@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static Context context;
     private static EditText username;
-    private static Button findTweetsButton;
+    private static Button findTweetsButton, tweetUserButton;
     private static ListView tweetsListView;
 
     @Override
@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         username = (EditText) findViewById(R.id.usernameEditText);
         findTweetsButton = (Button) findViewById(R.id.findTweetsButton);
+        tweetUserButton = (Button) findViewById(R.id.tweetUserButton);
         tweetsListView = (ListView) findViewById(R.id.tweetListView);
 
         findTweetsButton.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!username.getText().toString().trim().isEmpty()) {
                     final List<Tweet> tweets;
                     try {
-                        TwitterManager.getTweetsForUser(username.getText().toString().trim());
+                     TwitterManager.getTweetsForUser(username.getText().toString().trim());
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -78,6 +79,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+        });
+
+        tweetUserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TwitterManager.tweetUser(context, username.getText().toString().trim());
+            }
         });
     }
 

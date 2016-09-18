@@ -22,6 +22,12 @@
         android:layout_height="wrap_content"
         android:text="Find Tweets"/>
 
+    <Button
+        android:id="@+id/tweetUserButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tweet User"/>
+
     <ListView
         android:id="@+id/tweetListView"
         android:layout_width="match_parent"
