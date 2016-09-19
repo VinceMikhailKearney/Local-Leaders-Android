@@ -2,6 +2,7 @@ package industries.muskaqueers.thunderechosaber;
 
 import android.app.Application;
 
+import com.firebase.client.Firebase;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
@@ -18,6 +19,7 @@ public class ThunderEchoSaberApplication extends Application
     public static TwitterAuthConfig authConfig;
     public static Twitter twitter;
     public static TwitterManager twitterManager;
+    private FirebaseManager firebaseManager;
 
     @Override
     public void onCreate() {
@@ -26,5 +28,12 @@ public class ThunderEchoSaberApplication extends Application
         Fabric.with(this, new Twitter(authConfig));
         twitter = Twitter.getInstance();
         twitterManager = new TwitterManager();
+
+        Firebase.setAndroidContext(this);
+        this.firebaseManager = new FirebaseManager();
+    }
+
+    public FirebaseManager getFirebaseManager() {
+        return this.firebaseManager;
     }
 }
