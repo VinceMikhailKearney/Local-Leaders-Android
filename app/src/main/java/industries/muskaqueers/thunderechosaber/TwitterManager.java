@@ -24,8 +24,8 @@ import retrofit2.Call;
  * <p/>
  * This class can be used to make all of our API calls.
  */
-public class TwitterManager {
-
+public class TwitterManager
+{
     private static final String TAG = "TwitterManager";
 
     /**
@@ -34,8 +34,8 @@ public class TwitterManager {
      *                 will rip this out in order to get the correct results.
      * @throws IOException
      */
-    public static void getTweetsForUser(String username) throws IOException {
-
+    public static void getTweetsForUser(String username) throws IOException
+    {
         if (username.charAt(0) == '@') {
             username = username.substring(1);
         }
@@ -58,7 +58,6 @@ public class TwitterManager {
                              exception.printStackTrace();
                          }
                      }
-
         );
     }
 
@@ -68,8 +67,8 @@ public class TwitterManager {
      * @param username - If the user has not typed in '@' we  will add this in order contact the
      *                 correct user.
      */
-    public static void tweetUser(Context context, String username) {
-
+    public static void tweetUser(Context context, String username)
+    {
         if (username.charAt(0) != '@')
             username = "@" + username;
         TweetComposer.Builder builder = new TweetComposer.Builder(context)

@@ -44,8 +44,8 @@ import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.services.network.HttpRequest;
 import retrofit2.Call;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity
+{
     private static final String TAG = "MainActivity";
 
     private static Context context;
@@ -54,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private static ListView tweetsListView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -67,18 +68,19 @@ public class MainActivity extends AppCompatActivity {
         findTweetsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!username.getText().toString().trim().isEmpty()) {
+                if (!username.getText().toString().trim().isEmpty())
+                {
                     final List<Tweet> tweets;
                     try {
-                     TwitterManager.getTweetsForUser(username.getText().toString().trim());
-                    } catch (IOException ex) {
+                        TwitterManager.getTweetsForUser(username.getText().toString().trim());
+                    }
+                    catch (IOException ex) {
                         ex.printStackTrace();
                     }
-                } else {
-                    Toast.makeText(MainActivity.this, "Please enter valid username", Toast.LENGTH_SHORT).show();
                 }
+                else
+                    Toast.makeText(MainActivity.this, "Please enter valid username", Toast.LENGTH_SHORT).show();
             }
-
         });
 
         tweetUserButton.setOnClickListener(new View.OnClickListener() {
@@ -89,24 +91,24 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public static void fillOutList(List<Tweet> tweets) {
+    public static void fillOutList(List<Tweet> tweets)
+    {
         if (tweets.isEmpty()) {
             Toast.makeText(username.getContext(), "No tweets for this user", Toast.LENGTH_SHORT).show();
-        } else {
+        }
+        else
+        {
             List<String> tweetBodies = new ArrayList<String>();
-            for (Tweet tweet : tweets) {
+            for (Tweet tweet : tweets)
                 tweetBodies.add(tweet.text);
-            }
+
             String[] tweetsArr = new String[tweetBodies.size()];
             tweetsArr = tweetBodies.toArray(tweetsArr);
 
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,
                     android.R.layout.simple_list_item_1,
                     tweetsArr);
-
             tweetsListView.setAdapter(arrayAdapter);
         }
-
     }
-
 }
