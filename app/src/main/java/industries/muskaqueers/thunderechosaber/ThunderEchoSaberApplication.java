@@ -19,7 +19,7 @@ public class ThunderEchoSaberApplication extends Application
     public static TwitterAuthConfig authConfig;
     public static Twitter twitter;
     public static TwitterManager twitterManager;
-    private FirebaseManager firebaseManager;
+    private static FirebaseManager firebaseManager = new FirebaseManager();
 
     @Override
     public void onCreate() {
@@ -30,10 +30,9 @@ public class ThunderEchoSaberApplication extends Application
         twitterManager = new TwitterManager();
 
         Firebase.setAndroidContext(this);
-        this.firebaseManager = new FirebaseManager();
     }
 
-    public FirebaseManager getFirebaseManager() {
-        return this.firebaseManager;
+    public static FirebaseManager getFirebaseManager() {
+        return firebaseManager;
     }
 }
