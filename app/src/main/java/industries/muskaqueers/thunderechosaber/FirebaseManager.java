@@ -14,10 +14,11 @@ import com.google.firebase.database.ValueEventListener;
 public class FirebaseManager
 {
     private static final String TAG = "FirebaseManager";
+    public DatabaseReference dB;
 
     public FirebaseManager()
     {
-        DatabaseReference dB = FirebaseDatabase.getInstance().getReference("test");
+        this.dB = FirebaseDatabase.getInstance().getReference("test");
         dB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
