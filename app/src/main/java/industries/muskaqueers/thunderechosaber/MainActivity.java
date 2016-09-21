@@ -1,48 +1,23 @@
 package industries.muskaqueers.thunderechosaber;
 
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ListViewCompat;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.models.Search;
 import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.core.services.SearchService;
-import com.twitter.sdk.android.core.services.StatusesService;
-import com.twitter.sdk.android.tweetui.CollectionTimeline;
-import com.twitter.sdk.android.tweetui.SearchTimeline;
-import com.twitter.sdk.android.tweetui.Timeline;
-import com.twitter.sdk.android.tweetui.TweetTimelineListAdapter;
-import com.twitter.sdk.android.tweetui.UserTimeline;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.services.network.HttpRequest;
-import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -109,6 +84,45 @@ public class MainActivity extends AppCompatActivity
                     android.R.layout.simple_list_item_1,
                     tweetsArr);
             tweetsListView.setAdapter(arrayAdapter);
+        }
+    }
+
+    public static class CounsellorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    {
+        private Counsellor counsellor;
+        private TextView nameTextView, ageTextView, heroTextView;
+        private String name, age, hero;
+
+        public CounsellorViewHolder(View itemView) {
+            super(itemView);
+            nameTextView = (TextView) itemView.findViewById(R.id.name);
+            ageTextView = (TextView) itemView.findViewById(R.id.age);
+            heroTextView = (TextView) itemView.findViewById(R.id.hero);
+            itemView.setOnClickListener(this);
+        }
+
+        public void setName(String name) {
+            this.name = name;
+            this.nameTextView.setText(name);
+        }
+
+        public void setAge(String age) {
+            this.age = age;
+            this.ageTextView.setText(age);
+        }
+
+        public void setHero(String hero) {
+            this.hero = hero;
+            this.heroTextView.setText(hero);
+        }
+
+        public void setCounsellor(Counsellor counsellor) {
+            this.counsellor = counsellor;
+        }
+
+        @Override
+        public void onClick(View view) {
+            Log.d(TAG, "onClick: ");
         }
     }
 }
