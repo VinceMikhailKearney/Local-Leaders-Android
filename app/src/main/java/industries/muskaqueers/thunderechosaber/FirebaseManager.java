@@ -19,7 +19,6 @@ public class FirebaseManager
     public FirebaseManager()
     {
         this.firebaseDataReference = FirebaseDatabase.getInstance().getReference("test");
-        Log.i(TAG, "Firebase ref -->" + this.firebaseDataReference);
         this.firebaseDataReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
