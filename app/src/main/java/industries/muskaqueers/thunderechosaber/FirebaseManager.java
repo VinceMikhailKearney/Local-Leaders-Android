@@ -14,12 +14,13 @@ import com.google.firebase.database.ValueEventListener;
 public class FirebaseManager
 {
     private static final String TAG = "FirebaseManager";
-    public DatabaseReference dB;
+    public DatabaseReference firebaseDataReference;
 
     public FirebaseManager()
     {
-        this.dB = FirebaseDatabase.getInstance().getReference("test");
-        dB.addValueEventListener(new ValueEventListener() {
+        this.firebaseDataReference = FirebaseDatabase.getInstance().getReference("test");
+        Log.i(TAG, "Firebase ref -->" + this.firebaseDataReference);
+        this.firebaseDataReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
                 Log.d(TAG, "DataSnapshot value --> " + dataSnapshot.getValue());
