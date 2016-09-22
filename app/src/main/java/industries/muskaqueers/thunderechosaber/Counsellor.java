@@ -5,6 +5,7 @@ package industries.muskaqueers.thunderechosaber;
  */
 public class Counsellor
 {
+    private String counsellorID;
     private String name;
     private String age;
     private String hero;
@@ -18,7 +19,13 @@ public class Counsellor
         this.hero = hero;
     }
 
+    public String getCounsellorID() { return this.counsellorID; }
     public String getName() { return this.name; }
     public String getAge() { return this.age; }
     public String getHero() { return this.hero; }
+
+    public void setCounsellorID(String counsellorID) {this.counsellorID = counsellorID; }
+    public void setName(String name) {this.name = name; }
+    public void setAge(String age) {this.age = age; }
+    public void setHero(String hero) {this.hero = hero; }
 }

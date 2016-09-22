@@ -23,14 +23,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "ThunderEchoSabre.db";
 
     /* ---- Table and Columns (in order) ---- */
-    public static final String COUNSELLORS_TABLE = "Counsellors";
-    public static final String COLUMN_NAME_COUNSELLOR_ID = "counsellor_id";
-    public static final String COLUMN_NAME_COUNSELLOR_NAME = "name";
-    public static final String COLUMN_NAME_COUNSELLOR_PARTY = "party_abbreviation";
-    public static final String COLUMN_NAME_COUNSELLOR_TITLE = "title";
+    public final String COUNSELLORS_TABLE = "Counsellors";
+    public final String COLUMN_NAME_COUNSELLOR_ID = "counsellor_id";
+    public final String COLUMN_NAME_COUNSELLOR_NAME = "name";
+    public final String COLUMN_NAME_COUNSELLOR_PARTY = "party_abbreviation";
+    public final String COLUMN_NAME_COUNSELLOR_TITLE = "title";
 
     /* ---- Create table SQL string ---- */
-    private static final String CREATE_DATABASE =
+    private final String CREATE_DATABASE =
             "CREATE TABLE IF NOT EXISTS " + COUNSELLORS_TABLE + "("
                     + COLUMN_NAME_COUNSELLOR_ID + formatTextType
                     + COLUMN_NAME_COUNSELLOR_NAME + formatTextType
