@@ -56,7 +56,7 @@ public class CounsellorDatabaseHelper
                 Log.i(TAG, "Got Counsellor with ID: " + counsellorID);
             }
         }
-        else // We didn't fetch just ONE item.
+        else // We didn't fetch just ONE item - Which we of course expect to.
         {
             throw new IllegalStateException("Only supposed to fetch one. Count was -> " + cursor.getCount());
         }
