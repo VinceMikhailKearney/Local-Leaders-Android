@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "57217391808-7rvv9nbk6foleagapgmpskgu5827bs83.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "industries.muskaqueers.thunderechosaber",
+            "certificate_hash": "710D7176101DD3DFD4507E817FCAB7AA3CA9E588"
+          }
+        },
+        {
           "client_id": "57217391808-bj4mrmvs3cvheash7tqu1pb3e0fpqd32.apps.googleusercontent.com",
           "client_type": 3
         }
