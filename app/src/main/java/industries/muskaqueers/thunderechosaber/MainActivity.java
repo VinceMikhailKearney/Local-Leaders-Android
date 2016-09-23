@@ -87,9 +87,9 @@ public class MainActivity extends AppCompatActivity {
 
         public CounsellorViewHolder(View itemView) {
             super(itemView);
-            nameTextView = (TextView) itemView.findViewById(R.id.name);
-            ageTextView = (TextView) itemView.findViewById(R.id.age);
-            heroTextView = (TextView) itemView.findViewById(R.id.hero);
+//            nameTextView = (TextView) itemView.findViewById(R.id.name);
+//            ageTextView = (TextView) itemView.findViewById(R.id.age);
+//            heroTextView = (TextView) itemView.findViewById(R.id.hero);
             itemView.setOnClickListener(this);
         }
 
