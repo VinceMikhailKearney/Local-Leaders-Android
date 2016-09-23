@@ -17,9 +17,13 @@ public class CounsellorDatabaseHelper
 {
     private static final String TAG = "CounsellorDBHelper";
     public enum getOrDelete { FETCH , DELETE }
-    private static DatabaseManager localDB = ThunderEchoSaberApplication.getLocalDatabaseManager();
+    private static DatabaseManager localDB;
 
-    public static Counsellor addCounsellor(String name, String age, String hero) {
+    public CounsellorDatabaseHelper() {
+        this.localDB = ThunderEchoSaberApplication.getLocalDatabaseManager();
+    }
+
+    public Counsellor addCounsellor(String name, String age, String hero) {
         Log.i(TAG, "Adding a Counsellor to DB");
 
         String counsellorId = UUID.randomUUID().toString();
@@ -38,7 +42,7 @@ public class CounsellorDatabaseHelper
     }
 
     /* ---- Fetch/Delete Counsellor ---- */
-    public static Counsellor counsellor(String id, getOrDelete state)
+    public Counsellor counsellor(String id, getOrDelete state)
     {
         Counsellor item = null;
         Cursor cursor = fetchCounsellor(id);
@@ -114,7 +118,7 @@ public class CounsellorDatabaseHelper
     }
 
     /* ---- Convenience methods ---- */
-    private static Counsellor createCounsellorFrom(Cursor cursor)
+    private Counsellor createCounsellorFrom(Cursor cursor)
     {
         Counsellor counsellor = new Counsellor();
         counsellor.setCounsellorID(cursor.getString(0));
@@ -124,16 +128,16 @@ public class CounsellorDatabaseHelper
         return counsellor;
     }
 
-    private static SQLiteDatabase openThisDB() {
+    private SQLiteDatabase openThisDB() {
         return localDB.getWritableDatabase();
     }
 
-    private static void closeDBManger() {
+    private void closeDBManger() {
         // Need to close down the DatabaseManager (SQLiteOpenHelper).
         localDB.close();
     }
 
-    public static Cursor fetchCounsellor(String id)
+    public Cursor fetchCounsellor(String id)
     {
         String searchString = String.format("%s%s%s","'",id,"'");
         String query = "SELECT * FROM " + localDB.COUNSELLORS_TABLE + " WHERE " + localDB.COLUMN_NAME_COUNSELLOR_ID + " = " + searchString;
