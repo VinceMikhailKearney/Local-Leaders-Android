@@ -19,18 +19,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
-{
-    private static final String TAG = "MainActivity";
+public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
     private static Context context;
     private static EditText username;
     private static Button findTweetsButton, tweetUserButton;
     private static ListView tweetsListView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -43,17 +41,14 @@ public class MainActivity extends AppCompatActivity
         findTweetsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!username.getText().toString().trim().isEmpty())
-                {
+                if (!username.getText().toString().trim().isEmpty()) {
                     final List<Tweet> tweets;
                     try {
                         TwitterManager.getTweetsForUser(username.getText().toString().trim());
-                    }
-                    catch (IOException ex) {
+                    } catch (IOException ex) {
                         ex.printStackTrace();
                     }
-                }
-                else
+                } else
                     Toast.makeText(MainActivity.this, "Please enter valid username", Toast.LENGTH_SHORT).show();
             }
         });
@@ -66,13 +61,10 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    public static void fillOutList(List<Tweet> tweets)
-    {
+    public static void fillOutList(List<Tweet> tweets) {
         if (tweets.isEmpty()) {
             Toast.makeText(username.getContext(), "No tweets for this user", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
+        } else {
             List<String> tweetBodies = new ArrayList<String>();
             for (Tweet tweet : tweets)
                 tweetBodies.add(tweet.text);

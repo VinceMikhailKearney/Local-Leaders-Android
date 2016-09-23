@@ -24,18 +24,17 @@ import retrofit2.Call;
  * <p/>
  * This class can be used to make all of our API calls.
  */
-public class TwitterManager
-{
+public class TwitterManager {
     private static final String TAG = "TwitterManager";
 
     /**
      * getTweetsForUser
+     *
      * @param username - username of which tweets will be found for. If the user has typed in '@' we
      *                 will rip this out in order to get the correct results.
      * @throws IOException
      */
-    public static void getTweetsForUser(String username) throws IOException
-    {
+    public static void getTweetsForUser(String username) throws IOException {
         if (username.charAt(0) == '@') {
             username = username.substring(1);
         }
@@ -63,12 +62,12 @@ public class TwitterManager
 
     /**
      * tweetUser
-     * @param context - We need to provide a context in order to show the TweetComposer.
+     *
+     * @param context  - We need to provide a context in order to show the TweetComposer.
      * @param username - If the user has not typed in '@' we  will add this in order contact the
      *                 correct user.
      */
-    public static void tweetUser(Context context, String username)
-    {
+    public static void tweetUser(Context context, String username) {
         if (username.charAt(0) != '@')
             username = "@" + username;
         TweetComposer.Builder builder = new TweetComposer.Builder(context)

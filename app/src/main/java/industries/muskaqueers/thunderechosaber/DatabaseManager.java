@@ -36,7 +36,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
                     + COLUMN_NAME_COUNSELLOR_NAME + formatTextType
                     + COLUMN_NAME_COUNSELLOR_PARTY + formatTextType
                     + COLUMN_NAME_COUNSELLOR_TITLE + formatTextTypeEnd + ")";
-    /** Above ^^^
+
+    /**
+     * Above ^^^
      * When creating the SQL database table we need to form a string that matches an exact pattern.
      * I found this just a slightly easier way to read it when doing it in ToDooey :D.
      * Essentially it just makes sure that the table is not already present in the DB (not to override it)
@@ -46,7 +48,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public DatabaseManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         Log.i(TAG, "Setting up DatabaseManager.");
-       // After we init the DatabaseManager it calls onCreate() and sets up the DB for us
+        // After we init the DatabaseManager it calls onCreate() and sets up the DB for us
     }
 
     @Override
@@ -56,13 +58,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.execSQL(CREATE_DATABASE);
     }
 
-    /** For onUpgrade()
+    /**
+     * For onUpgrade()
      * Note: No point in using for Dev - We are better using 'Clear Data' in android settings.
      * Then just running it so the version number does not need to increase.
      * For release we need to migrate everything.
      */
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // If we ever upgrade, which we won't for now, we do the shiz here.
         Log.w(DatabaseManager.class.getName(), "Upgrading Database from " + oldVersion + " to " + newVersion);
         db.execSQL("ALTER TABLE " + COUNSELLORS_TABLE);

@@ -3,8 +3,8 @@ package industries.muskaqueers.thunderechosaber;
 /**
  * Created by vincekearney on 20/09/2016.
  */
-public class Counsellor
-{
+public class Counsellor {
+
     private String counsellorID;
     private String name;
     private String age;
@@ -12,8 +12,7 @@ public class Counsellor
 
     public Counsellor() {}
 
-    public Counsellor(String name, String age, String hero)
-    {
+    public Counsellor(String name, String age, String hero) {
         this.name = name;
         this.age = age;
         this.hero = hero;
