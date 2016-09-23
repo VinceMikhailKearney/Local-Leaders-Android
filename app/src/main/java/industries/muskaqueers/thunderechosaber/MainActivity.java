@@ -79,42 +79,42 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    public static class CounsellorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
-//    {
-//        private Counsellor counsellor;
-//        private TextView nameTextView, ageTextView, heroTextView;
-//        private String name, age, hero;
-//
-//        public CounsellorViewHolder(View itemView) {
-//            super(itemView);
-//            nameTextView = (TextView) itemView.findViewById(R.id.name);
-//            ageTextView = (TextView) itemView.findViewById(R.id.age);
-//            heroTextView = (TextView) itemView.findViewById(R.id.hero);
-//            itemView.setOnClickListener(this);
-//        }
-//
-//        public void setName(String name) {
-//            this.name = name;
-//            this.nameTextView.setText(name);
-//        }
-//
-//        public void setAge(String age) {
-//            this.age = age;
-//            this.ageTextView.setText(age);
-//        }
-//
-//        public void setHero(String hero) {
-//            this.hero = hero;
-//            this.heroTextView.setText(hero);
-//        }
-//
-//        public void setCounsellor(Counsellor counsellor) {
-//            this.counsellor = counsellor;
-//        }
-//
-//        @Override
-//        public void onClick(View view) {
-//            Log.d(TAG, "onClick: ");
-//        }
-//    }
+    public static class CounsellorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    {
+        private Counsellor counsellor;
+        private TextView nameTextView, ageTextView, heroTextView;
+        private String name, age, hero;
+
+        public CounsellorViewHolder(View itemView) {
+            super(itemView);
+            nameTextView = (TextView) itemView.findViewById(R.id.name);
+            ageTextView = (TextView) itemView.findViewById(R.id.age);
+            heroTextView = (TextView) itemView.findViewById(R.id.hero);
+            itemView.setOnClickListener(this);
+        }
+
+        public void setName(String name) {
+            this.name = name;
+            this.nameTextView.setText(name);
+        }
+
+        public void setAge(String age) {
+            this.age = age;
+            this.ageTextView.setText(age);
+        }
+
+        public void setHero(String hero) {
+            this.hero = hero;
+            this.heroTextView.setText(hero);
+        }
+
+        public void setCounsellor(Counsellor counsellor) {
+            this.counsellor = counsellor;
+        }
+
+        @Override
+        public void onClick(View view) {
+            Log.d(TAG, "onClick: ");
+        }
+    }
 }
