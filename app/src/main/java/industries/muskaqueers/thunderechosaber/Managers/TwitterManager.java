@@ -1,4 +1,4 @@
-package industries.muskaqueers.thunderechosaber;
+package industries.muskaqueers.thunderechosaber.Managers;
 
 import android.content.Context;
 import android.util.Log;
@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
 import retrofit2.Call;
 
 /**

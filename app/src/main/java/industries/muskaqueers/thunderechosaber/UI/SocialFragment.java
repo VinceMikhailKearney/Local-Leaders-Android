@@ -1,4 +1,4 @@
-package industries.muskaqueers.thunderechosaber;
+package industries.muskaqueers.thunderechosaber.UI;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import industries.muskaqueers.thunderechosaber.R;
 
 /**
  * Created by Andrew on 9/23/16.

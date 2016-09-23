@@ -1,9 +1,7 @@
-package industries.muskaqueers.thunderechosaber;
+package industries.muskaqueers.thunderechosaber.Managers;
 
 import android.util.Log;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.firebase.client.Firebase;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -11,6 +9,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import industries.muskaqueers.thunderechosaber.DB.CounsellorDatabaseHelper;
 
 /**
  * Created by vincekearney on 20/09/2016.

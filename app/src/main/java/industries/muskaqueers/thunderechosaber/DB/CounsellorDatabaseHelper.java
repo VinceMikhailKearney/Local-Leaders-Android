@@ -1,4 +1,4 @@
-package industries.muskaqueers.thunderechosaber;
+package industries.muskaqueers.thunderechosaber.DB;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -8,6 +8,9 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import industries.muskaqueers.thunderechosaber.Counsellor;
+import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
 
 /**
  * Created by vincekearney on 22/09/2016.

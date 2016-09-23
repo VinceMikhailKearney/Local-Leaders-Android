@@ -6,6 +6,9 @@ import com.firebase.client.Firebase;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
+import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
+import industries.muskaqueers.thunderechosaber.Managers.FirebaseManager;
+import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import io.fabric.sdk.android.Fabric;
 
 /**

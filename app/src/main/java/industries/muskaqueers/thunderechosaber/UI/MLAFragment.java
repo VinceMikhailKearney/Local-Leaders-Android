@@ -1,4 +1,4 @@
-package industries.muskaqueers.thunderechosaber;
+package industries.muskaqueers.thunderechosaber.UI;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import industries.muskaqueers.thunderechosaber.Counsellor;
+import industries.muskaqueers.thunderechosaber.R;
 
 /**
  * Created by Andrew on 9/23/16.

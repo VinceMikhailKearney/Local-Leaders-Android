@@ -1,4 +1,4 @@
-package industries.muskaqueers.thunderechosaber;
+package industries.muskaqueers.thunderechosaber.UI;
 
 import android.content.Context;
 import android.support.design.widget.TabLayout;
@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 //import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+
+import industries.muskaqueers.thunderechosaber.R;
 
 public class MainActivity extends AppCompatActivity {
 
