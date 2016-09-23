@@ -46,7 +46,7 @@ public class FirebaseManager {
             String age = memberObject.optString("age");
             String hero = memberObject.optString("hero");
 
-            this.counsellorDatabaseHelper.addCounsellor(name, age, hero);
+//            this.counsellorDatabaseHelper.addCounsellor(name, age, hero);
 //            Log.i(TAG, "Counsellor count == " + this.counsellorDatabaseHelper.getAllCounsellors().size());
 //            Log.i(TAG, "The counsellor object created - " + newCounsellor + "       The hero --> " + newCounsellor.getHero());
         } catch (JSONException e) {
