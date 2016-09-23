@@ -1,0 +1,50 @@
+{
+  "project_info": {
+    "project_number": "57217391808",
+    "firebase_url": "https://thunderechosabre-72fab.firebaseio.com",
+    "project_id": "thunderechosabre-72fab",
+    "storage_bucket": "thunderechosabre-72fab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:57217391808:android:d357bea97daf4106",
+        "android_client_info": {
+          "package_name": "industries.muskaqueers.thunderechosaber"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "57217391808-7rvv9nbk6foleagapgmpskgu5827bs83.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "industries.muskaqueers.thunderechosaber",
+            "certificate_hash": "710D7176101DD3DFD4507E817FCAB7AA3CA9E588"
+          }
+        },
+        {
+          "client_id": "57217391808-bj4mrmvs3cvheash7tqu1pb3e0fpqd32.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7WNxmhKd6QniHhpe6uDEUrcM2xPQrJZ8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

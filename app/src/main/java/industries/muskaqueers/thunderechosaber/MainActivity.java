@@ -1,112 +1,121 @@
 package industries.muskaqueers.thunderechosaber;
 
 import android.content.Context;
-import android.database.DataSetObserver;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ListViewCompat;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.models.Search;
-import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.core.services.SearchService;
-import com.twitter.sdk.android.core.services.StatusesService;
-import com.twitter.sdk.android.tweetui.CollectionTimeline;
-import com.twitter.sdk.android.tweetui.SearchTimeline;
-import com.twitter.sdk.android.tweetui.Timeline;
-import com.twitter.sdk.android.tweetui.TweetTimelineListAdapter;
-import com.twitter.sdk.android.tweetui.UserTimeline;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.services.network.HttpRequest;
-import retrofit2.Call;
+//import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private static final int SOCIAL_TAB = 0;
+    private static final int MLA_TAB = 1;
+    private static final int AREA_TAB = 2;
 
-    private static Context context;
-    private static EditText username;
-    private static Button findTweetsButton, tweetUserButton;
-    private static ListView tweetsListView;
+    Toolbar toolbar;
+    TabLayout tabLayout;
+    ViewPager fragmentPager;
 
+    // ---------- Lifecycle Methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        context = this;
-        username = (EditText) findViewById(R.id.usernameEditText);
-        findTweetsButton = (Button) findViewById(R.id.findTweetsButton);
-        tweetUserButton = (Button) findViewById(R.id.tweetUserButton);
-        tweetsListView = (ListView) findViewById(R.id.tweetListView);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        fragmentPager = (ViewPager) findViewById(R.id.fragment_pager);
 
-        findTweetsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!username.getText().toString().trim().isEmpty()) {
-                    final List<Tweet> tweets;
-                    try {
-                     TwitterManager.getTweetsForUser(username.getText().toString().trim());
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                } else {
-                    Toast.makeText(MainActivity.this, "Please enter valid username", Toast.LENGTH_SHORT).show();
-                }
-            }
+        setSupportActionBar(toolbar);
+        setupPager();
+        setupTabLayout();
 
-        });
-
-        tweetUserButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TwitterManager.tweetUser(context, username.getText().toString().trim());
-            }
-        });
     }
 
-    public static void fillOutList(List<Tweet> tweets) {
-        if (tweets.isEmpty()) {
-            Toast.makeText(username.getContext(), "No tweets for this user", Toast.LENGTH_SHORT).show();
-        } else {
-            List<String> tweetBodies = new ArrayList<String>();
-            for (Tweet tweet : tweets) {
-                tweetBodies.add(tweet.text);
-            }
-            String[] tweetsArr = new String[tweetBodies.size()];
-            tweetsArr = tweetBodies.toArray(tweetsArr);
+    // ---------- Fragment Pager Methods
+    protected static class MainAdapter extends FragmentPagerAdapter {
+        private Fragment[] fragments = {new SocialFragment(), new MLAFragment(), new AreaFragment()};
+        protected Context context;
 
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,
-                    android.R.layout.simple_list_item_1,
-                    tweetsArr);
-
-            tweetsListView.setAdapter(arrayAdapter);
+        public MainAdapter(FragmentManager fm, Context context) {
+            super(fm);
+            this.context = context;
         }
 
+        @Override
+        public int getCount() {
+            return fragments.length;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return fragments[position];
+        }
+
+    }
+
+    protected void setupPager() {
+        MainAdapter mainAdapter = new MainAdapter(getSupportFragmentManager(), getApplicationContext());
+        fragmentPager.setAdapter(mainAdapter);
+        fragmentPager.setCurrentItem(MLA_TAB);
+        if (tabLayout.getTabCount() > 0) {
+            updateTabTitle(tabLayout.getTabAt(fragmentPager.getCurrentItem()));
+        }
+
+    }
+
+    public void setupTabLayout() {
+        tabLayout.setupWithViewPager(fragmentPager);
+
+        int[] imageResIds = new int[]{R.drawable.newsicon, R.drawable.councilloricon, R.drawable.mapicon};
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            tabLayout.getTabAt(i).setIcon(imageResIds[i]);
+        }
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                updateTabTitle(tab);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
+
+        updateTabTitle(tabLayout.getTabAt(fragmentPager.getCurrentItem()));
+    }
+
+    protected void updateTabTitle(TabLayout.Tab tab) {
+        switch (tab.getPosition()) {
+            case 0: {
+                getSupportActionBar().setTitle("Social");
+                fragmentPager.setCurrentItem(tab.getPosition());
+                break;
+            }
+            case 1: {
+                getSupportActionBar().setTitle("MLAs");
+                fragmentPager.setCurrentItem(tab.getPosition());
+                break;
+            }
+            case 2: {
+                getSupportActionBar().setTitle("My Area");
+                fragmentPager.setCurrentItem(tab.getPosition());
+                break;
+            }
+            default:
+                break;
+        }
     }
 
 }
