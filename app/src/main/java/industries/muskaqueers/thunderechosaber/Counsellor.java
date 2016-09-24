@@ -10,8 +10,8 @@ public class Counsellor {
     private String lastName;
     private String imageURL;
     private String partyAbbreviation;
-    private String title;
     private String partyName;
+    private String title;
     private String twitterHandle;
     private String constituency;
 
@@ -23,8 +23,8 @@ public class Counsellor {
         this.lastName = lastName;
         this.imageURL = imageURL;
         this.partyAbbreviation = partyAbbreviation;
-        this.title = title;
         this.partyName = partyName;
+        this.title = title;
         this.constituency = constituency;
     }
 
@@ -43,11 +43,11 @@ public class Counsellor {
     public String getPartyAbbreviation() { return partyAbbreviation; }
     public void setPartyAbbreviation(String partyAbbreviation) { this.partyAbbreviation = partyAbbreviation; }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-
     public String getPartyName() { return partyName; }
     public void setPartyName(String partyName) { this.partyName = partyName; }
+
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
     public String getTwitterHandle() { return twitterHandle; }
     public void setTwitterHandle(String twitterHandle) { this.twitterHandle = twitterHandle; }
