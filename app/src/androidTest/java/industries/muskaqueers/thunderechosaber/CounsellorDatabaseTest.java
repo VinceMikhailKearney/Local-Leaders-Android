@@ -1,5 +1,6 @@
 package industries.muskaqueers.thunderechosaber;
 
+import android.nfc.Tag;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
@@ -22,6 +23,7 @@ import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
 
 @RunWith(AndroidJUnit4.class)
 public class CounsellorDatabaseTest {
+    private static final String TAG = "CounsellorDatabaseTest";
     private DatabaseManager testManager;
     private CounsellorDatabaseHelper testHelper;
 
@@ -33,11 +35,14 @@ public class CounsellorDatabaseTest {
 
     @Test
     public void test_counsellor_database() throws Exception {
+        // Here I am simply adding one to make sure that when we delete all it really has worked.
+        Assert.assertNotNull(testHelper.addCounsellor("Test", "100", "Android Studio"));
         // For testing purposes we will start by wiping the DB of counsellors
         testHelper.deleteAllCounsellors();
+        // Making sure that the deleteAll works
         assertThat(testHelper.getAllCounsellors().size(), is(0));
 
-        Log.i("Test", "Let's try adding counsellors to DB");
+        // Test adding counsellors to DB
         Counsellor newC = testHelper.addCounsellor("Vince", "23", "Goku");
         Assert.assertNotNull(newC);
         Counsellor newC1 = testHelper.addCounsellor("Andrew", "21", "Vegeta");
@@ -45,15 +50,17 @@ public class CounsellorDatabaseTest {
         Counsellor newC2 = testHelper.addCounsellor("Marc", "22", "Majin-Buu");
         Assert.assertNotNull(newC2);
 
+        // Make sure the DB contains the 3 that were just created
+        assertThat(testHelper.getAllCounsellors().size(), is(3));
+
+        // Search for a counsellor with ID = newC1.getCounsellorID()
         Counsellor searchForNewC1 = testHelper.counsellor(newC1.getCounsellorID(), CounsellorDatabaseHelper.getOrDelete.FETCH);
         Assert.assertNotNull(searchForNewC1);
 
-        // At this point we have created and saved 3 counsellors to the DB, let's make sure that's what we have
-        assertThat(testHelper.getAllCounsellors().size(), is(3));
-
-        // Let's test that deleting a counsellor works
+        // Make sure we can delete a specific counsellor
         testHelper.counsellor(newC.getCounsellorID(), CounsellorDatabaseHelper.getOrDelete.DELETE);
-        assertThat(testHelper.getAllCounsellors().size(), is(2)); // Make sure when we fetch all it's only 2
-        Assert.assertNull(testHelper.counsellor(newC.getCounsellorID(), CounsellorDatabaseHelper.getOrDelete.FETCH)); // Making sure the specifc counsellor removed is not in the DB
+        Assert.assertNull(testHelper.counsellor(newC.getCounsellorID(), CounsellorDatabaseHelper.getOrDelete.FETCH));
+        // Now to finsih make sure the DB contains only 2
+        assertThat(testHelper.getAllCounsellors().size(), is(2));
     }
 }

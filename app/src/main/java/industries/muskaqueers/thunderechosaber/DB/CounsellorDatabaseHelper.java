@@ -73,7 +73,7 @@ public class CounsellorDatabaseHelper {
 
     /* ---- Fetch methods ---- */
     public List<Counsellor> getAllCounsellors() {
-        Log.i(TAG, "Asking for all ToDo items.");
+        Log.i(TAG, "Asking for all Counsellor items.");
         // Query sets to select ALL from the To-Do table.
         String query = "SELECT * FROM " + localDB.COUNSELLORS_TABLE;
         return fetchCounsellorsWithQuery(query);
