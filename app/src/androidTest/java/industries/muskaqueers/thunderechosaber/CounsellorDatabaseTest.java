@@ -33,18 +33,18 @@ public class CounsellorDatabaseTest {
     @Test
     public void test_counsellor_database() throws Exception {
         // Here I am simply adding one to make sure that when we delete all it really has worked.
-        Assert.assertNotNull(testHelper.addCounsellor("Test", "100", "Android Studio"));
+        Assert.assertNotNull(testHelper.addCounsellor("Test", "MLA", "testimageurl", "VMJK", "Mikhail", "CTO", "Belfast"));
         // For testing purposes we will start by wiping the DB of counsellors
         testHelper.deleteAllCounsellors();
         // Making sure that the deleteAll works
         assertThat(testHelper.getAllCounsellors().size(), is(0));
 
         // Test adding counsellors to DB
-        Counsellor newC = testHelper.addCounsellor("Vince", "23", "Goku");
+        Counsellor newC = testHelper.addCounsellor("Vince", "Kearney", "vinceimageurl", "VK", "Kearney", "CTO", "Lurgan");
         Assert.assertNotNull(newC);
-        Counsellor newC1 = testHelper.addCounsellor("Andrew", "21", "Vegeta");
+        Counsellor newC1 = testHelper.addCounsellor("Andrew", "Cunningham", "andrewimageurl", "AC", "Cunningham", "CEO", "Hillsborough");
         Assert.assertNotNull(newC1);
-        Counsellor newC2 = testHelper.addCounsellor("Marc", "22", "Majin-Buu");
+        Counsellor newC2 = testHelper.addCounsellor("Marc", "Nevin", "marcimageurl", "MN", "Nevin", "COO", "Lisburn");
         Assert.assertNotNull(newC2);
 
         // Make sure the DB contains the 3 that were just created

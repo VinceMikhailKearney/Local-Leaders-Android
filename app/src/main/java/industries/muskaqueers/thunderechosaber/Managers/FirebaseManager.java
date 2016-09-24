@@ -43,10 +43,15 @@ public class FirebaseManager {
         try { // Let's add the MLA that we just pulled down
             JSONObject jsonObject = new JSONObject(jsonResponse);
             JSONObject memberObject = jsonObject.getJSONObject("vince");
-            String name = memberObject.optString("name");
-            String age = memberObject.optString("age");
-            String hero = memberObject.optString("hero");
-            this.MLA_DB_Helper.addCounsellor(name, age, hero);
+            String firstName = memberObject.optString("firstName");
+            String lastName = memberObject.optString("lastName");
+            String imageURL = memberObject.optString("imageURL");
+            String partyAbbreviation = memberObject.optString("partyAbbreviation");
+            String partyName = memberObject.optString("partyName");
+            String title = memberObject.optString("title");
+            String constituency = memberObject.optString("constituency");
+
+            this.MLA_DB_Helper.addCounsellor(firstName, lastName, imageURL, partyAbbreviation, partyName, title, constituency);
         } catch (JSONException e) {
             e.printStackTrace();
         }
