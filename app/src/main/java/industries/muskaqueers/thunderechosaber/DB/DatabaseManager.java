@@ -25,17 +25,27 @@ public class DatabaseManager extends SQLiteOpenHelper {
     /* ---- Table and Columns (in order) ---- */
     public final String COUNSELLORS_TABLE = "Counsellors";
     public final String COLUMN_NAME_COUNSELLOR_ID = "counsellor_id";
-    public final String COLUMN_NAME_COUNSELLOR_NAME = "name";
-    public final String COLUMN_NAME_COUNSELLOR_PARTY = "party_abbreviation";
+    public final String COLUMN_NAME_COUNSELLOR_FIRST_NAME = "first_name";
+    public final String COLUMN_NAME_COUNSELLOR_LAST_NAME = "last_name";
+    public final String COLUMN_NAME_COUNSELLOR_IMAGE_URL = "image_url";
+    public final String COLUMN_NAME_COUNSELLOR_PARTY_ABBREVIATION = "party_abbreviation";
+    public final String COLUMN_NAME_COUNSELLOR_PARTY_NAME = "party_name";
     public final String COLUMN_NAME_COUNSELLOR_TITLE = "title";
+    public final String COLUMN_NAME_COUNSELLOR_TWITTER_HANDLE = "twitter_handle";
+    public final String COLUMN_NAME_COUNSELLOR_CONSTITUENCY = "constituency";
 
     /* ---- Create table SQL string ---- */
     private final String CREATE_DATABASE =
             "CREATE TABLE IF NOT EXISTS " + COUNSELLORS_TABLE + "("
                     + COLUMN_NAME_COUNSELLOR_ID + formatTextType
-                    + COLUMN_NAME_COUNSELLOR_NAME + formatTextType
-                    + COLUMN_NAME_COUNSELLOR_PARTY + formatTextType
-                    + COLUMN_NAME_COUNSELLOR_TITLE + formatTextTypeEnd + ")";
+                    + COLUMN_NAME_COUNSELLOR_FIRST_NAME + formatTextType
+                    + COLUMN_NAME_COUNSELLOR_LAST_NAME + formatTextType
+                    + COLUMN_NAME_COUNSELLOR_IMAGE_URL + formatTextType
+                    + COLUMN_NAME_COUNSELLOR_PARTY_ABBREVIATION + formatTextType
+                    + COLUMN_NAME_COUNSELLOR_PARTY_NAME + formatTextType
+                    + COLUMN_NAME_COUNSELLOR_TITLE + formatTextType
+                    + COLUMN_NAME_COUNSELLOR_TWITTER_HANDLE + formatTextType
+                    + COLUMN_NAME_COUNSELLOR_CONSTITUENCY + formatTextTypeEnd + ")";
 
     /**
      * Above ^^^
