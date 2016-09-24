@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import industries.muskaqueers.thunderechosaber.DB.CounsellorDatabaseHelper;
+import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
 
 /**
  * Created by vincekearney on 20/09/2016.
@@ -21,7 +22,7 @@ public class FirebaseManager {
     private CounsellorDatabaseHelper counsellorDatabaseHelper;
 
     public FirebaseManager() {
-        this.counsellorDatabaseHelper = new CounsellorDatabaseHelper();
+        this.counsellorDatabaseHelper = new CounsellorDatabaseHelper(ThunderEchoSaberApplication.getLocalDatabaseManager());
         this.firebaseDataReference = FirebaseDatabase.getInstance().getReference("test");
         this.firebaseDataReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -46,7 +47,7 @@ public class FirebaseManager {
             String age = memberObject.optString("age");
             String hero = memberObject.optString("hero");
 
-//            this.counsellorDatabaseHelper.addCounsellor(name, age, hero);
+            this.counsellorDatabaseHelper.addCounsellor(name, age, hero);
 //            Log.i(TAG, "Counsellor count == " + this.counsellorDatabaseHelper.getAllCounsellors().size());
 //            Log.i(TAG, "The counsellor object created - " + newCounsellor + "       The hero --> " + newCounsellor.getHero());
         } catch (JSONException e) {
