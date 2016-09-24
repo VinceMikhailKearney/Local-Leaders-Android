@@ -6,25 +6,52 @@ package industries.muskaqueers.thunderechosaber;
 public class Counsellor {
 
     private String counsellorID;
-    private String name;
-    private String age;
-    private String hero;
+    private String firstName;
+    private String lastName;
+    private String imageURL;
+    private String partyAbbreviation;
+    private String title;
+    private String partyName;
+    private String twitterHandle;
+    private String constituency;
 
     public Counsellor() {}
 
-    public Counsellor(String name, String age, String hero) {
-        this.name = name;
-        this.age = age;
-        this.hero = hero;
+    public Counsellor(String firstName, String lastName, String imageURL, String partyAbbreviation,
+                      String title, String partyName, String constituency) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.imageURL = imageURL;
+        this.partyAbbreviation = partyAbbreviation;
+        this.title = title;
+        this.partyName = partyName;
+        this.constituency = constituency;
     }
 
     public String getCounsellorID() { return this.counsellorID; }
-    public String getName() { return this.name; }
-    public String getAge() { return this.age; }
-    public String getHero() { return this.hero; }
-
     public void setCounsellorID(String counsellorID) {this.counsellorID = counsellorID; }
-    public void setName(String name) {this.name = name; }
-    public void setAge(String age) {this.age = age; }
-    public void setHero(String hero) {this.hero = hero; }
+
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getImageURL() { return imageURL; }
+    public void setImageURL(String imageURL) { this.imageURL = imageURL; }
+
+    public String getPartyAbbreviation() { return partyAbbreviation; }
+    public void setPartyAbbreviation(String partyAbbreviation) { this.partyAbbreviation = partyAbbreviation; }
+
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+
+    public String getPartyName() { return partyName; }
+    public void setPartyName(String partyName) { this.partyName = partyName; }
+
+    public String getTwitterHandle() { return twitterHandle; }
+    public void setTwitterHandle(String twitterHandle) { this.twitterHandle = twitterHandle; }
+
+    public String getConstituency() { return constituency; }
+    public void setConstituency(String constituency) { this.constituency = constituency;}
 }
