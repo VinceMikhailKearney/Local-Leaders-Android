@@ -1,6 +1,7 @@
 package industries.muskaqueers.thunderechosaber;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.firebase.client.Firebase;
 import com.twitter.sdk.android.Twitter;
@@ -27,14 +28,16 @@ public class ThunderEchoSaberApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        // First thing, lets set up the DB
+        this.localDatabaseManager = new DatabaseManager(this);
+        // Now set up twitter
         authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig));
         twitter = Twitter.getInstance();
         twitterManager = new TwitterManager();
-
+        // Lastly Firebase
         Firebase.setAndroidContext(this);
         this.firebaseManager = new FirebaseManager();
-        this.localDatabaseManager = new DatabaseManager(this);
     }
 
     public static FirebaseManager getFirebaseManager() {
