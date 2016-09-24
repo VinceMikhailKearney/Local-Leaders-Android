@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.UUID;
 
 import industries.muskaqueers.thunderechosaber.Counsellor;
-import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
 
 /**
  * Created by vincekearney on 22/09/2016.
@@ -22,8 +21,9 @@ public class CounsellorDatabaseHelper {
     public enum getOrDelete {FETCH, DELETE}
     private static DatabaseManager localDB;
 
-    public CounsellorDatabaseHelper() {
-        this.localDB = ThunderEchoSaberApplication.getLocalDatabaseManager();
+    public CounsellorDatabaseHelper(DatabaseManager manager) {
+        Log.i(TAG, "Setting up CounsellorDBHelper");
+        this.localDB = manager;
     }
 
     public Counsellor addCounsellor(String name, String age, String hero) {
@@ -91,7 +91,7 @@ public class CounsellorDatabaseHelper {
         return allCounsellors;
     }
 
-    /* ---- Delete methods ---- */
+    /* ---- Public Delete Methods ---- */
     public void deleteAllCounsellors() {
         // Query sets to select ALL from the To-Do table.
         String query = "SELECT * FROM " + localDB.COUNSELLORS_TABLE;
@@ -109,7 +109,7 @@ public class CounsellorDatabaseHelper {
         closeDBManger();
     }
 
-    /* ---- Convenience methods ---- */
+    /* ---- Private Convenience Methods ---- */
     private Counsellor createCounsellorFrom(Cursor cursor) {
         Counsellor counsellor = new Counsellor();
         counsellor.setCounsellorID(cursor.getString(0));
@@ -128,7 +128,7 @@ public class CounsellorDatabaseHelper {
         localDB.close();
     }
 
-    public Cursor fetchCounsellor(String id) {
+    private Cursor fetchCounsellor(String id) {
         String searchString = String.format("%s%s%s", "'", id, "'");
         String query = "SELECT * FROM " + localDB.COUNSELLORS_TABLE + " WHERE " + localDB.COLUMN_NAME_COUNSELLOR_ID + " = " + searchString;
         return openThisDB().rawQuery(query, null);
