@@ -48,6 +48,10 @@ public class CounsellorDatabaseHelper {
     public Counsellor counsellor(String id, getOrDelete state) {
         Counsellor item = null;
         Cursor cursor = fetchCounsellor(id);
+
+        if(cursor.getCount() == 0)
+            return null;
+
         if (cursor.moveToFirst() && cursor.getCount() == 1) {
             String counsellorID = cursor.getString(0);
             if (state == getOrDelete.DELETE) {
