@@ -21,20 +21,35 @@ public class CounsellorDatabaseHelper {
     public enum getOrDelete {FETCH, DELETE}
     private static DatabaseManager localDB;
 
+    /**
+     * Constructor for setting up the database helper
+     * @param manager - Found it easier that we can just pass in a DatabaseManager. This simplified creating a unit test for this class.
+     */
     public CounsellorDatabaseHelper(DatabaseManager manager) {
         Log.i(TAG, "Setting up CounsellorDBHelper");
         this.localDB = manager;
     }
 
-    public Counsellor addCounsellor(String name, String age, String hero) {
+    /**
+     * Method for adding a MLA to the DB
+     * Parameters are self explanatory
+     * @return - Returns a Counsellor object
+     */
+    public Counsellor addCounsellor(String firstName, String lastName, String imageURL, String partyAbbreviation,
+                                    String partyName, String title, String constituency) {
         Log.i(TAG, "Adding a Counsellor to DB");
 
         String counsellorId = UUID.randomUUID().toString();
         ContentValues counsellorValues = new ContentValues();
         counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_ID, counsellorId);
-        counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_NAME, name);
-        counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_PARTY, age);
-        counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_TITLE, hero);
+        counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_FIRST_NAME, firstName);
+        counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_LAST_NAME, lastName);
+        counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_IMAGE_URL, imageURL);
+        counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_PARTY_ABBREVIATION, partyAbbreviation);
+        counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_PARTY_NAME, partyName);
+        counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_TITLE, title);
+        counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_TWITTER_HANDLE, ""); // VTODO - Need to add a proper twitter handle
+        counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_CONSTITUENCY, constituency);
 
         // Open the db - I.e. return a writeable instance of the database so that we can save to it
         openThisDB().insert(localDB.COUNSELLORS_TABLE, null, counsellorValues);
@@ -117,9 +132,14 @@ public class CounsellorDatabaseHelper {
     private Counsellor createCounsellorFrom(Cursor cursor) {
         Counsellor counsellor = new Counsellor();
         counsellor.setCounsellorID(cursor.getString(0));
-        counsellor.setName(cursor.getString(1));
-        counsellor.setAge(cursor.getString(2));
-        counsellor.setHero(cursor.getString(3));
+        counsellor.setFirstName(cursor.getString(1));
+        counsellor.setLastName(cursor.getString(2));
+        counsellor.setImageURL(cursor.getString(3));
+        counsellor.setPartyAbbreviation(cursor.getString(4));
+        counsellor.setPartyName(cursor.getString(5));
+        counsellor.setTitle(cursor.getString(6));
+        counsellor.setTwitterHandle(cursor.getString(7));
+        counsellor.setConstituency(cursor.getString(8));
         return counsellor;
     }
 
