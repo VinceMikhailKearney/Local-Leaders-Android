@@ -1,11 +1,8 @@
 package industries.muskaqueers.thunderechosaber;
 
-import android.nfc.Tag;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
