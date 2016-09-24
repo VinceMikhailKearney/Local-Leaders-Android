@@ -38,11 +38,16 @@ android {
         exclude 'META-INF/LICENSE-FIREBASE.txt'
         exclude 'META-INF/NOTICE'
     }
+
+    testOptions {
+        unitTests {
+            returnDefaultValues = true
+        }
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.0'
@@ -55,6 +60,11 @@ dependencies {
     }
     compile 'com.google.firebase:firebase-database:9.2.1'
     compile 'com.firebase:firebase-client-android:2.3.1'
+
+    // Required -- JUnit 4 framework
+    testCompile 'junit:junit:4.12'
+    // Optional -- Mockito framework
+    testCompile 'org.mockito:mockito-core:1.10.19'
 }
 
 apply plugin: 'com.google.gms.google-services'
