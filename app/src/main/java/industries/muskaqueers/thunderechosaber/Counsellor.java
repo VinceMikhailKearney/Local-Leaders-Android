@@ -37,6 +37,9 @@ public class Counsellor {
     public String getLastName() { return lastName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
 
+    // Return the MLA's full name
+    public String getFullName() { return getFirstName() + " " + getLastName(); }
+
     public String getImageURL() { return imageURL; }
     public void setImageURL(String imageURL) { this.imageURL = imageURL; }
 
