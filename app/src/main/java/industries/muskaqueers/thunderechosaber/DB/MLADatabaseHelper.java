@@ -17,11 +17,14 @@ import industries.muskaqueers.thunderechosaber.MLA;
 public class MLADatabaseHelper {
 
     private static final String TAG = "MLADatabaseHelper";
+
     public enum getOrDelete {FETCH, DELETE}
+
     private static DatabaseManager localDB;
 
     /**
      * Constructor for setting up the database helper
+     *
      * @param manager - Found it easier that we can just pass in a DatabaseManager. This simplified creating a unit test for this class.
      */
     public MLADatabaseHelper(DatabaseManager manager) {
@@ -32,6 +35,7 @@ public class MLADatabaseHelper {
     /**
      * Method for adding a MLA to the DB
      * Parameters are self explanatory
+     *
      * @return - Returns a MLA object
      */
     public MLA addMLA(String mlaID, String firstName, String lastName, String imageURL,
@@ -39,20 +43,20 @@ public class MLADatabaseHelper {
         Log.i(TAG, "Adding a MLA to DB");
 
         // First lets make sure that we haven't already added a MLA with their ID
-        if(MLA(mlaID, getOrDelete.FETCH) == null) {
-            ContentValues counsellorValues = new ContentValues();
-            counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_ID, mlaID);
-            counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_FIRST_NAME, firstName);
-            counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_LAST_NAME, lastName);
-            counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_IMAGE_URL, imageURL);
-            counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_PARTY_ABBREVIATION, partyAbbreviation);
-            counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_PARTY_NAME, partyName);
-            counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_TITLE, title);
-            counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_TWITTER_HANDLE, ""); // VTODO - Need to add a proper twitter handle
-            counsellorValues.put(localDB.COLUMN_NAME_COUNSELLOR_CONSTITUENCY, constituency);
+        if (MLA(mlaID, getOrDelete.FETCH) == null) {
+            ContentValues mlaValues = new ContentValues();
+            mlaValues.put(localDB.COLUMN_NAME_MLA_ID, mlaID);
+            mlaValues.put(localDB.COLUMN_NAME_MLA_FIRST_NAME, firstName);
+            mlaValues.put(localDB.COLUMN_NAME_MLA_LAST_NAME, lastName);
+            mlaValues.put(localDB.COLUMN_NAME_MLA_IMAGE_URL, imageURL);
+            mlaValues.put(localDB.COLUMN_NAME_MLA_PARTY_ABBREVIATION, partyAbbreviation);
+            mlaValues.put(localDB.COLUMN_NAME_MLA_PARTY_NAME, partyName);
+            mlaValues.put(localDB.COLUMN_NAME_MLA_TITLE, title);
+            mlaValues.put(localDB.COLUMN_NAME_MLA_TWITTER_HANDLE, ""); // VTODO - Need to add a proper twitter handle
+            mlaValues.put(localDB.COLUMN_NAME_MLA_CONSTITUENCY, constituency);
 
             // Open the db - I.e. return a writeable instance of the database so that we can save to it
-            openThisDB().insert(localDB.COUNSELLORS_TABLE, null, counsellorValues);
+            openThisDB().insert(localDB.MLAS_TABLE, null, mlaValues);
             // Close the database - Back to readable
             closeDBManger();
         }
@@ -65,17 +69,17 @@ public class MLADatabaseHelper {
         MLA item = null;
         Cursor cursor = fetchMLA(id);
 
-        if(cursor.getCount() == 0)
+        if (cursor.getCount() == 0)
             return null;
 
         if (cursor.moveToFirst() && cursor.getCount() == 1) {
-            String counsellorID = cursor.getString(0);
+            String mlaID = cursor.getString(0);
             if (state == getOrDelete.DELETE) {
                 Log.i(TAG, "Deleting MLA with ID: " + id);
-                openThisDB().delete(localDB.COUNSELLORS_TABLE, localDB.COLUMN_NAME_COUNSELLOR_ID + " = \"" + counsellorID + "\"", null);
+                openThisDB().delete(localDB.MLAS_TABLE, localDB.COLUMN_NAME_MLA_ID + " = \"" + mlaID + "\"", null);
             } else {
                 item = createMLAFrom(cursor);
-                Log.i(TAG, "Got MLA with ID: " + counsellorID);
+                Log.i(TAG, "Got MLA with ID: " + mlaID);
             }
         } else // We didn't fetch just ONE item - Which we of course expect to.
         {
@@ -91,11 +95,11 @@ public class MLADatabaseHelper {
     public List<MLA> getAllMLAs() {
         Log.i(TAG, "Asking for all MLA items.");
         // Query sets to select ALL from the To-Do table.
-        String query = "SELECT * FROM " + localDB.COUNSELLORS_TABLE;
-        return fetchCounsellorsWithQuery(query);
+        String query = "SELECT * FROM " + localDB.MLAS_TABLE;
+        return fetchMLAsWithQuery(query);
     }
 
-    private List<MLA> fetchCounsellorsWithQuery(String query) {
+    private List<MLA> fetchMLAsWithQuery(String query) {
         List<MLA> allMLAs = new ArrayList<>();
         Cursor cursor = openThisDB().rawQuery(query, null);
         // Starting at the first row, continue to move until past the last row.
@@ -114,14 +118,14 @@ public class MLADatabaseHelper {
     /* ---- Public Delete Methods ---- */
     public void deleteAllMLAs() {
         // Query sets to select ALL from the To-Do table.
-        String query = "SELECT * FROM " + localDB.COUNSELLORS_TABLE;
+        String query = "SELECT * FROM " + localDB.MLAS_TABLE;
         Cursor cursor = openThisDB().rawQuery(query, null);
         // Starting at the first row, continue to move until past the last row.
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            String counsellorID = cursor.getString(0);
-            Log.i(TAG, "Deleting all to do's. This ID - " + counsellorID);
-            openThisDB().delete(localDB.COUNSELLORS_TABLE, localDB.COLUMN_NAME_COUNSELLOR_ID + " = \"" + counsellorID + "\"", null);
+            String mlaID = cursor.getString(0);
+            Log.i(TAG, "Deleting all MLAs. This ID - " + mlaID);
+            openThisDB().delete(localDB.MLAS_TABLE, localDB.COLUMN_NAME_MLA_ID + " = \"" + mlaID + "\"", null);
             cursor.moveToNext();
         }
 
@@ -155,7 +159,7 @@ public class MLADatabaseHelper {
 
     private Cursor fetchMLA(String id) {
         String searchString = String.format("%s%s%s", "'", id, "'");
-        String query = "SELECT * FROM " + localDB.COUNSELLORS_TABLE + " WHERE " + localDB.COLUMN_NAME_COUNSELLOR_ID + " = " + searchString;
+        String query = "SELECT * FROM " + localDB.MLAS_TABLE + " WHERE " + localDB.COLUMN_NAME_MLA_ID + " = " + searchString;
         return openThisDB().rawQuery(query, null);
     }
 }

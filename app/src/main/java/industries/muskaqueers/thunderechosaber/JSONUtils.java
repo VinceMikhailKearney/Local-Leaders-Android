@@ -21,16 +21,16 @@ public class JSONUtils {
     public void getMLAsFromMap(HashMap<String, Object> hashMap, String key) {
         ArrayList<Object> arrayList = (ArrayList) hashMap.get(key);
         for(int i = 0; i < arrayList.size(); i++) {
-            HashMap<String, Object> counsellorMap = (HashMap) arrayList.get(i);
+            HashMap<String, Object> mlaMap = (HashMap) arrayList.get(i);
             MLA newMLA = new MLA();
-            newMLA.setMLA_ID(stringFromKey(counsellorMap, "MemberPersonId"));
-            newMLA.setFirstName(stringFromKey(counsellorMap, "MemberFirstName"));
-            newMLA.setLastName(stringFromKey(counsellorMap, "MemberLastName"));
-            newMLA.setImageURL(stringFromKey(counsellorMap, "MemberImgUrl"));
-            newMLA.setPartyAbbreviation(stringFromKey(counsellorMap, "PartyAbbreviation"));
-            newMLA.setPartyName(stringFromKey(counsellorMap, "PartyName"));
-            newMLA.setTitle(stringFromKey(counsellorMap, "MemberTitle"));
-            newMLA.setConstituency(stringFromKey(counsellorMap, "ConstituencyName"));
+            newMLA.setMLA_ID(stringFromKey(mlaMap, "MemberPersonId"));
+            newMLA.setFirstName(stringFromKey(mlaMap, "MemberFirstName"));
+            newMLA.setLastName(stringFromKey(mlaMap, "MemberLastName"));
+            newMLA.setImageURL(stringFromKey(mlaMap, "MemberImgUrl"));
+            newMLA.setPartyAbbreviation(stringFromKey(mlaMap, "PartyAbbreviation"));
+            newMLA.setPartyName(stringFromKey(mlaMap, "PartyName"));
+            newMLA.setTitle(stringFromKey(mlaMap, "MemberTitle"));
+            newMLA.setConstituency(stringFromKey(mlaMap, "ConstituencyName"));
 
             listener.CreateMLA(newMLA);
         }
