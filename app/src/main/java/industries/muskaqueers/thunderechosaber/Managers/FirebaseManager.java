@@ -7,29 +7,35 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.HashMap;
 
-import industries.muskaqueers.thunderechosaber.DB.CounsellorDatabaseHelper;
+import industries.muskaqueers.thunderechosaber.MLA;
+import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
+import industries.muskaqueers.thunderechosaber.JSONUtils;
 import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
 
 /**
  * Created by vincekearney on 20/09/2016.
  */
-public class FirebaseManager {
+public class FirebaseManager implements JSONUtils.JSONListener {
     private static final String TAG = "FirebaseManager";
     public DatabaseReference firebaseDataReference;
-    private CounsellorDatabaseHelper MLA_DB_Helper;
+    private MLADatabaseHelper MLA_DB_Helper;
+    private JSONUtils utils;
 
     public FirebaseManager() {
-        this.MLA_DB_Helper = new CounsellorDatabaseHelper(ThunderEchoSaberApplication.getLocalDatabaseManager());
-        this.firebaseDataReference = FirebaseDatabase.getInstance().getReference("test");
+        utils = new JSONUtils(this);
+        this.MLA_DB_Helper = new MLADatabaseHelper(ThunderEchoSaberApplication.getLocalDatabaseManager());
+        this.firebaseDataReference = FirebaseDatabase.getInstance().getReference("MLASJSON");
         this.firebaseDataReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                String dataSnapshotString = dataSnapshot.getValue().toString();
-                Log.d(TAG, "DataSnapshot value --> " + dataSnapshotString);
-                createMLA(dataSnapshotString);
+                if(dataSnapshot.getValue() == null) {
+                    Log.w(TAG, "onDataChange: " + "Did not ask for the right data. Check the getReference() method");
+                    return;
+                }
+                Log.d(TAG, "onDataChange: Version = " + utils.versionNumber((HashMap) dataSnapshot.getValue(), "version"));
+                utils.getMLAsFromMap((HashMap) dataSnapshot.getValue(), "mlas");
             }
 
             @Override
@@ -39,21 +45,19 @@ public class FirebaseManager {
         });
     }
 
-    public void createMLA(String jsonResponse) {
-        try { // Let's add the MLA that we just pulled down
-            JSONObject jsonObject = new JSONObject(jsonResponse);
-            JSONObject memberObject = jsonObject.getJSONObject("vince");
-            String firstName = memberObject.optString("firstName");
-            String lastName = memberObject.optString("lastName");
-            String imageURL = memberObject.optString("imageURL");
-            String partyAbbreviation = memberObject.optString("partyAbbreviation");
-            String partyName = memberObject.optString("partyName");
-            String title = memberObject.optString("title");
-            String constituency = memberObject.optString("constituency");
+    @Override
+    public void CreateMLA(MLA mla) {
+        MLA testMLA = MLA_DB_Helper.
+                addMLA(
+                mla.getMLA_ID(),
+                mla.getFirstName(),
+                mla.getLastName(),
+                mla.getImageURL(),
+                mla.getPartyAbbreviation(),
+                mla.getPartyName(),
+                mla.getTitle(),
+                mla.getConstituency());
 
-            this.MLA_DB_Helper.addCounsellor(firstName, lastName, imageURL, partyAbbreviation, partyName, title, constituency);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        Log.d(TAG, "CreateMLA: Name = " + testMLA.getFullName());
     }
 }

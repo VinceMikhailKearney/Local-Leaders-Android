@@ -5,14 +5,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import industries.muskaqueers.thunderechosaber.Counsellor;
+import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.R;
 
 /**
@@ -45,7 +44,7 @@ public class MLAFragment extends Fragment {
 
     // ---------- Adapter ViewHolder
     public static class CounsellorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private Counsellor counsellor;
+        private MLA MLA;
         private TextView nameTextView, partyTextView, positionTextView, ageTextView, heroTextView;
         private CircleImageView profilePicture;
         private String name, age, hero;
@@ -77,8 +76,8 @@ public class MLAFragment extends Fragment {
             this.heroTextView.setText(hero);
         }
 
-        public void setCounsellor(Counsellor counsellor) {
-            this.counsellor = counsellor;
+        public void setMLA(MLA MLA) {
+            this.MLA = MLA;
         }
 
         @Override

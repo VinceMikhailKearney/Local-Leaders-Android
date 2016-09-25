@@ -3,9 +3,9 @@ package industries.muskaqueers.thunderechosaber;
 /**
  * Created by vincekearney on 20/09/2016.
  */
-public class Counsellor {
+public class MLA {
 
-    private String counsellorID;
+    private String MLA_ID;
     private String firstName;
     private String lastName;
     private String imageURL;
@@ -15,10 +15,10 @@ public class Counsellor {
     private String twitterHandle;
     private String constituency;
 
-    public Counsellor() {}
+    public MLA() {}
 
-    public Counsellor(String firstName, String lastName, String imageURL, String partyAbbreviation,
-                      String title, String partyName, String constituency) {
+    public MLA(String firstName, String lastName, String imageURL, String partyAbbreviation,
+               String title, String partyName, String constituency) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.imageURL = imageURL;
@@ -28,8 +28,8 @@ public class Counsellor {
         this.constituency = constituency;
     }
 
-    public String getCounsellorID() { return this.counsellorID; }
-    public void setCounsellorID(String counsellorID) {this.counsellorID = counsellorID; }
+    public String getMLA_ID() { return this.MLA_ID; }
+    public void setMLA_ID(String MLA_ID) {this.MLA_ID = MLA_ID; }
 
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
