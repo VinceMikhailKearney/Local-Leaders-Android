@@ -17,7 +17,7 @@
 *.dex
 
 # Java class files
-Credentials.class
+/Users/Andrew/Development/ThunderEchoSaber/app/src/main/java/industries/muskaqueers/thunderechosaber/Credentials.java
 
 # Generated files
 bin/
