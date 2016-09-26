@@ -7,7 +7,6 @@
 .DS_Store
 /build
 /captures
-*/Credentials.java
 
 # Built application files
 *.apk
@@ -17,7 +16,7 @@
 *.dex
 
 # Java class files
-/Users/Andrew/Development/ThunderEchoSaber/app/src/main/java/industries/muskaqueers/thunderechosaber/Credentials.java
+Credentials.java
 
 # Generated files
 bin/
