@@ -17,8 +17,8 @@ import io.fabric.sdk.android.Fabric;
  */
 public class ThunderEchoSaberApplication extends Application {
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-    private static final String TWITTER_KEY = "3nPktRGEgNNDNxCDYnPQH4bw6";
-    private static final String TWITTER_SECRET = "51ROaR0TmxPRKwaZQRwv4IwvuRmgMZBS9spHsqL5gPmuaeEZRI";
+    private static final String TWITTER_KEY = Credentials.TWITTER_KEY;
+    private static final String TWITTER_SECRET = Credentials.TWITTER_SECRET;
     public static TwitterAuthConfig authConfig;
     public static Twitter twitter;
     public static TwitterManager twitterManager;
