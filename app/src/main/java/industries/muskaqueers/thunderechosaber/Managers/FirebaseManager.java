@@ -35,6 +35,11 @@ public class FirebaseManager implements JSONUtils.JSONListener {
                     return;
                 }
                 Log.d(TAG, "onDataChange: Version = " + utils.versionNumber((HashMap) dataSnapshot.getValue(), "version"));
+
+                Log.d(TAG, "onDataChange: MLAs size = " + MLA_DB_Helper.getAllMLAs().size());
+                if(MLA_DB_Helper.getAllMLAs().size() == 108)
+                    return; // This is hardcoded right now just to save myself bother. We really ought to sort this out properly
+
                 utils.getMLAsFromMap((HashMap) dataSnapshot.getValue(), "mlas");
             }
 
