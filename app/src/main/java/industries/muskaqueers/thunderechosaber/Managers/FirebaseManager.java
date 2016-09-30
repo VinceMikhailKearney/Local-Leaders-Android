@@ -8,23 +8,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.List;
 
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
-import industries.muskaqueers.thunderechosaber.JSONUtils;
+import industries.muskaqueers.thunderechosaber.PasrserUtils;
 import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
 
 /**
  * Created by vincekearney on 20/09/2016.
  */
-public class FirebaseManager implements JSONUtils.JSONListener {
+public class FirebaseManager {
     private static final String TAG = "FirebaseManager";
     public DatabaseReference firebaseDataReference;
     private MLADatabaseHelper MLA_DB_Helper;
-    private JSONUtils utils;
 
     public FirebaseManager() {
-        utils = new JSONUtils(this);
         this.MLA_DB_Helper = new MLADatabaseHelper(ThunderEchoSaberApplication.getLocalDatabaseManager());
         this.firebaseDataReference = FirebaseDatabase.getInstance().getReference("MLASJSON");
         this.firebaseDataReference.addValueEventListener(new ValueEventListener() {
@@ -34,13 +33,13 @@ public class FirebaseManager implements JSONUtils.JSONListener {
                     Log.w(TAG, "onDataChange: " + "Did not ask for the right data. Check the getReference() method");
                     return;
                 }
-                Log.d(TAG, "onDataChange: Version = " + utils.versionNumber((HashMap) dataSnapshot.getValue(), "version"));
+                Log.d(TAG, "onDataChange: Version = " + PasrserUtils.versionNumber((HashMap) dataSnapshot.getValue(), "version"));
 
                 Log.d(TAG, "onDataChange: MLAs size = " + MLA_DB_Helper.getAllMLAs().size());
                 if(MLA_DB_Helper.getAllMLAs().size() == 108)
                     return; // This is hardcoded right now just to save myself bother. We really ought to sort this out properly
 
-                utils.getMLAsFromMap((HashMap) dataSnapshot.getValue(), "mlas");
+                addMlasToDatabase(PasrserUtils.getMLAsFromMap((HashMap) dataSnapshot.getValue(), "mlas"));
             }
 
             @Override
@@ -50,19 +49,19 @@ public class FirebaseManager implements JSONUtils.JSONListener {
         });
     }
 
-    @Override
-    public void CreateMLA(MLA mla) {
-        MLA testMLA = MLA_DB_Helper.
-                addMLA(
-                mla.getMLA_ID(),
-                mla.getFirstName(),
-                mla.getLastName(),
-                mla.getImageURL(),
-                mla.getPartyAbbreviation(),
-                mla.getPartyName(),
-                mla.getTitle(),
-                mla.getConstituency());
+    private void addMlasToDatabase(List<MLA> mlas) {
+        for(MLA mla : mlas) {
+            MLA addMLA = this.MLA_DB_Helper.addMLA(mla.getMLA_ID(),
+                    mla.getFirstName(),
+                    mla.getLastName(),
+                    mla.getImageURL(),
+                    mla.getPartyAbbreviation(),
+                    mla.getPartyName(),
+                    mla.getTitle(),
+                    mla.getConstituency());
 
-        Log.d(TAG, "CreateMLA: Name = " + testMLA.getFullName());
+            // Now that the MLA is in the DB, let's update the TwitterHandle
+            this.MLA_DB_Helper.updateTwitterHandle(addMLA, PasrserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
+        }
     }
 }

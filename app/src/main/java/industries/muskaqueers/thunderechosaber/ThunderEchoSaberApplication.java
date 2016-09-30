@@ -1,7 +1,7 @@
 package industries.muskaqueers.thunderechosaber;
 
 import android.app.Application;
-import android.util.Log;
+import android.content.Context;
 
 import com.firebase.client.Firebase;
 import com.twitter.sdk.android.Twitter;
@@ -19,6 +19,7 @@ public class ThunderEchoSaberApplication extends Application {
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = Credentials.getTwitterKey();
     private static final String TWITTER_SECRET = Credentials.getTwitterSecret();
+    private static Context appContext;
     public static TwitterAuthConfig authConfig;
     public static Twitter twitter;
     public static TwitterManager twitterManager;
@@ -30,6 +31,8 @@ public class ThunderEchoSaberApplication extends Application {
         super.onCreate();
         // First thing, lets set up the DB
         this.localDatabaseManager = new DatabaseManager(this);
+        // Then set up the context
+        this.appContext = getApplicationContext();
         // Now set up twitter
         authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig));
@@ -46,5 +49,9 @@ public class ThunderEchoSaberApplication extends Application {
 
     public static DatabaseManager getLocalDatabaseManager() {
         return localDatabaseManager;
+    }
+
+    public static Context getAppContext() {
+        return appContext;
     }
 }
