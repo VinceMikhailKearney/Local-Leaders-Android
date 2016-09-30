@@ -46,7 +46,7 @@ public abstract class PasrserUtils {
     }
 
     public static String findHandleFor(String firstName, String lastName) {
-        String handle = "";
+        String twitterHandle = "";
         BufferedReader reader = new BufferedReader(new InputStreamReader(ThunderEchoSaberApplication.getAppContext().getResources().openRawResource(R.raw.elected_candidates)));
         String line;
 
@@ -54,7 +54,7 @@ public abstract class PasrserUtils {
             while ((line = reader.readLine()) != null) {
                 String[] rowData = line.split(",");
                 if (rowData[11].equalsIgnoreCase(lastName) && rowData[12].equalsIgnoreCase(firstName)) {
-                    handle = rowData[13];
+                    twitterHandle = rowData[13];
                 }
             }
         } catch (IOException error) {
@@ -67,6 +67,7 @@ public abstract class PasrserUtils {
             }
         }
 
-        return handle;
+        Log.d(TAG, "findHandleFor: " + firstName + " " + lastName + " = " + twitterHandle);
+        return twitterHandle;
     }
 }
