@@ -17,6 +17,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
 import industries.muskaqueers.thunderechosaber.MLA;
+import industries.muskaqueers.thunderechosaber.Managers.FirebaseManager;
 import industries.muskaqueers.thunderechosaber.R;
 import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
 
@@ -46,7 +47,7 @@ public class MLAFragment extends Fragment implements MLA_Adapter.MLA_AdapterList
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         // Get an instance of the MLADBHelper
-        this.mlaDatabaseHelper = new MLADatabaseHelper(ThunderEchoSaberApplication.getLocalDatabaseManager());
+        this.mlaDatabaseHelper = new MLADatabaseHelper();
         // Set the list of the fragment to all MLAs in the DB
         this.mlaList = this.mlaDatabaseHelper.getAllMLAs();
         this.mlaAdapter = new MLA_Adapter(this.mlaList);

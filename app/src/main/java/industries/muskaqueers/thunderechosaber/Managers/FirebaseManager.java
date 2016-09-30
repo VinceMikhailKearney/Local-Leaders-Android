@@ -24,19 +24,19 @@ public class FirebaseManager {
     private MLADatabaseHelper MLA_DB_Helper;
 
     public FirebaseManager() {
-        this.MLA_DB_Helper = new MLADatabaseHelper(ThunderEchoSaberApplication.getLocalDatabaseManager());
+        this.MLA_DB_Helper = new MLADatabaseHelper();
         this.firebaseDataReference = FirebaseDatabase.getInstance().getReference("MLASJSON");
         this.firebaseDataReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() == null) {
+                if (dataSnapshot.getValue() == null) {
                     Log.w(TAG, "onDataChange: " + "Did not ask for the right data. Check the getReference() method");
                     return;
                 }
                 Log.d(TAG, "onDataChange: Version = " + PasrserUtils.versionNumber((HashMap) dataSnapshot.getValue(), "version"));
 
                 Log.d(TAG, "onDataChange: MLAs size = " + MLA_DB_Helper.getAllMLAs().size());
-                if(MLA_DB_Helper.getAllMLAs().size() == 108)
+                if (MLA_DB_Helper.getAllMLAs().size() == 108)
                     return; // This is hardcoded right now just to save myself bother. We really ought to sort this out properly
 
                 addMlasToDatabase(PasrserUtils.getMLAsFromMap((HashMap) dataSnapshot.getValue(), "mlas"));
@@ -50,7 +50,7 @@ public class FirebaseManager {
     }
 
     private void addMlasToDatabase(List<MLA> mlas) {
-        for(MLA mla : mlas) {
+        for (MLA mla : mlas) {
             MLA addMLA = this.MLA_DB_Helper.addMLA(mla.getMLA_ID(),
                     mla.getFirstName(),
                     mla.getLastName(),
