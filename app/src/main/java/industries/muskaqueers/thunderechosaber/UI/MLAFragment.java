@@ -9,18 +9,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.R;
+import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
 
 /**
  * Created by Andrew on 9/23/16.
  */
 
-public class MLAFragment extends Fragment {
+public class MLAFragment extends Fragment implements MLA_Adapter.MLA_AdapterListener {
 
     private RecyclerView mlaRecyclerView;
+    private List<MLA> mlaList = new ArrayList<>();
+    private MLA_Adapter mlaAdapter;
+    private MLADatabaseHelper mlaDatabaseHelper;
 
     // ---------- Lifecycle Methods
     @Override
@@ -31,58 +40,29 @@ public class MLAFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_mla, container, false);
 
+        View view = inflater.inflate(R.layout.fragment_mla, container, false);
         mlaRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        // Create an adapter
+
+        // Get an instance of the MLADBHelper
+        this.mlaDatabaseHelper = new MLADatabaseHelper(ThunderEchoSaberApplication.getLocalDatabaseManager());
+        // Set the list of the fragment to all MLAs in the DB
+        this.mlaList = this.mlaDatabaseHelper.getAllMLAs();
+        this.mlaAdapter = new MLA_Adapter(this.mlaList);
+        this.mlaAdapter.setListener(this);
         mlaRecyclerView.setLayoutManager(layoutManager);
-        // mlaRecyclerView.setAdapter(Custom Adapter);
+        mlaRecyclerView.setAdapter(this.mlaAdapter);
 
         return view;
     }
 
-    // ---------- Adapter ViewHolder
-    public static class CounsellorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private MLA MLA;
-        private TextView nameTextView, partyTextView, positionTextView, ageTextView, heroTextView;
-        private CircleImageView profilePicture;
-        private String name, age, hero;
+    @Override
+    public void onClickMLA(MLA mla) {
+        String toastText = String.format("MLA Twitter Handle: " + mla.getTwitterHandle());
+        if(mla.getTwitterHandle().length() == 0)
+            toastText = "MLA does not have a twitter handle";
 
-        public CounsellorViewHolder(View itemView) {
-            super(itemView);
-//            nameTextView = (TextView) itemView.findViewById(R.id.name);
-//            ageTextView = (TextView) itemView.findViewById(R.id.age);
-//            heroTextView = (TextView) itemView.findViewById(R.id.hero);
-            nameTextView = (TextView) itemView.findViewById(R.id.name);
-            partyTextView = (TextView) itemView.findViewById(R.id.party_name);
-            positionTextView = (TextView) itemView.findViewById(R.id.position);
-            profilePicture = (CircleImageView) itemView.findViewById(R.id.profile_picture);
-            itemView.setOnClickListener(this);
-        }
-
-        public void setName(String name) {
-            this.name = name;
-            this.nameTextView.setText(name);
-        }
-
-        public void setAge(String age) {
-            this.age = age;
-            this.ageTextView.setText(age);
-        }
-
-        public void setHero(String hero) {
-            this.hero = hero;
-            this.heroTextView.setText(hero);
-        }
-
-        public void setMLA(MLA MLA) {
-            this.MLA = MLA;
-        }
-
-        @Override
-        public void onClick(View view) {
-        }
+        Toast.makeText(getContext(), toastText, Toast.LENGTH_SHORT).show();
     }
-
 }
