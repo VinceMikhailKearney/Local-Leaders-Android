@@ -41,7 +41,7 @@ public class MLADatabaseHelper {
         Log.i(TAG, "Adding a MLA to DB");
 
         // First lets make sure that we haven't already added a MLA with their ID
-        if (MLA(mlaID, getOrDelete.FETCH) == null) {
+        if (fetchMLA(mlaID) == null) {
             ContentValues mlaValues = new ContentValues();
             mlaValues.put(localDB.COLUMN_NAME_MLA_ID, mlaID);
             mlaValues.put(localDB.COLUMN_NAME_MLA_FIRST_NAME, firstName);
@@ -59,7 +59,7 @@ public class MLADatabaseHelper {
             closeDBManger();
         }
 
-        return MLA(mlaID, getOrDelete.FETCH);
+        return fetchMLA(mlaID);
     }
 
     public void updateTwitterHandle(MLA mla, String handle) {
@@ -72,9 +72,17 @@ public class MLADatabaseHelper {
     }
 
     /* ---- Fetch/Delete MLA ---- */
-    public MLA MLA(String id, getOrDelete state) {
+    public MLA fetchMLA(String id) {
+        return fetchOrDelete(id, getOrDelete.FETCH);
+    }
+
+    public void deleteMLA(String id) {
+        fetchOrDelete(id, getOrDelete.DELETE);
+    }
+
+    public MLA fetchOrDelete(String id, getOrDelete state) {
         MLA item = null;
-        Cursor cursor = fetchMLA(id);
+        Cursor cursor = fetchCursorForMLA(id);
 
         if (cursor.getCount() == 0)
             return null;
@@ -164,7 +172,7 @@ public class MLADatabaseHelper {
         localDB.close();
     }
 
-    private Cursor fetchMLA(String id) {
+    private Cursor fetchCursorForMLA(String id) {
         String searchString = String.format("%s%s%s", "'", id, "'");
         String query = "SELECT * FROM " + localDB.MLAS_TABLE + " WHERE " + localDB.COLUMN_NAME_MLA_ID + " = " + searchString;
         return openThisDB().rawQuery(query, null);

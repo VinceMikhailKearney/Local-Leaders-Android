@@ -47,15 +47,14 @@ public abstract class PasrserUtils {
 
     public static String findHandleFor(String firstName, String lastName) {
         String handle = "";
-        InputStreamReader streamReader = new InputStreamReader(ThunderEchoSaberApplication.getAppContext().getResources().openRawResource(R.raw.elected_candidates));
-        BufferedReader reader = new BufferedReader(streamReader);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(ThunderEchoSaberApplication.getAppContext().getResources().openRawResource(R.raw.elected_candidates)));
         String line;
 
         try {
             while ((line = reader.readLine()) != null) {
-                String[] stringAtIndex = line.split(",");
-                if (stringAtIndex[11].equalsIgnoreCase(lastName) && stringAtIndex[12].equalsIgnoreCase(firstName)) {
-                    handle = stringAtIndex[13];
+                String[] rowData = line.split(",");
+                if (rowData[11].equalsIgnoreCase(lastName) && rowData[12].equalsIgnoreCase(firstName)) {
+                    handle = rowData[13];
                 }
             }
         } catch (IOException error) {
