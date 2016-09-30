@@ -28,7 +28,7 @@ import industries.muskaqueers.thunderechosaber.ThunderEchoSabreEvent;
  * Created by Andrew on 9/23/16.
  */
 
-public class MLAFragment extends Fragment implements MLA_Adapter.MLA_AdapterListener {
+public class MLAFragment extends Fragment {
 
     private static final String TAG = "MLAFragment";
     private RecyclerView mlaRecyclerView;
@@ -54,14 +54,6 @@ public class MLAFragment extends Fragment implements MLA_Adapter.MLA_AdapterList
         super.onPause();
     }
 
-    public void onEvent(ThunderEchoSabreEvent event) {
-        if(event.getEventType() == ThunderEchoSabreEvent.eventBusEventType.UPDATE_MLAS) {
-            Log.d(TAG, "onEvent: Just got told to update mlas");
-            this.mlaList = this.mlaDatabaseHelper.getAllMLAs();
-            this.mlaAdapter.setMlaList(this.mlaList);
-        }
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,19 +67,25 @@ public class MLAFragment extends Fragment implements MLA_Adapter.MLA_AdapterList
         // Set the list of the fragment to all MLAs in the DB
         this.mlaList = this.mlaDatabaseHelper.getAllMLAs();
         this.mlaAdapter = new MLA_Adapter(this.mlaList);
-        this.mlaAdapter.setListener(this);
         mlaRecyclerView.setLayoutManager(layoutManager);
         mlaRecyclerView.setAdapter(this.mlaAdapter);
 
         return view;
     }
 
-    @Override
-    public void onClickMLA(MLA mla) {
-        String toastText = String.format("MLA Twitter Handle: " + mla.getTwitterHandle());
-        if(mla.getTwitterHandle().length() == 0)
-            toastText = "MLA does not have a twitter handle";
+    public void onEvent(ThunderEchoSabreEvent event) {
+        if(event.getEventType() == ThunderEchoSabreEvent.eventBusEventType.UPDATE_MLAS) {
+            Log.d(TAG, "onEvent: Just got told to update mlas");
+            this.mlaList = this.mlaDatabaseHelper.getAllMLAs();
+            this.mlaAdapter.setMlaList(this.mlaList);
+        } else if(event.getEventType() == ThunderEchoSabreEvent.eventBusEventType.ON_CLICK_MLA) {
+            Log.d(TAG, "onEvent: Clicked MLA");
+            MLA thisMLA = event.getMLA();
+            String toastText = String.format("MLA Twitter Handle: " + thisMLA.getTwitterHandle());
+            if(thisMLA.getTwitterHandle().length() == 0)
+                toastText = "MLA does not have a twitter handle";
 
-        Toast.makeText(getContext(), toastText, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), toastText, Toast.LENGTH_SHORT).show();
+        }
     }
 }

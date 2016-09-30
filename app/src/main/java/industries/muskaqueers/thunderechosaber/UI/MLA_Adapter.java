@@ -8,9 +8,11 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.R;
+import industries.muskaqueers.thunderechosaber.ThunderEchoSabreEvent;
 
 /**
  * Created by vincekearney on 24/09/2016.
@@ -20,11 +22,6 @@ public class MLA_Adapter extends RecyclerView.Adapter<MLA_Adapter.MLAViewHolder>
 
     private static final String TAG = "MLAAdapter";
     private List<MLA> mlaList;
-    private MLA_AdapterListener adapterListener;
-
-    public interface MLA_AdapterListener {
-        void onClickMLA(MLA mla);
-    }
 
     public MLA_Adapter(List<MLA> list) {
         setMlaList(list);
@@ -33,10 +30,6 @@ public class MLA_Adapter extends RecyclerView.Adapter<MLA_Adapter.MLAViewHolder>
     public void setMlaList(List<MLA> list) {
         this.mlaList = list;
         this.notifyDataSetChanged();
-    }
-
-    public void setListener(MLA_AdapterListener listener) {
-        this.adapterListener = listener;
     }
 
     @Override
@@ -92,7 +85,9 @@ public class MLA_Adapter extends RecyclerView.Adapter<MLA_Adapter.MLAViewHolder>
 
         @Override
         public void onClick(View view) {
-            adapterListener.onClickMLA(this.viewMLA);
+            ThunderEchoSabreEvent event = new ThunderEchoSabreEvent(ThunderEchoSabreEvent.eventBusEventType.ON_CLICK_MLA);
+            event.setMLA(viewMLA);
+            EventBus.getDefault().post(event);
         }
     }
 }

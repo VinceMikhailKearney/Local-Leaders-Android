@@ -6,12 +6,21 @@ package industries.muskaqueers.thunderechosaber;
 
 public class ThunderEchoSabreEvent {
     public enum eventBusEventType {
-        UPDATE_MLAS
+        UPDATE_MLAS, ON_CLICK_MLA
     }
     private eventBusEventType eventType;
+    private MLA mla;
 
     public ThunderEchoSabreEvent(eventBusEventType type) {
         this.eventType = type;
+    }
+
+    public void setMLA(MLA mla) {
+        this.mla = mla;
+    }
+
+    public MLA getMLA() {
+        return this.mla;
     }
 
     public eventBusEventType getEventType() {
