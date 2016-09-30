@@ -10,10 +10,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+import industries.muskaqueers.thunderechosaber.ThunderEchoSabreEvent;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
 import industries.muskaqueers.thunderechosaber.PasrserUtils;
-import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
 
 /**
  * Created by vincekearney on 20/09/2016.
@@ -63,5 +64,7 @@ public class FirebaseManager {
             // Now that the MLA is in the DB, let's update the TwitterHandle
             this.MLA_DB_Helper.updateTwitterHandle(addMLA, PasrserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
         }
+
+        EventBus.getDefault().post(new ThunderEchoSabreEvent(ThunderEchoSabreEvent.eventBusEventType.UPDATE_MLAS));
     }
 }

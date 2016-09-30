@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.Managers.FirebaseManager;
 import industries.muskaqueers.thunderechosaber.R;
 import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
+import industries.muskaqueers.thunderechosaber.ThunderEchoSabreEvent;
 
 /**
  * Created by Andrew on 9/23/16.
@@ -27,6 +30,7 @@ import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
 
 public class MLAFragment extends Fragment implements MLA_Adapter.MLA_AdapterListener {
 
+    private static final String TAG = "MLAFragment";
     private RecyclerView mlaRecyclerView;
     private List<MLA> mlaList = new ArrayList<>();
     private MLA_Adapter mlaAdapter;
@@ -36,6 +40,26 @@ public class MLAFragment extends Fragment implements MLA_Adapter.MLA_AdapterList
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        EventBus.getDefault().unregister(this);
+        super.onPause();
+    }
+
+    public void onEvent(ThunderEchoSabreEvent event) {
+        if(event.getEventType() == ThunderEchoSabreEvent.eventBusEventType.UPDATE_MLAS) {
+            Log.d(TAG, "onEvent: Just got told to update mlas");
+            this.mlaList = this.mlaDatabaseHelper.getAllMLAs();
+            this.mlaAdapter.setMlaList(this.mlaList);
+        }
     }
 
     @Nullable
