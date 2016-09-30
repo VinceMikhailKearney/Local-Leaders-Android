@@ -17,9 +17,7 @@ import industries.muskaqueers.thunderechosaber.MLA;
 public class MLADatabaseHelper {
 
     private static final String TAG = "MLADatabaseHelper";
-
     public enum getOrDelete {FETCH, DELETE}
-
     private static DatabaseManager localDB;
 
     /**
@@ -62,6 +60,15 @@ public class MLADatabaseHelper {
         }
 
         return MLA(mlaID, getOrDelete.FETCH);
+    }
+
+    public void updateTwitterHandle(MLA mla, String handle) {
+        Log.i(TAG, "\nMLA ID -> " + mla.getMLA_ID() + "\nHandle ->" + handle + "\n");
+        ContentValues newTwitterHandle = new ContentValues();
+        newTwitterHandle.put(localDB.COLUMN_NAME_MLA_TWITTER_HANDLE, handle);
+
+        String sqlSearch = String.format("%s = %s%s%s",localDB.COLUMN_NAME_MLA_ID,"'",mla.getMLA_ID(),"'");
+        openThisDB().update(localDB.MLAS_TABLE, newTwitterHandle, sqlSearch, null);
     }
 
     /* ---- Fetch/Delete MLA ---- */
