@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import industries.muskaqueers.thunderechosaber.MLA;
+import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
 
 /**
  * Created by vincekearney on 22/09/2016.
@@ -21,12 +22,20 @@ public class MLADatabaseHelper {
     private static DatabaseManager localDB;
 
     /**
-     * Constructor for setting up the database helper
+     * Constructor for setting up the database helper in app
+     */
+    public MLADatabaseHelper() {
+        Log.i(TAG, "Setting up MLADatabaseHelper in app");
+        this.localDB = ThunderEchoSaberApplication.getLocalDatabaseManager();
+    }
+
+    /**
+     * Constructor for setting up the database helper for testing
      *
-     * @param manager - Found it easier that we can just pass in a DatabaseManager. This simplified creating a unit test for this class.
+     * @param manager - When running a test we don't set up the application, therefore we need to set the localDB manually
      */
     public MLADatabaseHelper(DatabaseManager manager) {
-        Log.i(TAG, "Setting up MLADatabaseHelper");
+        Log.i(TAG, "Setting up MLADatabaseHelper for testing");
         this.localDB = manager;
     }
 
