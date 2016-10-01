@@ -15,6 +15,7 @@ import industries.muskaqueers.thunderechosaber.ThunderEchoSabreEvent;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
 import industries.muskaqueers.thunderechosaber.PasrserUtils;
+import industries.muskaqueers.thunderechosaber.UI.ProcessImage;
 
 /**
  * Created by vincekearney on 20/09/2016.
@@ -23,8 +24,10 @@ public class FirebaseManager {
     private static final String TAG = "FirebaseManager";
     public DatabaseReference firebaseDataReference;
     private MLADatabaseHelper MLA_DB_Helper;
+    private ProcessImage imageProcessor;
 
     public FirebaseManager() {
+        this.imageProcessor = new ProcessImage();
         this.MLA_DB_Helper = new MLADatabaseHelper();
         this.firebaseDataReference = FirebaseDatabase.getInstance().getReference("MLASJSON");
         this.firebaseDataReference.addValueEventListener(new ValueEventListener() {
@@ -63,6 +66,7 @@ public class FirebaseManager {
 
             // Now that the MLA is in the DB, let's update the TwitterHandle
             this.MLA_DB_Helper.updateTwitterHandle(addMLA, PasrserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
+            imageProcessor.getDataFromImage(mla.getImageURL(), mla.getMLA_ID());
         }
 
         EventBus.getDefault().post(new ThunderEchoSabreEvent(ThunderEchoSabreEvent.eventBusEventType.UPDATE_MLAS));

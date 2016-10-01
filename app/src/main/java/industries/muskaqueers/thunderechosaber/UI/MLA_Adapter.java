@@ -1,6 +1,8 @@
 package industries.muskaqueers.thunderechosaber.UI;
 
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +60,7 @@ public class MLA_Adapter extends RecyclerView.Adapter<MLA_Adapter.MLAViewHolder>
         private TextView nameTextView, partyTextView, positionTextView;
         private CircleImageView profilePicture;
         private String name, party, position;
+        private Bitmap bitmap;
 
         public MLAViewHolder(View itemView) {
             super(itemView);
@@ -73,6 +76,12 @@ public class MLA_Adapter extends RecyclerView.Adapter<MLA_Adapter.MLAViewHolder>
             this.name = mla.getFullName();
             this.party = mla.getPartyName();
             this.position = mla.getTitle();
+            this.bitmap = mla.getImageBitmap();
+
+            if(bitmap != null) {
+                Log.d(TAG, "setMLA: Bitmap is NOT null. MLA Name = " + mla.getFullName());
+                this.profilePicture.setImageBitmap(this.bitmap);
+            }
 
             setTextViews();
         }
