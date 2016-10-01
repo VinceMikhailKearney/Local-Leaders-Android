@@ -37,9 +37,9 @@ public class FirebaseManager {
                     Log.w(TAG, "onDataChange: " + "Did not ask for the right data. Check the getReference() method");
                     return;
                 }
+
                 Log.d(TAG, "onDataChange: Version = " + PasrserUtils.versionNumber((HashMap) dataSnapshot.getValue(), "version"));
 
-                Log.d(TAG, "onDataChange: MLAs size = " + MLA_DB_Helper.getAllMLAs().size());
                 if (MLA_DB_Helper.getAllMLAs().size() == 108)
                     return; // This is hardcoded right now just to save myself bother. We really ought to sort this out properly
 
@@ -53,6 +53,10 @@ public class FirebaseManager {
         });
     }
 
+    /**
+     * After getting MLAs from HashMap we save each of them to the DB. Updating the twitter handle and image data of each one as well.
+     * @param mlas - Array of all MLAs in the map
+     */
     private void addMlasToDatabase(List<MLA> mlas) {
         for (MLA mla : mlas) {
             MLA addMLA = this.MLA_DB_Helper.addMLA(mla.getMLA_ID(),

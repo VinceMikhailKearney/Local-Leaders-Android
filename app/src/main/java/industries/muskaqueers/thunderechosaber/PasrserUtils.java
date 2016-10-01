@@ -16,6 +16,12 @@ import java.util.List;
 public abstract class PasrserUtils {
     private static final String TAG = "PasrserUtils";
 
+    /**
+     * Get an array of MLAs from map that we get from Firebase
+     * @param hashMap - The map that contains the information of all MLAs
+     * @param key - The key of what we are looking to retrieve from the hash map (in this case it is 'mlas', which is an array)
+     * @return - Array of MLAs from the map that we pass in
+     */
     public static List<MLA> getMLAsFromMap(HashMap<String, Object> hashMap, String key) {
         ArrayList<Object> arrayList = (ArrayList) hashMap.get(key);
         List<MLA> allMLAs = new ArrayList<>();
@@ -41,10 +47,19 @@ public abstract class PasrserUtils {
         return (Long) hashMap.get(key);
     }
 
+    /**
+     * Convenive method for getting the string value from a key in the map
+     */
     private static String stringFromKey(HashMap<String, Object> map, String key) {
         return map.get(key).toString();
     }
 
+    /**
+     * Find the twitter handle for a MLA
+     * @param firstName - First name of the MLA
+     * @param lastName - Last name of the MLA
+     * @return - Twitter handle that matches the full name of the MLA
+     */
     public static String findHandleFor(String firstName, String lastName) {
         String twitterHandle = "";
         BufferedReader reader = new BufferedReader(new InputStreamReader(ThunderEchoSaberApplication.getAppContext().getResources().openRawResource(R.raw.elected_candidates)));

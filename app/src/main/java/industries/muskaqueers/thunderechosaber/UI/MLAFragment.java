@@ -50,8 +50,8 @@ public class MLAFragment extends Fragment {
 
     @Override
     public void onPause() {
-        EventBus.getDefault().unregister(this);
         super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
     @Nullable
@@ -73,6 +73,10 @@ public class MLAFragment extends Fragment {
         return view;
     }
 
+    /**
+     * EventBus listener
+     * @param event - Event object that states what the event is for along with containing information such as a specific MLA
+     */
     public void onEvent(ThunderEchoSabreEvent event) {
         if(event.getEventType() == ThunderEchoSabreEvent.eventBusEventType.UPDATE_MLAS) {
             Log.d(TAG, "onEvent: Just got told to update mlas");
