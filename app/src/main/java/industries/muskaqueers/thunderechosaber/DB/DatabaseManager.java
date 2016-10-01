@@ -13,8 +13,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
     /* ---- TAG and Helper strings ---- */
     private static final String TAG = "DatabaseManager";
     private static final String TYPE_TEXT = "TEXT";
+    private static final String TYPE_BLOB = "BLOB";
     private static final String TYPE_INTEGER = "INTEGER";
     private static final String formatTextType = String.format(" %s, ", TYPE_TEXT);
+    private static final String formatBlobType = String.format(" %s, ", TYPE_BLOB);
     private static final String formatTextTypeEnd = String.format(" %s", TYPE_TEXT);
     private static final String formatIntegerType = String.format(" %s, ", TYPE_INTEGER);
 
@@ -28,6 +30,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public final String COLUMN_NAME_MLA_FIRST_NAME = "first_name";
     public final String COLUMN_NAME_MLA_LAST_NAME = "last_name";
     public final String COLUMN_NAME_MLA_IMAGE_URL = "image_url";
+    public final String COLUMN_NAME_MLA_IMAGE_BITMAP = "image_bitmap";
     public final String COLUMN_NAME_MLA_PARTY_ABBREVIATION = "party_abbreviation";
     public final String COLUMN_NAME_MLA_PARTY_NAME = "party_name";
     public final String COLUMN_NAME_MLA_TITLE = "title";
@@ -41,6 +44,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                     + COLUMN_NAME_MLA_FIRST_NAME + formatTextType
                     + COLUMN_NAME_MLA_LAST_NAME + formatTextType
                     + COLUMN_NAME_MLA_IMAGE_URL + formatTextType
+                    + COLUMN_NAME_MLA_IMAGE_BITMAP + formatBlobType
                     + COLUMN_NAME_MLA_PARTY_ABBREVIATION + formatTextType
                     + COLUMN_NAME_MLA_PARTY_NAME + formatTextType
                     + COLUMN_NAME_MLA_TITLE + formatTextType
