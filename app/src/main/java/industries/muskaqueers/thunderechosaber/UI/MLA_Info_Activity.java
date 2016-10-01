@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
@@ -52,6 +53,13 @@ public class MLA_Info_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 TwitterManager.tweetUser(v.getContext(), mla.getTwitterHandle());
+            }
+        });
+        
+        emailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MLA_Info_Activity.this, "Coming soon...", Toast.LENGTH_SHORT).show();
             }
         });
     }

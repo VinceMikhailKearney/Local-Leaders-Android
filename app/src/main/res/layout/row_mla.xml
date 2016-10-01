@@ -3,8 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:padding="10dp">
+    android:background="@android:color/white"
+    android:padding="10dp"
+    android:layout_marginBottom="0.5dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_picture"
@@ -15,6 +18,7 @@
 
     <android.support.v7.widget.LinearLayoutCompat
         android:id="@+id/info_layout"
+        android:paddingLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -25,7 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-bold"
-            android:padding="5dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="5dp"
             android:textStyle="bold"
             android:textColor="@color/grey1"
             tools:text="John Smith" />
@@ -35,7 +40,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
-            android:padding="5dp"
             android:textColor="@color/pink1"
             tools:text="Example Party" />
 
@@ -45,7 +49,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
-            android:padding="5dp"
+            android:paddingBottom="5dp"
+            android:paddingTop="2dp"
             android:textColor="@color/grey1"
             tools:text="Mayor of RandomTown" />
 
