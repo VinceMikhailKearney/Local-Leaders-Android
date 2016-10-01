@@ -1,9 +1,6 @@
 package industries.muskaqueers.thunderechosaber.Managers;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -50,7 +47,6 @@ public class TwitterManager {
                              for (Tweet tweet : tweets) {
                                  tweetList.add(tweet);
                              }
-//                             MainActivity.fillOutList(tweetList);
                          }
 
                          @Override
@@ -73,6 +69,15 @@ public class TwitterManager {
             username = "@" + username;
         TweetComposer.Builder builder = new TweetComposer.Builder(context)
                 .text("." + username + " #LocalLeaders ");
+        builder.show();
+    }
+
+    public static void tweetNoUser(Context context, String partyName, String mlaName) {
+        if (partyName.charAt(0) != '@')
+            partyName = "@" + partyName;
+        TweetComposer.Builder builder = new TweetComposer.Builder(context)
+                .text("." + partyName + " " + mlaName + " doesn't have twitter, how can I get in contact? " +
+                        "#LocalLeaders ");
         builder.show();
     }
 }

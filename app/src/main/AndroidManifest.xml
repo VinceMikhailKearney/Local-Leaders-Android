@@ -20,6 +20,7 @@
         </activity>
         <activity
             android:name=".UI.MLA_Info_Activity"
+            android:parentActivityName=".UI.MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
         <meta-data
             android:name="io.fabric.ApiKey"
