@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white"
     android:orientation="vertical"
     tools:context="industries.muskaqueers.thunderechosaber.UI.MainActivity">
@@ -14,20 +15,22 @@
         android:background="@color/blue1" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_photo"
+        android:id="@+id/profile_picture"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@android:color/white"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="15dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="125dp"
         tools:src="@drawable/tw__composer_logo_blue" />
 
     <LinearLayout
         android:id="@+id/title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/profile_photo"
+        android:layout_below="@+id/profile_picture"
         android:orientation="vertical">
 
         <TextView
@@ -36,12 +39,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="sans-serif-bold"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:gravity="center"
             android:textAlignment="center"
             android:textColor="@color/grey1"
             tools:text="John Smith" />
 
         <TextView
+            android:textSize="14sp"
             android:id="@+id/party_abrv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,6 +58,7 @@
             tools:text="TEP" />
 
         <TextView
+            android:textSize="14sp"
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,14 +79,16 @@
         android:padding="16dp">
 
         <TextView
+            android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-bold"
-            android:padding="2dp"
+            android:textStyle="bold"
             android:text="Party Name"
             android:textColor="@color/grey1" />
 
         <TextView
+            android:textSize="16sp"
             android:id="@+id/party_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,14 +98,17 @@
             tools:text="The Example Party" />
 
         <TextView
+            android:paddingTop="5dp"
+            android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-bold"
-            android:padding="2dp"
             android:text="Constituency"
+            android:textStyle="bold"
             android:textColor="@color/grey1" />
 
         <TextView
+            android:textSize="16sp"
             android:id="@+id/constituency"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

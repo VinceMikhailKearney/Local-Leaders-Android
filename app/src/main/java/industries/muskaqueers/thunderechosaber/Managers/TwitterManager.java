@@ -72,7 +72,7 @@ public class TwitterManager {
         if (username.charAt(0) != '@')
             username = "@" + username;
         TweetComposer.Builder builder = new TweetComposer.Builder(context)
-                .text("." + username + " ");
+                .text("." + username + " #LocalLeaders ");
         builder.show();
     }
 }

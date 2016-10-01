@@ -18,6 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".UI.MLA_Info_Activity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="13b516c3655af5ef1203ffb797a6a20e0053b396" />

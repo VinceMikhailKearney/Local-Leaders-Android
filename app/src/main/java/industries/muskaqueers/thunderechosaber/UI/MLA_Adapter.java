@@ -1,6 +1,8 @@
 package industries.muskaqueers.thunderechosaber.UI;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -94,9 +97,9 @@ public class MLA_Adapter extends RecyclerView.Adapter<MLA_Adapter.MLAViewHolder>
 
         @Override
         public void onClick(View view) {
-            ThunderEchoSabreEvent event = new ThunderEchoSabreEvent(ThunderEchoSabreEvent.eventBusEventType.ON_CLICK_MLA);
-            event.setMLA(viewMLA);
-            EventBus.getDefault().post(event);
+            Intent showDetail = new Intent(view.getContext(), MLA_Info_Activity.class);
+            showDetail.putExtra(MLA_Info_Activity.MLA_EXTRA, viewMLA.getMLA_ID());
+            view.getContext().startActivity(showDetail);
         }
     }
 }

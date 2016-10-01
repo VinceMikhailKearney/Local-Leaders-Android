@@ -1,11 +1,14 @@
 package industries.muskaqueers.thunderechosaber;
 
 import android.graphics.Bitmap;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 
 /**
  * Created by vincekearney on 20/09/2016.
  */
-public class MLA {
+public class MLA implements Serializable {
 
     private String MLA_ID;
     private String firstName;
