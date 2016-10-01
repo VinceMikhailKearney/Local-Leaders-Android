@@ -3,6 +3,7 @@ package industries.muskaqueers.thunderechosaber.DB;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -56,10 +57,11 @@ public class MLADatabaseHelper {
             mlaValues.put(localDB.COLUMN_NAME_MLA_FIRST_NAME, firstName);
             mlaValues.put(localDB.COLUMN_NAME_MLA_LAST_NAME, lastName);
             mlaValues.put(localDB.COLUMN_NAME_MLA_IMAGE_URL, imageURL);
+            mlaValues.put(localDB.COLUMN_NAME_MLA_IMAGE_BITMAP, new byte[]{}); // Image bitmap is updated later
             mlaValues.put(localDB.COLUMN_NAME_MLA_PARTY_ABBREVIATION, partyAbbreviation);
             mlaValues.put(localDB.COLUMN_NAME_MLA_PARTY_NAME, partyName);
             mlaValues.put(localDB.COLUMN_NAME_MLA_TITLE, title);
-            mlaValues.put(localDB.COLUMN_NAME_MLA_TWITTER_HANDLE, ""); // VTODO - Need to add a proper twitter handle
+            mlaValues.put(localDB.COLUMN_NAME_MLA_TWITTER_HANDLE, ""); // The twitter handle is updated later
             mlaValues.put(localDB.COLUMN_NAME_MLA_CONSTITUENCY, constituency);
 
             // Open the db - I.e. return a writeable instance of the database so that we can save to it
@@ -78,6 +80,15 @@ public class MLADatabaseHelper {
 
         String sqlSearch = String.format("%s = %s%s%s",localDB.COLUMN_NAME_MLA_ID,"'",mla.getMLA_ID(),"'");
         openThisDB().update(localDB.MLAS_TABLE, newTwitterHandle, sqlSearch, null);
+    }
+
+    public void updateImageData(MLA mla, byte[] byteArray) {
+        Log.i(TAG, "\nMLA ID -> " + mla.getMLA_ID() + "\nByte Array ->" + byteArray + "\n");
+        ContentValues newImageData = new ContentValues();
+        newImageData.put(localDB.COLUMN_NAME_MLA_IMAGE_BITMAP, byteArray);
+
+        String sqlSearch = String.format("%s = %s%s%s",localDB.COLUMN_NAME_MLA_ID,"'",mla.getMLA_ID(),"'");
+        openThisDB().update(localDB.MLAS_TABLE, newImageData, sqlSearch, null);
     }
 
     /* ---- Fetch/Delete MLA ---- */
@@ -164,11 +175,13 @@ public class MLADatabaseHelper {
         MLA.setFirstName(cursor.getString(1));
         MLA.setLastName(cursor.getString(2));
         MLA.setImageURL(cursor.getString(3));
-        MLA.setPartyAbbreviation(cursor.getString(4));
-        MLA.setPartyName(cursor.getString(5));
-        MLA.setTitle(cursor.getString(6));
-        MLA.setTwitterHandle(cursor.getString(7));
-        MLA.setConstituency(cursor.getString(8));
+        byte[] imageData = cursor.getBlob(4);
+        MLA.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.length));
+        MLA.setPartyAbbreviation(cursor.getString(5));
+        MLA.setPartyName(cursor.getString(6));
+        MLA.setTitle(cursor.getString(7));
+        MLA.setTwitterHandle(cursor.getString(8));
+        MLA.setConstituency(cursor.getString(9));
         return MLA;
     }
 
