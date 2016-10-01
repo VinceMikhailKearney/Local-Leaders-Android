@@ -20,6 +20,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.Managers.FirebaseManager;
+import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.R;
 import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
 import industries.muskaqueers.thunderechosaber.ThunderEchoSabreEvent;
@@ -85,11 +86,11 @@ public class MLAFragment extends Fragment {
         } else if(event.getEventType() == ThunderEchoSabreEvent.eventBusEventType.ON_CLICK_MLA) {
             Log.d(TAG, "onEvent: Clicked MLA");
             MLA thisMLA = event.getMLA();
-            String toastText = String.format("MLA Twitter Handle: " + thisMLA.getTwitterHandle());
-            if(thisMLA.getTwitterHandle().length() == 0)
-                toastText = "MLA does not have a twitter handle";
-
-            Toast.makeText(getContext(), toastText, Toast.LENGTH_SHORT).show();
+            if(thisMLA.getTwitterHandle().length() == 0) {
+                Toast.makeText(getContext(), "MLA does not have a twitter handle", Toast.LENGTH_SHORT).show();
+            } else {
+                TwitterManager.tweetUser(getContext(), thisMLA.getTwitterHandle());
+            }
         }
     }
 }
