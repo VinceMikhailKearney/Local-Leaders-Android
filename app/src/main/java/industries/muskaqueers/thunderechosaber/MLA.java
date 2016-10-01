@@ -1,5 +1,7 @@
 package industries.muskaqueers.thunderechosaber;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by vincekearney on 20/09/2016.
  */
@@ -9,6 +11,7 @@ public class MLA {
     private String firstName;
     private String lastName;
     private String imageURL;
+    private Bitmap imageBitmap;
     private String partyAbbreviation;
     private String partyName;
     private String title;
@@ -42,6 +45,9 @@ public class MLA {
 
     public String getImageURL() { return imageURL; }
     public void setImageURL(String imageURL) { this.imageURL = imageURL; }
+
+    public Bitmap getImageBitmap() { return imageBitmap; }
+    public void setImageBitmap(Bitmap imageBitmap) { this.imageBitmap = imageBitmap; }
 
     public String getPartyAbbreviation() { return partyAbbreviation; }
     public void setPartyAbbreviation(String partyAbbreviation) { this.partyAbbreviation = partyAbbreviation; }
