@@ -44,6 +44,7 @@ public class MLADatabaseHelper {
      * Method for adding a MLA to the DB
      * Parameters are self explanatory
      *
+     * We set the twitter handle and image data blank here as we update after we get the right information
      * @return - Returns a MLA object
      */
     public MLA addMLA(String mlaID, String firstName, String lastName, String imageURL,
@@ -73,6 +74,11 @@ public class MLADatabaseHelper {
         return fetchMLA(mlaID);
     }
 
+    /**
+     * Method for updating the twitter handle of an MLA in the DB
+     * @param mla - The MLA we are updating
+     * @param handle - Twitter handle for MLA
+     */
     public void updateTwitterHandle(MLA mla, String handle) {
         Log.i(TAG, "\nMLA ID -> " + mla.getMLA_ID() + "\nHandle ->" + handle + "\n");
         ContentValues newTwitterHandle = new ContentValues();
@@ -82,6 +88,11 @@ public class MLADatabaseHelper {
         openThisDB().update(localDB.MLAS_TABLE, newTwitterHandle, sqlSearch, null);
     }
 
+    /**
+     * Method for updating the Image Data of an MLA in the DB
+     * @param mla - The MLA we are updating
+     * @param byteArray - The byteArray we fetched from the URL
+     */
     public void updateImageData(MLA mla, byte[] byteArray) {
         Log.i(TAG, "\nMLA ID -> " + mla.getMLA_ID() + "\nByte Array ->" + byteArray + "\n");
         ContentValues newImageData = new ContentValues();
@@ -92,14 +103,30 @@ public class MLADatabaseHelper {
     }
 
     /* ---- Fetch/Delete MLA ---- */
+
+    /**
+     * Convenience method to return a MLA with a matching ID
+     * @param id - ID of the MLA we are fetching
+     * @return - MLA
+     */
     public MLA fetchMLA(String id) {
         return fetchOrDelete(id, getOrDelete.FETCH);
     }
 
+    /**
+     * Convenience method that just makes it easier to delete a MLA
+     * @param id - ID of the MLA we want to delete
+     */
     public void deleteMLA(String id) {
         fetchOrDelete(id, getOrDelete.DELETE);
     }
 
+    /**
+     * Convenience method that allows us to either fetch or delete a single MLA in the DB
+     * @param id - ID of the MLA
+     * @param state - Whether to Fetch of Delete the MLA
+     * @return - Returns the MLA if we fetch or nothing if the ID does not match anything in the DB. If we are deleting we return nothing.
+     */
     public MLA fetchOrDelete(String id, getOrDelete state) {
         MLA item = null;
         Cursor cursor = fetchCursorForMLA(id);
@@ -127,6 +154,11 @@ public class MLADatabaseHelper {
     }
 
     /* ---- Fetch methods ---- */
+
+    /**
+     * Method for retrieving all MLAs from DB
+     * @return - Array of all MLAs
+     */
     public List<MLA> getAllMLAs() {
         Log.i(TAG, "Asking for all MLA items.");
         // Query sets to select ALL from the To-Do table.
@@ -134,6 +166,11 @@ public class MLADatabaseHelper {
         return fetchMLAsWithQuery(query);
     }
 
+    /**
+     * Convenience method for fetching MLAs from DB with respect to a query
+     * @param query - The SQL query we wish to execute
+     * @return - An array of MLA's that matches the query
+     */
     private List<MLA> fetchMLAsWithQuery(String query) {
         List<MLA> allMLAs = new ArrayList<>();
         Cursor cursor = openThisDB().rawQuery(query, null);
@@ -151,6 +188,10 @@ public class MLADatabaseHelper {
     }
 
     /* ---- Public Delete Methods ---- */
+
+    /**
+     * Selects all the MLAs from the Database and then deletes them one by one
+     */
     public void deleteAllMLAs() {
         // Query sets to select ALL from the To-Do table.
         String query = "SELECT * FROM " + localDB.MLAS_TABLE;
@@ -169,6 +210,12 @@ public class MLADatabaseHelper {
     }
 
     /* ---- Private Convenience Methods ---- */
+
+    /**
+     * Creates a MLA with the values contained in a cursor
+     * @param cursor - The curosr containing the information of the MLA we are creating
+     * @return - MLA
+     */
     private MLA createMLAFrom(Cursor cursor) {
         MLA MLA = new MLA();
         MLA.setMLA_ID(cursor.getString(0));
@@ -185,6 +232,9 @@ public class MLADatabaseHelper {
         return MLA;
     }
 
+    /**
+     * @return A writeable instance of the DatabaseManager
+     */
     private SQLiteDatabase openThisDB() {
         return localDB.getWritableDatabase();
     }
@@ -194,6 +244,10 @@ public class MLADatabaseHelper {
         localDB.close();
     }
 
+    /**
+     * @param id - The id of the MLA that we are fetching
+     * @return A cursor that contains the information corresponding to the MLA with th id passed in as a parameter
+     */
     private Cursor fetchCursorForMLA(String id) {
         String searchString = String.format("%s%s%s", "'", id, "'");
         String query = "SELECT * FROM " + localDB.MLAS_TABLE + " WHERE " + localDB.COLUMN_NAME_MLA_ID + " = " + searchString;
