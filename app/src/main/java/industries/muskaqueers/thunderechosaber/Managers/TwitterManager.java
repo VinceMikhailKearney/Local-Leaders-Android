@@ -32,12 +32,13 @@ public class TwitterManager {
      *                 will rip this out in order to get the correct results.
      * @throws IOException
      */
-    public static void getTweetsForUser(String username) throws IOException {
+    public static List<String> getTweetsForUser(String username) throws IOException {
         if (username.charAt(0) == '@') {
             username = username.substring(1);
         }
 
         final List<Tweet> tweetList = new ArrayList<>();
+        final List<String> tweetListBody = new ArrayList<>();
         SearchService searchService = ThunderEchoSaberApplication.twitter.core.getApiClient().getSearchService();
         Call<Search> call = searchService.tweets(username, null, null, null, null, null, null, null, null, null);
         call.enqueue(new Callback<Search>() {
@@ -46,6 +47,7 @@ public class TwitterManager {
                              final List<Tweet> tweets = result.data.tweets;
                              for (Tweet tweet : tweets) {
                                  tweetList.add(tweet);
+                                 tweetListBody.add(tweet.text);
                              }
                          }
 
@@ -55,6 +57,7 @@ public class TwitterManager {
                          }
                      }
         );
+        return tweetListBody;
     }
 
     /**
