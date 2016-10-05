@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import industries.muskaqueers.thunderechosaber.Events.TwitterEvent;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.R;
 
@@ -32,9 +33,12 @@ public class Social_Adapter extends RecyclerView.Adapter<Social_Adapter.MLAViewH
     }
 
     public Social_Adapter(List<String> tweetList){
+        Log.d(TAG, "We have got a tweetList: " + tweetList);
         this.mla = null;
         setTweetList(tweetList);
     }
+
+    public Social_Adapter(){}
 
     public void setTweetList(List<String> tweetList) {
         this.tweetList = tweetList;

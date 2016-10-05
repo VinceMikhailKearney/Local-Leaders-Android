@@ -1,6 +1,7 @@
 package industries.muskaqueers.thunderechosaber.Managers;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -14,8 +15,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+import industries.muskaqueers.thunderechosaber.Events.TwitterEvent;
 import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
 import retrofit2.Call;
+
+import static industries.muskaqueers.thunderechosaber.Events.TwitterEvent.*;
 
 /**
  * Twitter Manager
@@ -32,10 +37,11 @@ public class TwitterManager {
      *                 will rip this out in order to get the correct results.
      * @throws IOException
      */
-    public static List<String> getTweetsForUser(String username) throws IOException {
+    public static void getTweetsForUser(String username) throws IOException {
         if (username.charAt(0) == '@') {
             username = username.substring(1);
         }
+        Log.d(TAG, "We are getting tweets for user: " + username);
 
         final List<Tweet> tweetList = new ArrayList<>();
         final List<String> tweetListBody = new ArrayList<>();
@@ -49,15 +55,16 @@ public class TwitterManager {
                                  tweetList.add(tweet);
                                  tweetListBody.add(tweet.text);
                              }
+                             EventBus.getDefault().post(new TwitterEvent.RecentTweets(tweetListBody));
                          }
 
                          @Override
                          public void failure(TwitterException exception) {
+                             Log.d(TAG, "Something went wrong");
                              exception.printStackTrace();
                          }
                      }
         );
-        return tweetListBody;
     }
 
     /**
