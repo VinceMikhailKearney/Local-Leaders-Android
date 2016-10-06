@@ -43,17 +43,6 @@ public abstract class PasrserUtils {
         return allMLAs;
     }
 
-    public static Long versionNumber(HashMap<String, Object> hashMap, String key) {
-        return (Long) hashMap.get(key);
-    }
-
-    /**
-     * Convenive method for getting the string value from a key in the map
-     */
-    private static String stringFromKey(HashMap<String, Object> map, String key) {
-        return map.get(key).toString();
-    }
-
     /**
      * Find the twitter handle for a MLA
      * @param firstName - First name of the MLA
@@ -84,5 +73,16 @@ public abstract class PasrserUtils {
 
         Log.d(TAG, "findHandleFor: " + firstName + " " + lastName + " = " + twitterHandle);
         return twitterHandle;
+    }
+
+    public static Long versionNumber(HashMap<String, Object> hashMap, String key) {
+        return (Long) hashMap.get(key);
+    }
+
+    /**
+     * Convenive method for getting the string value from a key in the map
+     */
+    private static String stringFromKey(HashMap<String, Object> map, String key) {
+        return map.get(key).toString();
     }
 }
