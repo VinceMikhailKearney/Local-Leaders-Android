@@ -28,46 +28,46 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     /* ---- MLA Table and Columns (in order) ---- */
     public final String MLAS_TABLE = "MLAs";
-    public final String COLUMN_NAME_MLA_ID = "mla_id";
-    public final String COLUMN_NAME_MLA_FIRST_NAME = "first_name";
-    public final String COLUMN_NAME_MLA_LAST_NAME = "last_name";
-    public final String COLUMN_NAME_MLA_IMAGE_URL = "image_url";
-    public final String COLUMN_NAME_MLA_IMAGE_BITMAP = "image_bitmap";
-    public final String COLUMN_NAME_MLA_PARTY_ABBREVIATION = "party_abbreviation";
-    public final String COLUMN_NAME_MLA_PARTY_NAME = "party_name";
-    public final String COLUMN_NAME_MLA_TITLE = "title";
-    public final String COLUMN_NAME_MLA_TWITTER_HANDLE = "twitter_handle";
-    public final String COLUMN_NAME_MLA_CONSTITUENCY = "constituency";
+    public final String MLA_ID = "mla_id";
+    public final String MLA_FIRST_NAME = "first_name";
+    public final String MLA_LAST_NAME = "last_name";
+    public final String MLA_IMAGE_URL = "image_url";
+    public final String MLA_IMAGE_BITMAP = "image_bitmap";
+    public final String MLA_PARTY_ABBREVIATION = "party_abbreviation";
+    public final String MLA_PARTY_NAME = "party_name";
+    public final String MLA_TITLE = "title";
+    public final String MLA_TWITTER_HANDLE = "twitter_handle";
+    public final String MLA_CONSTITUENCY = "constituency";
 
     /* ---- Party Table and Columns (in order) ---- */
     public final String PARTY_TABLE = "PartyInfo";
-    public final String COLUMN_NAME_PARTY_ID = "party_id";
-    public final String COLUMN_NAME_PARTY_NAME = "party_name";
-    public final String COLUMN_NAME_PARTY_TWITTER_HANDLE = "party_twitter_handle";
-    public final String COLUMN_NAME_PARTY_IMAGE_URL = "party_image_url";
-    public final String COLUMN_NAME_PARTY_IMAGE_DATA = "image_data";
+    public final String PARTY_ID = "party_id";
+    public final String PARTY_NAME = "party_name";
+    public final String PARTY_TWITTER_HANDLE = "party_twitter_handle";
+    public final String PARTY_IMAGE_URL = "party_image_url";
+    public final String PARTY_IMAGE_DATA = "image_data";
 
     /* ---- Create table SQL string ---- */
     private final String CREATE_MLA_TABLE =
             "CREATE TABLE IF NOT EXISTS " + MLAS_TABLE + "("
-                    + COLUMN_NAME_MLA_ID + formatTextType
-                    + COLUMN_NAME_MLA_FIRST_NAME + formatTextType
-                    + COLUMN_NAME_MLA_LAST_NAME + formatTextType
-                    + COLUMN_NAME_MLA_IMAGE_URL + formatTextType
-                    + COLUMN_NAME_MLA_IMAGE_BITMAP + formatBlobType
-                    + COLUMN_NAME_MLA_PARTY_ABBREVIATION + formatTextType
-                    + COLUMN_NAME_MLA_PARTY_NAME + formatTextType
-                    + COLUMN_NAME_MLA_TITLE + formatTextType
-                    + COLUMN_NAME_MLA_TWITTER_HANDLE + formatTextType
-                    + COLUMN_NAME_MLA_CONSTITUENCY + formatTextTypeEnd + ")";
+                    + MLA_ID + formatTextType
+                    + MLA_FIRST_NAME + formatTextType
+                    + MLA_LAST_NAME + formatTextType
+                    + MLA_IMAGE_URL + formatTextType
+                    + MLA_IMAGE_BITMAP + formatBlobType
+                    + MLA_PARTY_ABBREVIATION + formatTextType
+                    + MLA_PARTY_NAME + formatTextType
+                    + MLA_TITLE + formatTextType
+                    + MLA_TWITTER_HANDLE + formatTextType
+                    + MLA_CONSTITUENCY + formatTextTypeEnd + ")";
 
     private final String CREATE_PARTY_TABLE =
             "CREATE TABLE IF NOT EXISTS " + PARTY_TABLE + "("
-                    + COLUMN_NAME_PARTY_ID + formatTextType
-                    + COLUMN_NAME_PARTY_NAME + formatTextType
-                    + COLUMN_NAME_PARTY_TWITTER_HANDLE + formatTextType
-                    + COLUMN_NAME_PARTY_IMAGE_URL + formatTextType
-                    + COLUMN_NAME_PARTY_IMAGE_DATA + formatBlobTypeEnd + ")";
+                    + PARTY_ID + formatTextType
+                    + PARTY_NAME + formatTextType
+                    + PARTY_TWITTER_HANDLE + formatTextType
+                    + PARTY_IMAGE_URL + formatTextType
+                    + PARTY_IMAGE_DATA + formatBlobTypeEnd + ")";
 
     /**
      * Above ^^^

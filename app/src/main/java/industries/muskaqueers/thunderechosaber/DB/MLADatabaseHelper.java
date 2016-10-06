@@ -54,16 +54,16 @@ public class MLADatabaseHelper {
         // First lets make sure that we haven't already added a MLA with their ID
         if (fetchMLA(mlaID) == null) {
             ContentValues mlaValues = new ContentValues();
-            mlaValues.put(localDB.COLUMN_NAME_MLA_ID, mlaID);
-            mlaValues.put(localDB.COLUMN_NAME_MLA_FIRST_NAME, firstName);
-            mlaValues.put(localDB.COLUMN_NAME_MLA_LAST_NAME, lastName);
-            mlaValues.put(localDB.COLUMN_NAME_MLA_IMAGE_URL, imageURL);
-            mlaValues.put(localDB.COLUMN_NAME_MLA_IMAGE_BITMAP, new byte[]{}); // Image bitmap is updated later
-            mlaValues.put(localDB.COLUMN_NAME_MLA_PARTY_ABBREVIATION, partyAbbreviation);
-            mlaValues.put(localDB.COLUMN_NAME_MLA_PARTY_NAME, partyName);
-            mlaValues.put(localDB.COLUMN_NAME_MLA_TITLE, title);
-            mlaValues.put(localDB.COLUMN_NAME_MLA_TWITTER_HANDLE, ""); // The twitter handle is updated later
-            mlaValues.put(localDB.COLUMN_NAME_MLA_CONSTITUENCY, constituency);
+            mlaValues.put(localDB.MLA_ID, mlaID);
+            mlaValues.put(localDB.MLA_FIRST_NAME, firstName);
+            mlaValues.put(localDB.MLA_LAST_NAME, lastName);
+            mlaValues.put(localDB.MLA_IMAGE_URL, imageURL);
+            mlaValues.put(localDB.MLA_IMAGE_BITMAP, new byte[]{}); // Image bitmap is updated later
+            mlaValues.put(localDB.MLA_PARTY_ABBREVIATION, partyAbbreviation);
+            mlaValues.put(localDB.MLA_PARTY_NAME, partyName);
+            mlaValues.put(localDB.MLA_TITLE, title);
+            mlaValues.put(localDB.MLA_TWITTER_HANDLE, ""); // The twitter handle is updated later
+            mlaValues.put(localDB.MLA_CONSTITUENCY, constituency);
 
             // Open the db - I.e. return a writeable instance of the database so that we can save to it
             openThisDB().insert(localDB.MLAS_TABLE, null, mlaValues);
@@ -82,9 +82,9 @@ public class MLADatabaseHelper {
     public void updateTwitterHandle(MLA mla, String handle) {
         Log.i(TAG, "\nMLA ID -> " + mla.getMLA_ID() + "\nHandle ->" + handle + "\n");
         ContentValues newTwitterHandle = new ContentValues();
-        newTwitterHandle.put(localDB.COLUMN_NAME_MLA_TWITTER_HANDLE, handle);
+        newTwitterHandle.put(localDB.MLA_TWITTER_HANDLE, handle);
 
-        String sqlSearch = String.format("%s = %s%s%s",localDB.COLUMN_NAME_MLA_ID,"'",mla.getMLA_ID(),"'");
+        String sqlSearch = String.format("%s = %s%s%s",localDB.MLA_ID,"'",mla.getMLA_ID(),"'");
         openThisDB().update(localDB.MLAS_TABLE, newTwitterHandle, sqlSearch, null);
     }
 
@@ -96,9 +96,9 @@ public class MLADatabaseHelper {
     public void updateImageData(MLA mla, byte[] byteArray) {
         Log.i(TAG, "\nMLA ID -> " + mla.getMLA_ID() + "\nByte Array ->" + byteArray + "\n");
         ContentValues newImageData = new ContentValues();
-        newImageData.put(localDB.COLUMN_NAME_MLA_IMAGE_BITMAP, byteArray);
+        newImageData.put(localDB.MLA_IMAGE_BITMAP, byteArray);
 
-        String sqlSearch = String.format("%s = %s%s%s",localDB.COLUMN_NAME_MLA_ID,"'",mla.getMLA_ID(),"'");
+        String sqlSearch = String.format("%s = %s%s%s",localDB.MLA_ID,"'",mla.getMLA_ID(),"'");
         openThisDB().update(localDB.MLAS_TABLE, newImageData, sqlSearch, null);
     }
 
@@ -138,7 +138,7 @@ public class MLADatabaseHelper {
             String mlaID = cursor.getString(0);
             if (state == getOrDelete.DELETE) {
                 Log.i(TAG, "Deleting MLA with ID: " + id);
-                openThisDB().delete(localDB.MLAS_TABLE, localDB.COLUMN_NAME_MLA_ID + " = \"" + mlaID + "\"", null);
+                openThisDB().delete(localDB.MLAS_TABLE, localDB.MLA_ID + " = \"" + mlaID + "\"", null);
             } else {
                 item = createMLAFrom(cursor);
                 Log.i(TAG, "Got MLA with ID: " + mlaID);
@@ -201,7 +201,7 @@ public class MLADatabaseHelper {
         while (!cursor.isAfterLast()) {
             String mlaID = cursor.getString(0);
             Log.i(TAG, "Deleting all MLAs. This ID - " + mlaID);
-            openThisDB().delete(localDB.MLAS_TABLE, localDB.COLUMN_NAME_MLA_ID + " = \"" + mlaID + "\"", null);
+            openThisDB().delete(localDB.MLAS_TABLE, localDB.MLA_ID + " = \"" + mlaID + "\"", null);
             cursor.moveToNext();
         }
 
@@ -250,7 +250,7 @@ public class MLADatabaseHelper {
      */
     private Cursor fetchCursorForMLA(String id) {
         String searchString = String.format("%s%s%s", "'", id, "'");
-        String query = "SELECT * FROM " + localDB.MLAS_TABLE + " WHERE " + localDB.COLUMN_NAME_MLA_ID + " = " + searchString;
+        String query = "SELECT * FROM " + localDB.MLAS_TABLE + " WHERE " + localDB.MLA_ID + " = " + searchString;
         return openThisDB().rawQuery(query, null);
     }
 }
