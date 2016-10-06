@@ -16,15 +16,17 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String TYPE_BLOB = "BLOB";
     private static final String TYPE_INTEGER = "INTEGER";
     private static final String formatTextType = String.format(" %s, ", TYPE_TEXT);
-    private static final String formatBlobType = String.format(" %s, ", TYPE_BLOB);
     private static final String formatTextTypeEnd = String.format(" %s", TYPE_TEXT);
+    private static final String formatBlobType = String.format(" %s, ", TYPE_BLOB);
+    private static final String formatBlobTypeEnd = String.format(" %s", TYPE_BLOB);
     private static final String formatIntegerType = String.format(" %s, ", TYPE_INTEGER);
+    private static final String formatIntegerTypeEnd = String.format(" %s", TYPE_BLOB);
 
     /* ---- Database ---- */
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "ThunderEchoSabre.db";
 
-    /* ---- Table and Columns (in order) ---- */
+    /* ---- MLA Table and Columns (in order) ---- */
     public final String MLAS_TABLE = "MLAs";
     public final String COLUMN_NAME_MLA_ID = "mla_id";
     public final String COLUMN_NAME_MLA_FIRST_NAME = "first_name";
@@ -37,8 +39,16 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public final String COLUMN_NAME_MLA_TWITTER_HANDLE = "twitter_handle";
     public final String COLUMN_NAME_MLA_CONSTITUENCY = "constituency";
 
+    /* ---- Party Table and Columns (in order) ---- */
+    public final String PARTY_TABLE = "PartyInfo";
+    public final String COLUMN_NAME_PARTY_ID = "party_id";
+    public final String COLUMN_NAME_PARTY_NAME = "party_name";
+    public final String COLUMN_NAME_PARTY_TWITTER_HANDLE = "party_twitter_handle";
+    public final String COLUMN_NAME_PARTY_IMAGE_URL = "party_image_url";
+    public final String COLUMN_NAME_PARTY_IMAGE_DATA = "image_data";
+
     /* ---- Create table SQL string ---- */
-    private final String CREATE_DATABASE =
+    private final String CREATE_MLA_TABLE =
             "CREATE TABLE IF NOT EXISTS " + MLAS_TABLE + "("
                     + COLUMN_NAME_MLA_ID + formatTextType
                     + COLUMN_NAME_MLA_FIRST_NAME + formatTextType
@@ -50,6 +60,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
                     + COLUMN_NAME_MLA_TITLE + formatTextType
                     + COLUMN_NAME_MLA_TWITTER_HANDLE + formatTextType
                     + COLUMN_NAME_MLA_CONSTITUENCY + formatTextTypeEnd + ")";
+
+    private final String CREATE_PARTY_TABLE =
+            "CREATE TABLE IF NOT EXISTS " + PARTY_TABLE + "("
+                    + COLUMN_NAME_PARTY_ID + formatTextType
+                    + COLUMN_NAME_PARTY_NAME + formatTextType
+                    + COLUMN_NAME_PARTY_TWITTER_HANDLE + formatTextType
+                    + COLUMN_NAME_PARTY_IMAGE_URL + formatTextType
+                    + COLUMN_NAME_PARTY_IMAGE_DATA + formatBlobTypeEnd + ")";
 
     /**
      * Above ^^^
@@ -67,9 +85,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i(TAG, "Creating the database. Output --> " + CREATE_DATABASE);
+        Log.i(TAG, "Creating the MLA table --> " + CREATE_MLA_TABLE);
+        Log.i(TAG, "Creating the MLA table --> " + CREATE_PARTY_TABLE);
         // Here is the best way to see the string that creates the DB table
-        db.execSQL(CREATE_DATABASE);
+        db.execSQL(CREATE_MLA_TABLE);
+        db.execSQL(CREATE_PARTY_TABLE);
     }
 
     /**
