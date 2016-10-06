@@ -9,20 +9,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import de.hdodenhof.circleimageview.CircleImageView;
 import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
 import industries.muskaqueers.thunderechosaber.MLA;
-import industries.muskaqueers.thunderechosaber.Managers.FirebaseManager;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.R;
-import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
 import industries.muskaqueers.thunderechosaber.ThunderEchoSabreEvent;
 
 /**
@@ -34,7 +30,7 @@ public class MLAFragment extends Fragment {
     private static final String TAG = "MLAFragment";
     private RecyclerView mlaRecyclerView;
     private List<MLA> mlaList = new ArrayList<>();
-    private MLA_Adapter mlaAdapter;
+    private MLAAdapter mlaAdapter;
     private MLADatabaseHelper mlaDatabaseHelper;
 
     // ---------- Lifecycle Methods
@@ -67,7 +63,7 @@ public class MLAFragment extends Fragment {
         this.mlaDatabaseHelper = new MLADatabaseHelper();
         // Set the list of the fragment to all MLAs in the DB
         this.mlaList = this.mlaDatabaseHelper.getAllMLAs();
-        this.mlaAdapter = new MLA_Adapter(this.mlaList);
+        this.mlaAdapter = new MLAAdapter(this.mlaList);
         mlaRecyclerView.setLayoutManager(layoutManager);
         mlaRecyclerView.setAdapter(this.mlaAdapter);
 

@@ -14,9 +14,9 @@ import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.R;
 
-public class MLA_Info_Activity extends AppCompatActivity implements View.OnClickListener {
+public class MLAInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "MLA_Info_Activity";
+    private static final String TAG = "MLAInfoActivity";
     public static final String MLA_EXTRA = "MLA_EXTRA";
 
     private MLA mla;
@@ -73,7 +73,7 @@ public class MLA_Info_Activity extends AppCompatActivity implements View.OnClick
                 }
                 break;
             case R.id.email_button:
-                Toast.makeText(MLA_Info_Activity.this, "Coming soon...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MLAInfoActivity.this, "Coming soon...", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

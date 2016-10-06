@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UI.MLA_Info_Activity"
+            android:name=".UI.MLAInfoActivity"
             android:parentActivityName=".UI.MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
         <meta-data

@@ -1,6 +1,5 @@
 package industries.muskaqueers.thunderechosaber.UI;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import industries.muskaqueers.thunderechosaber.Events.TwitterEvent;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.R;
 
@@ -21,24 +19,24 @@ import industries.muskaqueers.thunderechosaber.R;
  * Created by vincekearney on 24/09/2016.
  */
 
-public class Social_Adapter extends RecyclerView.Adapter<Social_Adapter.MLAViewHolder> {
+public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.MLAViewHolder> {
 
     private static final String TAG = "MLAAdapter";
     private List<String> tweetList;
     private MLA mla;
 
-    public Social_Adapter(MLA mla, List<String> tweetList) {
+    public SocialAdapter(MLA mla, List<String> tweetList) {
         this.mla = mla;
         setTweetList(tweetList);
     }
 
-    public Social_Adapter(List<String> tweetList){
+    public SocialAdapter(List<String> tweetList){
         Log.d(TAG, "We have got a tweetList: " + tweetList);
         this.mla = null;
         setTweetList(tweetList);
     }
 
-    public Social_Adapter(){}
+    public SocialAdapter(){}
 
     public void setTweetList(List<String> tweetList) {
         this.tweetList = tweetList;
