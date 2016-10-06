@@ -100,6 +100,7 @@ public class MLADatabaseHelper {
 
         String sqlSearch = String.format("%s = %s%s%s",localDB.MLA_ID,"'",mla.getMLA_ID(),"'");
         openThisDB().update(localDB.MLAS_TABLE, newImageData, sqlSearch, null);
+        closeDBManger();
     }
 
     /* ---- Fetch/Delete MLA ---- */
@@ -246,7 +247,7 @@ public class MLADatabaseHelper {
 
     /**
      * @param id - The id of the MLA that we are fetching
-     * @return A cursor that contains the information corresponding to the MLA with th id passed in as a parameter
+     * @return A cursor that contains the information corresponding to the MLA with the id passed in as a parameter
      */
     private Cursor fetchCursorForMLA(String id) {
         String searchString = String.format("%s%s%s", "'", id, "'");

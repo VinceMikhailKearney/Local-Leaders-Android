@@ -15,6 +15,8 @@ public class Party {
     private Bitmap imageBitmap;
 
 
+    public Party() {}
+
     public Party(String id, String name, String twitterHandle, String url) {
         this.partyId = id;
         this.name = name;
