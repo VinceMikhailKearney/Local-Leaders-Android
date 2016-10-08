@@ -5,13 +5,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
+import industries.muskaqueers.thunderechosaber.DB.PartyDatabaseHelper;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
+import industries.muskaqueers.thunderechosaber.Party;
 import industries.muskaqueers.thunderechosaber.R;
 
 public class MLA_Info_Activity extends AppCompatActivity implements View.OnClickListener {
@@ -22,6 +25,7 @@ public class MLA_Info_Activity extends AppCompatActivity implements View.OnClick
     private MLA mla;
     private Toolbar toolbar;
     private CircleImageView profilePicture;
+    private ImageView coverPhoto;
     private TextView name, partyAbrv, title, partyName, constituency;
     private ImageButton tweetButton, emailButton;
 
@@ -33,9 +37,11 @@ public class MLA_Info_Activity extends AppCompatActivity implements View.OnClick
 
         String mlaID = (String) getIntent().getSerializableExtra(MLA_EXTRA);
         MLADatabaseHelper dbh = new MLADatabaseHelper();
+        PartyDatabaseHelper partyDatabaseHelper = new PartyDatabaseHelper();
         mla = dbh.fetchMLA(mlaID);
 
         profilePicture = (CircleImageView) findViewById(R.id.profile_picture);
+        coverPhoto = (ImageView) findViewById(R.id.cover_photo);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         name = (TextView) findViewById(R.id.name);
         partyAbrv = (TextView)  findViewById(R.id.party_abrv);
@@ -46,6 +52,9 @@ public class MLA_Info_Activity extends AppCompatActivity implements View.OnClick
         emailButton = (ImageButton) findViewById(R.id.email_button);
 
         profilePicture.setImageBitmap(mla.getImageBitmap());
+        Party party = partyDatabaseHelper.fetchParty(mla.getPartyAbbreviation().toUpperCase());
+        if(party != null)
+            coverPhoto.setImageBitmap(partyDatabaseHelper.fetchParty(mla.getPartyAbbreviation().toUpperCase()).getImageBitmap());
         name.setText(mla.getFullName());
         partyAbrv.setText(mla.getPartyAbbreviation().toUpperCase());
         title.setText(mla.getTitle());

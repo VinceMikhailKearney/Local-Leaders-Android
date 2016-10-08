@@ -49,7 +49,9 @@ public abstract class PasrserUtils {
         for(int i = 0; i < partyArray.size(); i++) {
             HashMap<String, Object> partyMap = (HashMap) partyArray.get(i);
             Party newParty = new Party();
-            newParty.setPartyId(UUID.randomUUID().toString());
+            // For now the easiest way to access a party in the DB is via it's name. I prefer to interact with the ID attribute.
+            /* ToDo - Will improve this later. */
+            newParty.setPartyId(stringFromKey(partyMap, "name"));
             newParty.setName(stringFromKey(partyMap, "name"));
             newParty.setTwitterHandle(stringFromKey(partyMap, "twitter_handle"));
             newParty.setImageURL(stringFromKey(partyMap, "image_url"));
