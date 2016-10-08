@@ -9,21 +9,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import de.hdodenhof.circleimageview.CircleImageView;
 import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
 import industries.muskaqueers.thunderechosaber.MLA;
-import industries.muskaqueers.thunderechosaber.Managers.FirebaseManager;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.R;
-import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
-import industries.muskaqueers.thunderechosaber.ThunderEchoSabreEvent;
+import industries.muskaqueers.thunderechosaber.DatabaseEvent;
 
 /**
  * Created by Andrew on 9/23/16.
@@ -78,12 +74,12 @@ public class MLAFragment extends Fragment {
      * EventBus listener
      * @param event - Event object that states what the event is for along with containing information such as a specific MLA
      */
-    public void onEvent(ThunderEchoSabreEvent event) {
-        if(event.getEventType() == ThunderEchoSabreEvent.eventBusEventType.UPDATE_MLAS) {
+    public void onEvent(DatabaseEvent event) {
+        if(event.getEventType() == DatabaseEvent.type.UpdateMLAs) {
             Log.d(TAG, "onEvent: Just got told to update mlas");
             this.mlaList = this.mlaDatabaseHelper.getAllMLAs();
             this.mlaAdapter.setMlaList(this.mlaList);
-        } else if(event.getEventType() == ThunderEchoSabreEvent.eventBusEventType.ON_CLICK_MLA) {
+        } else if(event.getEventType() == DatabaseEvent.type.OnClickMla) {
             Log.d(TAG, "onEvent: Clicked MLA");
             MLA thisMLA = event.getMLA();
             if(thisMLA.getTwitterHandle().length() == 0) {

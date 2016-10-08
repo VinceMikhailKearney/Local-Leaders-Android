@@ -8,14 +8,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.DB.PartyDatabaseHelper;
 import industries.muskaqueers.thunderechosaber.Party;
-import industries.muskaqueers.thunderechosaber.ThunderEchoSabreEvent;
+import industries.muskaqueers.thunderechosaber.DatabaseEvent;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
 import industries.muskaqueers.thunderechosaber.PasrserUtils;
@@ -101,10 +100,10 @@ public class FirebaseManager {
             // Now that the MLA is in the DB, let's update the TwitterHandle
             this.MLA_DB_Helper.updateTwitterHandle(addMLA, PasrserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
             // Async download the image and store in DB against the MLA
-            imageProcessor.getDataFromImage(mla.getImageURL(), mla.getMLA_ID());
+            imageProcessor.getDataFromImage(mla.getImageURL(), mla.getMLA_ID(), ProcessImage.type.MLA);
         }
 
-        EventBus.getDefault().post(new ThunderEchoSabreEvent(ThunderEchoSabreEvent.eventBusEventType.UPDATE_MLAS));
+        EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs));
     }
 
     private void addPartiesToDatabase(List<Party> parties) {
@@ -115,7 +114,7 @@ public class FirebaseManager {
                     party.getImageURL());
 
             Log.i(TAG, "addPartiesToDatabase: Party " + addParty);
-//            imageProcessor.getDataFromImage(party.getImageURL(), party.getPartyId());
+//            imageProcessor.getDataFromImage(party.getImageURL(), party.getPartyId(), ProcessImage.type.Party);
         }
     }
 }

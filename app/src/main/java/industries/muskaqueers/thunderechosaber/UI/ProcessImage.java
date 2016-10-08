@@ -10,7 +10,8 @@ import java.net.URL;
 
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
-import industries.muskaqueers.thunderechosaber.ThunderEchoSabreEvent;
+import industries.muskaqueers.thunderechosaber.DB.PartyDatabaseHelper;
+import industries.muskaqueers.thunderechosaber.DatabaseEvent;
 
 /**
  * Created by vincekearney on 01/10/2016.
@@ -27,10 +28,13 @@ public class ProcessImage {
      */
 
     private static final String TAG = "ProcessImage";
-    private MLADatabaseHelper databaseHelper;
+    private MLADatabaseHelper mlaDatabaseHelper;
+    private PartyDatabaseHelper partyDatabaseHelper;
+    public enum type {Party, MLA}
 
     public ProcessImage() {
-        this.databaseHelper = new MLADatabaseHelper();
+        this.mlaDatabaseHelper = new MLADatabaseHelper();
+        this.partyDatabaseHelper = new PartyDatabaseHelper();
     }
 
     /**
@@ -46,17 +50,23 @@ public class ProcessImage {
 
     /**
      * Method for getting data from an image that we download from the URL of a MLA
-     * @param url - URL of the MLA
-     * @param mlaID - ID of the MLA so we can update the image data of the given MLA once downloaded
+     * @param url - URL of the MLA/Party
+     * @param objectId - ID of the MLA/Party so we can update the image data of the given MLA once downloaded
      */
-    public void getDataFromImage(String url, final String mlaID) {
+    public void getDataFromImage(String url, final String objectId, final type state) {
         BitmapFromImage bitFromImage = new BitmapFromImage() {
             @Override
             protected void onPostExecute(byte[] byteArray) {
                 super.onPostExecute(byteArray);
                 Log.d(TAG, "onPostExecute: Byte Array = " + byteArray.toString());
-                databaseHelper.updateImageData(databaseHelper.fetchMLA(mlaID), byteArray);
-                EventBus.getDefault().post(new ThunderEchoSabreEvent(ThunderEchoSabreEvent.eventBusEventType.UPDATE_MLAS));
+                if(state == ProcessImage.type.MLA) {
+                    mlaDatabaseHelper.updateImageData(mlaDatabaseHelper.fetchMLA(objectId), byteArray);
+                    EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs));
+                } else if (state == ProcessImage.type.Party) {
+                    partyDatabaseHelper.updateImageData(partyDatabaseHelper.fetchParty(objectId), byteArray);
+                    EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateParties));
+                    // Right now the above event is not caught anywhere, need to redesign some stuff first.
+                }
             }
         };
         bitFromImage.execute(url);

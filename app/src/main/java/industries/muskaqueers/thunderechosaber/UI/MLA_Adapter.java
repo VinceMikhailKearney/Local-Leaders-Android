@@ -2,7 +2,6 @@ package industries.muskaqueers.thunderechosaber.UI;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,14 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.io.Serializable;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.R;
-import industries.muskaqueers.thunderechosaber.ThunderEchoSabreEvent;
 
 /**
  * Created by vincekearney on 24/09/2016.

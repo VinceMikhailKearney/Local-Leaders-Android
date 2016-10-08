@@ -4,14 +4,14 @@ package industries.muskaqueers.thunderechosaber;
  * Created by vincekearney on 30/09/2016.
  */
 
-public class ThunderEchoSabreEvent {
-    public enum eventBusEventType {
-        UPDATE_MLAS, ON_CLICK_MLA
+public class DatabaseEvent {
+    public enum type {
+        UpdateMLAs, OnClickMla, UpdateParties
     }
-    private eventBusEventType eventType;
+    private type eventType;
     private MLA mla;
 
-    public ThunderEchoSabreEvent(eventBusEventType type) {
+    public DatabaseEvent(type type) {
         this.eventType = type;
     }
 
@@ -23,7 +23,7 @@ public class ThunderEchoSabreEvent {
         return this.mla;
     }
 
-    public eventBusEventType getEventType() {
+    public type getEventType() {
         return this.eventType;
     }
 }
