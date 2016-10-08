@@ -46,6 +46,7 @@ public class PartyDatabaseHelper {
             partyValues.put(localDB.PARTY_NAME, name);
             partyValues.put(localDB.PARTY_TWITTER_HANDLE, twitter);
             partyValues.put(localDB.PARTY_IMAGE_URL, url);
+            partyValues.put(localDB.PARTY_IMAGE_DATA, new byte[]{});
 
             openThisDB().insert(localDB.PARTY_TABLE, null, partyValues);
             closeDBManger();
@@ -167,8 +168,8 @@ public class PartyDatabaseHelper {
         party.setName(cursor.getString(1));
         party.setTwitterHandle(cursor.getString(2));
         party.setImageURL(cursor.getString(3));
-//        byte[] imageData = cursor.getBlob(4);
-//        party.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.length));
+        byte[] imageData = cursor.getBlob(4);
+        party.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.length));
         return party;
     }
 
