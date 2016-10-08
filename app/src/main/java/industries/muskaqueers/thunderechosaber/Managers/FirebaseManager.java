@@ -114,7 +114,7 @@ public class FirebaseManager {
                     party.getImageURL());
 
             Log.i(TAG, "addPartiesToDatabase: Party " + addParty);
-//            imageProcessor.getDataFromImage(party.getImageURL(), party.getPartyId(), ProcessImage.type.Party);
+            imageProcessor.getDataFromImage(party.getImageURL(), party.getPartyId(), ProcessImage.type.Party);
         }
     }
 }
