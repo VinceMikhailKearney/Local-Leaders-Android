@@ -8,10 +8,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+import industries.muskaqueers.thunderechosaber.DB.PartyDatabaseHelper;
+import industries.muskaqueers.thunderechosaber.Party;
 import industries.muskaqueers.thunderechosaber.ThunderEchoSabreEvent;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
@@ -26,11 +29,14 @@ public class FirebaseManager {
     public DatabaseReference firebaseMlaReference;
     public DatabaseReference firebasePartyReference;
     private MLADatabaseHelper MLA_DB_Helper;
+    private PartyDatabaseHelper partyDatabaseHelper;
     private ProcessImage imageProcessor;
 
     public FirebaseManager() {
         this.imageProcessor = new ProcessImage();
         this.MLA_DB_Helper = new MLADatabaseHelper();
+        this.partyDatabaseHelper = new PartyDatabaseHelper();
+
         this.firebaseMlaReference = FirebaseDatabase.getInstance().getReference("MLASJSON");
         this.firebaseMlaReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -62,6 +68,12 @@ public class FirebaseManager {
                     Log.w(TAG, "onDataChange Party: " + "Did not ask for the right data. Check the getReference() method");
                     return;
                 }
+
+                try {
+                    addPartiesToDatabase(PasrserUtils.getPartiesFromArray((List<Object>) dataSnapshot.getValue()));
+                } catch (NullPointerException e) {
+                    Log.w(TAG, "onDataChange: Well something fucked up",e);
+                }
             }
 
             @Override
@@ -88,9 +100,22 @@ public class FirebaseManager {
 
             // Now that the MLA is in the DB, let's update the TwitterHandle
             this.MLA_DB_Helper.updateTwitterHandle(addMLA, PasrserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
+            // Async download the image and store in DB against the MLA
             imageProcessor.getDataFromImage(mla.getImageURL(), mla.getMLA_ID());
         }
 
         EventBus.getDefault().post(new ThunderEchoSabreEvent(ThunderEchoSabreEvent.eventBusEventType.UPDATE_MLAS));
+    }
+
+    private void addPartiesToDatabase(List<Party> parties) {
+        for(Party party : parties) {
+            Party addParty = this.partyDatabaseHelper.addParty(party.getPartyId(),
+                    party.getName(),
+                    party.getTwitterHandle(),
+                    party.getImageURL());
+
+            Log.i(TAG, "addPartiesToDatabase: Party " + addParty);
+//            imageProcessor.getDataFromImage(party.getImageURL(), party.getPartyId());
+        }
     }
 }

@@ -38,7 +38,7 @@ public class PartyDatabaseHelper {
     }
 
     public Party addParty(String id, String name, String twitter, String url) {
-        Log.i(TAG, "addParty: Adding new party to DB");
+        Log.i(TAG, "addParty: Adding new party to DB. Name = " + name);
 
         if(fetchParty(id) == null) {
             ContentValues partyValues = new ContentValues();
@@ -55,8 +55,8 @@ public class PartyDatabaseHelper {
     }
 
     /**
-     * Method for updating the Image Data of an MLA in the DB
-     * @param party - The MLA we are updating
+     * Method for updating the Image Data of an Party in the DB
+     * @param party - The Party we are updating
      * @param byteArray - The byteArray we fetched from the URL
      */
     public void updateImageData(Party party, byte[] byteArray) {
@@ -72,27 +72,27 @@ public class PartyDatabaseHelper {
     /* ---- Fetch/Delete Party ---- */
 
     /**
-     * Convenience method to return a MLA with a matching ID
-     * @param id - ID of the MLA we are fetching
-     * @return - MLA
+     * Convenience method to return a Party with a matching ID
+     * @param id - ID of the Party we are fetching
+     * @return - Party
      */
     public Party fetchParty(String id) {
         return fetchOrDelete(id, PartyDatabaseHelper.getOrDelete.FETCH);
     }
 
     /**
-     * Convenience method that just makes it easier to delete a MLA
-     * @param id - ID of the MLA we want to delete
+     * Convenience method that just makes it easier to delete a Party
+     * @param id - ID of the Party we want to delete
      */
     public void deleteParty(String id) {
         fetchOrDelete(id, PartyDatabaseHelper.getOrDelete.DELETE);
     }
 
     /**
-     * Convenience method that allows us to either fetch or delete a single MLA in the DB
-     * @param id - ID of the MLA
-     * @param state - Whether to Fetch of Delete the MLA
-     * @return - Returns the MLA if we fetch or nothing if the ID does not match anything in the DB. If we are deleting we return nothing.
+     * Convenience method that allows us to either fetch or delete a single Party in the DB
+     * @param id - ID of the Party
+     * @param state - Whether to Fetch of Delete the Party
+     * @return - Returns the Party if we fetch or nothing if the ID does not match anything in the DB. If we are deleting we return nothing.
      */
     public Party fetchOrDelete(String id, PartyDatabaseHelper.getOrDelete state) {
         Party party = null;
@@ -102,13 +102,13 @@ public class PartyDatabaseHelper {
             return null;
 
         if (cursor.moveToFirst() && cursor.getCount() == 1) {
-            String mlaID = cursor.getString(0);
+            String partyID = cursor.getString(0);
             if (state == PartyDatabaseHelper.getOrDelete.DELETE) {
-                Log.i(TAG, "Deleting MLA with ID: " + id);
-                openThisDB().delete(localDB.MLAS_TABLE, localDB.MLA_ID + " = \"" + mlaID + "\"", null);
+                Log.i(TAG, "Deleting Party with ID: " + id);
+                openThisDB().delete(localDB.PARTY_TABLE, localDB.PARTY_ID + " = \"" + partyID + "\"", null);
             } else {
                 party = createPartyFrom(cursor);
-                Log.i(TAG, "Got MLA with ID: " + mlaID);
+                Log.i(TAG, "Got Party with ID: " + partyID);
             }
         } else // We didn't fetch just ONE item - Which we of course expect to.
         {
@@ -123,8 +123,8 @@ public class PartyDatabaseHelper {
     /* ---- Fetch methods ---- */
 
     /**
-     * Method for retrieving all MLAs from DB
-     * @return - Array of all MLAs
+     * Method for retrieving all Parties from DB
+     * @return - Array of all Parties
      */
     public List<Party> getAllParties() {
         Log.i(TAG, "Asking for all Party items.");
@@ -134,9 +134,9 @@ public class PartyDatabaseHelper {
     }
 
     /**
-     * Convenience method for fetching MLAs from DB with respect to a query
+     * Convenience method for fetching parties from DB with respect to a query
      * @param query - The SQL query we wish to execute
-     * @return - An array of MLA's that matches the query
+     * @return - An array of parties that matches the query
      */
     private List<Party> fetchPartiesWithQuery(String query) {
         List<Party> allParties = new ArrayList<>();
@@ -157,9 +157,9 @@ public class PartyDatabaseHelper {
     /* ---- Private Convenience Methods ---- */
 
     /**
-     * Creates a MLA with the values contained in a cursor
-     * @param cursor - The curosr containing the information of the MLA we are creating
-     * @return - MLA
+     * Creates a Party with the values contained in a cursor
+     * @param cursor - The curosr containing the information of the Party we are creating
+     * @return - Party
      */
     private Party createPartyFrom(Cursor cursor) {
         Party party = new Party();
@@ -167,8 +167,8 @@ public class PartyDatabaseHelper {
         party.setName(cursor.getString(1));
         party.setTwitterHandle(cursor.getString(2));
         party.setImageURL(cursor.getString(3));
-        byte[] imageData = cursor.getBlob(4);
-        party.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.length));
+//        byte[] imageData = cursor.getBlob(4);
+//        party.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.length));
         return party;
     }
 

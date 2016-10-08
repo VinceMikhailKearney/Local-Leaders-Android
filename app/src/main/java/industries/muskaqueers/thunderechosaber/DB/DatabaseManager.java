@@ -86,7 +86,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.i(TAG, "Creating the MLA table --> " + CREATE_MLA_TABLE);
-        Log.i(TAG, "Creating the MLA table --> " + CREATE_PARTY_TABLE);
+        Log.i(TAG, "Creating the Party table --> " + CREATE_PARTY_TABLE);
         // Here is the best way to see the string that creates the DB table
         db.execSQL(CREATE_MLA_TABLE);
         db.execSQL(CREATE_PARTY_TABLE);

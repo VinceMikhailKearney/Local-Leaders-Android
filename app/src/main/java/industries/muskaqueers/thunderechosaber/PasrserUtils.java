@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by vincekearney on 25/09/2016.
@@ -41,6 +42,21 @@ public abstract class PasrserUtils {
         }
 
         return allMLAs;
+    }
+
+    public static List<Party> getPartiesFromArray(List<Object> partyArray) throws NullPointerException {
+        List<Party> allParties = new ArrayList<>();
+        for(int i = 0; i < partyArray.size(); i++) {
+            HashMap<String, Object> partyMap = (HashMap) partyArray.get(i);
+            Party newParty = new Party();
+            newParty.setPartyId(UUID.randomUUID().toString());
+            newParty.setName(stringFromKey(partyMap, "name"));
+            newParty.setTwitterHandle(stringFromKey(partyMap, "twitter_handle"));
+            newParty.setImageURL(stringFromKey(partyMap, "image_url"));
+
+            allParties.add(newParty);
+        }
+        return allParties;
     }
 
     /**
