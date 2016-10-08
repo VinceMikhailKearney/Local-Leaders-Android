@@ -23,6 +23,7 @@ public class MLA_Info_Activity extends AppCompatActivity implements View.OnClick
     public static final String MLA_EXTRA = "MLA_EXTRA";
 
     private MLA mla;
+    private Party mlaParty;
     private Toolbar toolbar;
     private CircleImageView profilePicture;
     private ImageView coverPhoto;
@@ -52,9 +53,9 @@ public class MLA_Info_Activity extends AppCompatActivity implements View.OnClick
         emailButton = (ImageButton) findViewById(R.id.email_button);
 
         profilePicture.setImageBitmap(mla.getImageBitmap());
-        Party party = partyDatabaseHelper.fetchParty(mla.getPartyAbbreviation().toUpperCase());
-        if(party != null)
-            coverPhoto.setImageBitmap(partyDatabaseHelper.fetchParty(mla.getPartyAbbreviation().toUpperCase()).getImageBitmap());
+        this.mlaParty = partyDatabaseHelper.fetchParty(mla.getPartyAbbreviation().toUpperCase());
+        if(this.mlaParty != null)
+            coverPhoto.setImageBitmap(this.mlaParty.getImageBitmap());
         name.setText(mla.getFullName());
         partyAbrv.setText(mla.getPartyAbbreviation().toUpperCase());
         title.setText(mla.getTitle());
@@ -71,16 +72,14 @@ public class MLA_Info_Activity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tweet_button:
-                if (!mla.getTwitterHandle().isEmpty())
-                TwitterManager.tweetUser(v.getContext(), mla.getTwitterHandle());
-                else {
-//                    Leave the bottom two lines in for now
-//                    String partyTwitterHandle = (String) FirebaseManager.getTwitterHandle(String partyAbrv);
-//                    TwitterManager.tweetUser(v.getContext(), partyTwitterHandle, mla.getFullName());
-                    Toast.makeText(v.getContext(), "This user does not have a Twitter handle", Toast.LENGTH_SHORT).show();
-                }
+            case R.id.tweet_button: {
+                String twitterHandle = mla.getTwitterHandle();
+                if (mla.getTwitterHandle().isEmpty()) // If the MLA does not have a twitter handle, set twitter handle to that of the party.
+                    twitterHandle = this.mlaParty.getTwitterHandle();
+
+                TwitterManager.tweetUser(v.getContext(), twitterHandle);
                 break;
+            }
             case R.id.email_button:
                 Toast.makeText(MLA_Info_Activity.this, "Coming soon...", Toast.LENGTH_SHORT).show();
                 break;
