@@ -65,5 +65,9 @@ public class MLADatabaseTest {
         Assert.assertNull(testHelper.fetchMLA(newC.getMLA_ID()));
         // Now to finish make sure the DB contains only 2
         assertThat(testHelper.getAllObjects().size(), is(2));
+
+        // Now let's clear the DB before we go using the app
+        testHelper.deleteAll();
+        assertThat(testHelper.getAllObjects().size(), is(0));
     }
 }
