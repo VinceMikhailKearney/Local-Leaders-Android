@@ -80,6 +80,7 @@ public class MLAFragment extends Fragment {
         if(event.getEventType() == DatabaseEvent.type.UpdateMLAs) {
             Log.d(TAG, "onEvent: Just got told to update mlas");
 
+            this.mlaList.clear();
             for(Object mla : this.mlaDatabaseHelper.getAllObjects()) {
                 this.mlaList.add((MLA) mla);
             }

@@ -117,7 +117,8 @@ public class MLADatabaseHelper extends BaseDatabaseHelper {
         MLA.setLastName(cursor.getString(2));
         MLA.setImageURL(cursor.getString(3));
         byte[] imageData = cursor.getBlob(4);
-        MLA.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.length));
+        if(imageData.length != 0)
+            MLA.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.length));
         MLA.setPartyAbbreviation(cursor.getString(5));
         MLA.setPartyName(cursor.getString(6));
         MLA.setTitle(cursor.getString(7));

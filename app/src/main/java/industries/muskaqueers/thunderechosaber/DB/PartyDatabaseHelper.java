@@ -90,7 +90,8 @@ public class PartyDatabaseHelper extends BaseDatabaseHelper {
         party.setTwitterHandle(cursor.getString(2));
         party.setImageURL(cursor.getString(3));
         byte[] imageData = cursor.getBlob(4);
-        party.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.length));
+        if(imageData.length != 0)
+            party.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.length));
         return party;
     }
 }
