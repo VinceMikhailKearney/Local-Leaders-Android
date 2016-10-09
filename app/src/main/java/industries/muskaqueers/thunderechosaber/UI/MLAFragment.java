@@ -62,7 +62,9 @@ public class MLAFragment extends Fragment {
         // Get an instance of the MLADBHelper
         this.mlaDatabaseHelper = new MLADatabaseHelper();
         // Set the list of the fragment to all MLAs in the DB
-        this.mlaList = this.mlaDatabaseHelper.getAllMLAs();
+        for(Object mla : this.mlaDatabaseHelper.getAllObjects()) {
+            this.mlaList.add((MLA) mla);
+        }
         this.mlaAdapter = new MLA_Adapter(this.mlaList);
         mlaRecyclerView.setLayoutManager(layoutManager);
         mlaRecyclerView.setAdapter(this.mlaAdapter);
@@ -77,7 +79,11 @@ public class MLAFragment extends Fragment {
     public void onEvent(DatabaseEvent event) {
         if(event.getEventType() == DatabaseEvent.type.UpdateMLAs) {
             Log.d(TAG, "onEvent: Just got told to update mlas");
-            this.mlaList = this.mlaDatabaseHelper.getAllMLAs();
+
+            for(Object mla : this.mlaDatabaseHelper.getAllObjects()) {
+                this.mlaList.add((MLA) mla);
+            }
+
             this.mlaAdapter.setMlaList(this.mlaList);
         } else if(event.getEventType() == DatabaseEvent.type.OnClickMla) {
             Log.d(TAG, "onEvent: Clicked MLA");

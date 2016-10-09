@@ -47,7 +47,7 @@ public class FirebaseManager {
 
                 Log.d(TAG, "onDataChange MLA: Version = " + PasrserUtils.versionNumber((HashMap) dataSnapshot.getValue(), "version"));
 
-                if (MLA_DB_Helper.getAllMLAs().size() == 108)
+                if (MLA_DB_Helper.getAllObjects().size() == 108)
                     return; // This is hardcoded right now just to save myself bother. We really ought to sort this out properly
 
                 addMlasToDatabase(PasrserUtils.getMLAsFromMap((HashMap) dataSnapshot.getValue(), "mlas"));

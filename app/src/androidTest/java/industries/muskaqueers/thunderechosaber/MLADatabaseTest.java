@@ -26,7 +26,8 @@ public class MLADatabaseTest {
     @Before
     public void setUp() throws Exception {
         testManager = new DatabaseManager(getTargetContext());
-        testHelper = new MLADatabaseHelper(testManager);
+        testHelper = new MLADatabaseHelper();
+        testHelper.setLocalDB(testManager);
     }
 
     @Test
@@ -34,9 +35,9 @@ public class MLADatabaseTest {
         // Here I am simply adding one to make sure that when we delete all it really has worked.
         Assert.assertNotNull(testHelper.addMLA("1", "Test", "MLA", "testimageurl", "VMJK", "Mikhail", "CTO", "Belfast"));
         // For testing purposes we will start by wiping the DB of MLAs
-        testHelper.deleteAllMLAs();
+        testHelper.deleteAll();
         // Making sure that the deleteAll works
-        assertThat(testHelper.getAllMLAs().size(), is(0));
+        assertThat(testHelper.getAllObjects().size(), is(0));
 
         // Test adding counsellors to DB
         MLA newC = testHelper.addMLA("2", "Vince", "Kearney", "vinceimageurl", "VK", "Kearney", "CTO", "Lurgan");
@@ -47,7 +48,7 @@ public class MLADatabaseTest {
         Assert.assertNotNull(newC2);
 
         // Make sure the DB contains the 3 that were just created
-        assertThat(testHelper.getAllMLAs().size(), is(3));
+        assertThat(testHelper.getAllObjects().size(), is(3));
 
         // Search for a MLA with ID = newC1.getMLA_ID()
         MLA searchForNewC1 = testHelper.fetchMLA(newC1.getMLA_ID());
@@ -63,6 +64,6 @@ public class MLADatabaseTest {
         testHelper.deleteMLA(newC.getMLA_ID());
         Assert.assertNull(testHelper.fetchMLA(newC.getMLA_ID()));
         // Now to finish make sure the DB contains only 2
-        assertThat(testHelper.getAllMLAs().size(), is(2));
+        assertThat(testHelper.getAllObjects().size(), is(2));
     }
 }
