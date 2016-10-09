@@ -19,7 +19,6 @@ public class MLADatabaseHelper extends BaseDatabaseHelper {
 
     @Override
     public String getTableName() {
-        Log.d(TAG, "getTableName: MlaDatabaseHelper");
         return getLocalDatabase().MLAS_TABLE;
     }
 
