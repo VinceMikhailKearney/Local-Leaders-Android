@@ -26,7 +26,6 @@ public class BaseDatabaseHelper {
     private static DatabaseManager localDB;
 
     public String getTableName() {
-        Log.d(TAG, "getTableName: BaseDatabaseHelper");
         return null;
     }
 
@@ -54,7 +53,6 @@ public class BaseDatabaseHelper {
     }
 
     public void update(ContentValues values, String search) {
-        Log.d(TAG, "update: Values = " + values);
         if(values == null) {
             Log.w(TAG, "update: Seems that we have null values");
             return;
@@ -64,15 +62,11 @@ public class BaseDatabaseHelper {
     }
 
     public ContentValues newValues(String columnName, Object data) {
-        Log.d(TAG, "newValues: Data = " + data);
         ContentValues values = new ContentValues();
-        if (data instanceof String) {
-            Log.d(TAG, "newValues: Looking at a string");
+        if (data instanceof String)
             values.put(columnName, (String) data);
-        } else if (data instanceof byte[]) {
-            Log.d(TAG, "newValues: Looking at a byte array");
+        else if (data instanceof byte[])
             values.put(columnName, (byte[]) data);
-        }
 
         return values;
     }
@@ -107,11 +101,7 @@ public class BaseDatabaseHelper {
     }
 
     public List<Object> getAllObjects() {
-        Log.d(TAG, "getAllObjects: Going to get all objects");
-        String tableName = getTableName();
-        Log.d(TAG, "getAllObjects: Table name -> " + tableName);
-        String query = String.format("SELECT * FROM " + tableName);
-        Log.d(TAG, "getAllObjects: Set up query = " + query);
+        String query = String.format("SELECT * FROM " + getTableName());
         List<Object> allObjects = new ArrayList<>();
         Cursor cursor = openDatabase().rawQuery(query, null);
         // Starting at the first row, continue to move until past the last row.
