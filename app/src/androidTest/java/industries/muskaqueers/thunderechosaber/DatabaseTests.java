@@ -20,7 +20,7 @@ import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
  */
 
 @RunWith(AndroidJUnit4.class)
-public class MLADatabaseTest {
+public class DatabaseTests {
     private DatabaseManager testManager;
 
     @Before
