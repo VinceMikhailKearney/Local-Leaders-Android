@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
+import industries.muskaqueers.thunderechosaber.LlApplication;
 import retrofit2.Call;
 
 /**
@@ -38,7 +38,7 @@ public class TwitterManager {
         }
 
         final List<Tweet> tweetList = new ArrayList<>();
-        SearchService searchService = ThunderEchoSaberApplication.twitter.core.getApiClient().getSearchService();
+        SearchService searchService = LlApplication.twitter.core.getApiClient().getSearchService();
         Call<Search> call = searchService.tweets(username, null, null, null, null, null, null, null, null, null);
         call.enqueue(new Callback<Search>() {
                          @Override

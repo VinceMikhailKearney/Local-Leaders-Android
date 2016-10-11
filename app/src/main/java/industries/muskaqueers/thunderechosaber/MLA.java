@@ -1,7 +1,6 @@
 package industries.muskaqueers.thunderechosaber;
 
 import android.graphics.Bitmap;
-import android.os.Parcelable;
 
 import java.io.Serializable;
 

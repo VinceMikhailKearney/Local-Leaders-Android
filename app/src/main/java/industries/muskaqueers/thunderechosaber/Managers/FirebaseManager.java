@@ -12,11 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import industries.muskaqueers.thunderechosaber.DB.PartyDatabaseHelper;
+import industries.muskaqueers.thunderechosaber.DB.BaseDatabaseHelper;
 import industries.muskaqueers.thunderechosaber.Party;
 import industries.muskaqueers.thunderechosaber.DatabaseEvent;
 import industries.muskaqueers.thunderechosaber.MLA;
-import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
 import industries.muskaqueers.thunderechosaber.PasrserUtils;
 import industries.muskaqueers.thunderechosaber.UI.ProcessImage;
 
@@ -27,14 +26,10 @@ public class FirebaseManager {
     private static final String TAG = "FirebaseManager";
     public DatabaseReference firebaseMlaReference;
     public DatabaseReference firebasePartyReference;
-    private MLADatabaseHelper MLA_DB_Helper;
-    private PartyDatabaseHelper partyDatabaseHelper;
     private ProcessImage imageProcessor;
 
     public FirebaseManager() {
         this.imageProcessor = new ProcessImage();
-        this.MLA_DB_Helper = new MLADatabaseHelper();
-        this.partyDatabaseHelper = new PartyDatabaseHelper();
 
         this.firebaseMlaReference = FirebaseDatabase.getInstance().getReference("MLASJSON");
         this.firebaseMlaReference.addValueEventListener(new ValueEventListener() {
@@ -47,7 +42,7 @@ public class FirebaseManager {
 
                 Log.d(TAG, "onDataChange MLA: Version = " + PasrserUtils.versionNumber((HashMap) dataSnapshot.getValue(), "version"));
 
-                if (MLA_DB_Helper.getAllObjects().size() == 108)
+                if (BaseDatabaseHelper.getMlaHelper().getAllObjects().size() == 108)
                     return; // This is hardcoded right now just to save myself bother. We really ought to sort this out properly
 
                 addMlasToDatabase(PasrserUtils.getMLAsFromMap((HashMap) dataSnapshot.getValue(), "mlas"));
@@ -88,7 +83,7 @@ public class FirebaseManager {
      */
     private void addMlasToDatabase(List<MLA> mlas) {
         for (MLA mla : mlas) {
-            MLA addMLA = this.MLA_DB_Helper.addMLA(mla.getMLA_ID(),
+            MLA addMLA = BaseDatabaseHelper.getMlaHelper().addMLA(mla.getMLA_ID(),
                     mla.getFirstName(),
                     mla.getLastName(),
                     mla.getImageURL(),
@@ -98,7 +93,7 @@ public class FirebaseManager {
                     mla.getConstituency());
 
             // Now that the MLA is in the DB, let's update the TwitterHandle
-            this.MLA_DB_Helper.updateTwitterHandle(addMLA, PasrserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
+            BaseDatabaseHelper.getMlaHelper().updateTwitterHandle(addMLA, PasrserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
             // Async download the image and store in DB against the MLA
             imageProcessor.getDataFromImage(mla.getImageURL(), mla.getMLA_ID(), ProcessImage.type.MLA);
         }
@@ -108,7 +103,7 @@ public class FirebaseManager {
 
     private void addPartiesToDatabase(List<Party> parties) {
         for(Party party : parties) {
-            Party addParty = this.partyDatabaseHelper.addParty(party.getPartyId(),
+            Party addParty = BaseDatabaseHelper.getPartyHelper().addParty(party.getPartyId(),
                     party.getName(),
                     party.getTwitterHandle(),
                     party.getImageURL());

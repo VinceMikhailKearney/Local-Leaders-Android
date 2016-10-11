@@ -17,14 +17,9 @@ public class PartyDatabaseHelper extends BaseDatabaseHelper {
 
     private static final String TAG = "PartyDatabaseHelper";
 
-    @Override
-    public String getTableName() {
-        return getLocalDatabase().PARTY_TABLE;
-    }
-
-    @Override
-    public String getColumnIdName() {
-        return getLocalDatabase().PARTY_ID;
+    public PartyDatabaseHelper() {
+        setLocalTableName(getLocalDatabase().PARTY_TABLE);
+        setLocalColumnId(getLocalDatabase().PARTY_ID);
     }
 
     public Party addParty(String id, String name, String twitter, String url) {

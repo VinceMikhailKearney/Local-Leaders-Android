@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
+import industries.muskaqueers.thunderechosaber.DB.BaseDatabaseHelper;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.R;
@@ -31,7 +31,6 @@ public class MLAFragment extends Fragment {
     private RecyclerView mlaRecyclerView;
     private List<MLA> mlaList = new ArrayList<>();
     private MLA_Adapter mlaAdapter;
-    private MLADatabaseHelper mlaDatabaseHelper;
 
     // ---------- Lifecycle Methods
     @Override
@@ -59,10 +58,8 @@ public class MLAFragment extends Fragment {
         mlaRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
-        // Get an instance of the MLADBHelper
-        this.mlaDatabaseHelper = new MLADatabaseHelper();
         // Set the list of the fragment to all MLAs in the DB
-        for(Object mla : this.mlaDatabaseHelper.getAllObjects()) {
+        for(Object mla : BaseDatabaseHelper.getMlaHelper().getAllObjects()) {
             this.mlaList.add((MLA) mla);
         }
         this.mlaAdapter = new MLA_Adapter(this.mlaList);
@@ -81,7 +78,7 @@ public class MLAFragment extends Fragment {
             Log.d(TAG, "onEvent: Just got told to update mlas");
 
             this.mlaList.clear();
-            for(Object mla : this.mlaDatabaseHelper.getAllObjects()) {
+            for(Object mla : BaseDatabaseHelper.getMlaHelper().getAllObjects()) {
                 this.mlaList.add((MLA) mla);
             }
 

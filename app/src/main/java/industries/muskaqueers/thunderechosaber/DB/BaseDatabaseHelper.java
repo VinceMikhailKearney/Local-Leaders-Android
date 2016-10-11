@@ -8,7 +8,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
+import industries.muskaqueers.thunderechosaber.LlApplication;
 
 /**
  * Created by vincekearney on 08/10/2016.
@@ -18,20 +18,16 @@ public class BaseDatabaseHelper {
 
     private static final String TAG = "BaseDatabaseHelper";
     public enum getOrDelete {FETCH, DELETE}
+    private String tableName;
+    private String columnId;
 
     /**
      * Retrieve the localDB through the getter method.
      * Done this way so that we can also set a Database when running tests
      */
     private static DatabaseManager localDB;
-
-    public String getTableName() {
-        return null;
-    }
-
-    public String getColumnIdName() {
-        return null;
-    }
+    private static MLADatabaseHelper mlaHelper;
+    private static PartyDatabaseHelper partyHelper;
 
     public List<Object> createObjectAndAddToList(List<Object> list, Cursor cursor) {
         return null;
@@ -43,11 +39,35 @@ public class BaseDatabaseHelper {
 
     public void setLocalDB(DatabaseManager manager) {
         localDB = manager;
+        mlaHelper = new MLADatabaseHelper();
+        partyHelper = new PartyDatabaseHelper();
+    }
+
+    public void setLocalTableName(String table) {
+        this.tableName = table;
+    }
+
+    public void setLocalColumnId(String id) {
+        this.columnId = id;
+    }
+
+    public static MLADatabaseHelper getMlaHelper() {
+        if(mlaHelper == null)
+            return LlApplication.getLocalMlaHelper();
+
+        return mlaHelper;
+    }
+
+    public static PartyDatabaseHelper getPartyHelper() {
+        if(partyHelper == null)
+            return LlApplication.getLocalPartyHelper();
+
+        return partyHelper;
     }
 
     public void add(ContentValues values) {
         // Open the db - I.e. return a writeable instance of the database so that we can save to it
-        openDatabase().insert(getTableName(), null, values);
+        openDatabase().insert(this.tableName, null, values);
         // Close the database - Back to readable
         closeDatabase();
     }
@@ -57,7 +77,7 @@ public class BaseDatabaseHelper {
             Log.w(TAG, "update: Seems that we have null values");
             return;
         }
-        openDatabase().update(getTableName(), values, search, null);
+        openDatabase().update(this.tableName, values, search, null);
         closeDatabase();
     }
 
@@ -81,7 +101,7 @@ public class BaseDatabaseHelper {
         if (cursor.moveToFirst() && cursor.getCount() == 1) {
             String objectID = cursor.getString(0);
             if (state == BaseDatabaseHelper.getOrDelete.DELETE) {
-                openDatabase().delete(getTableName(), getColumnIdName() + " = \"" + objectID + "\"", null);
+                openDatabase().delete(this.tableName, this.columnId + " = \"" + objectID + "\"", null);
             } else {
                 item = createObjectFrom(cursor);
             }
@@ -96,12 +116,12 @@ public class BaseDatabaseHelper {
 
     private Cursor fetchCursor(String id) {
         String searchString = String.format("%s%s%s", "'", id, "'");
-        String query = "SELECT * FROM " + getTableName() + " WHERE " + getColumnIdName() + " = " + searchString;
+        String query = "SELECT * FROM " + this.tableName + " WHERE " + this.columnId + " = " + searchString;
         return openDatabase().rawQuery(query, null);
     }
 
     public List<Object> getAllObjects() {
-        String query = String.format("SELECT * FROM " + getTableName());
+        String query = String.format("SELECT * FROM " + this.tableName);
         List<Object> allObjects = new ArrayList<>();
         Cursor cursor = openDatabase().rawQuery(query, null);
         // Starting at the first row, continue to move until past the last row.
@@ -118,13 +138,13 @@ public class BaseDatabaseHelper {
 
     public void deleteAll() {
         // Query sets to select ALL from the To-Do table.
-        String query = "SELECT * FROM " + getTableName();
+        String query = "SELECT * FROM " + this.tableName;
         Cursor cursor = openDatabase().rawQuery(query, null);
         // Starting at the first row, continue to move until past the last row.
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             String objectID = cursor.getString(0);
-            openDatabase().delete(getTableName(), getColumnIdName() + " = \"" + objectID + "\"", null);
+            openDatabase().delete(this.tableName, this.columnId + " = \"" + objectID + "\"", null);
             cursor.moveToNext();
         }
 
@@ -134,13 +154,13 @@ public class BaseDatabaseHelper {
 
     public DatabaseManager getLocalDatabase() {
         if(localDB == null)
-            localDB = ThunderEchoSaberApplication.getLocalDatabaseManager();
+            localDB = LlApplication.getLocalDatabaseManager();
         return localDB;
     }
 
     private SQLiteDatabase openDatabase() {
         if (localDB == null)
-            localDB = ThunderEchoSaberApplication.getLocalDatabaseManager();
+            localDB = LlApplication.getLocalDatabaseManager();
         return localDB.getWritableDatabase();
     }
 

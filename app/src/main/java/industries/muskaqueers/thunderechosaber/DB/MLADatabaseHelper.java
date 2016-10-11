@@ -17,14 +17,9 @@ public class MLADatabaseHelper extends BaseDatabaseHelper {
 
     private static final String TAG = "MLADatabaseHelper";
 
-    @Override
-    public String getTableName() {
-        return getLocalDatabase().MLAS_TABLE;
-    }
-
-    @Override
-    public String getColumnIdName() {
-        return getLocalDatabase().MLA_ID;
+    public MLADatabaseHelper() {
+        setLocalTableName(getLocalDatabase().MLAS_TABLE);
+        setLocalColumnId(getLocalDatabase().MLA_ID);
     }
 
     /**

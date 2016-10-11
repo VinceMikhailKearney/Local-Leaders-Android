@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by vincekearney on 25/09/2016.
@@ -69,7 +68,7 @@ public abstract class PasrserUtils {
      */
     public static String findHandleFor(String firstName, String lastName) {
         String twitterHandle = "";
-        BufferedReader reader = new BufferedReader(new InputStreamReader(ThunderEchoSaberApplication.getAppContext().getResources().openRawResource(R.raw.elected_candidates)));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(LlApplication.getAppContext().getResources().openRawResource(R.raw.elected_candidates)));
         String line;
 
         try {
