@@ -13,7 +13,7 @@ import industries.muskaqueers.thunderechosaber.MLA;
  * Created by vincekearney on 22/09/2016.
  */
 
-public class MLADatabaseHelper extends DatabaseHelper {
+public class MLADatabaseHelper extends DatabaseManager {
 
     private static final String TAG = "MLADatabaseHelper";
 
@@ -88,7 +88,7 @@ public class MLADatabaseHelper extends DatabaseHelper {
      * @return - MLA
      */
     public MLA fetchMlaWithID(String id) {
-        return (MLA) fetchOrDeleteWithId(id, DatabaseHelper.getOrDelete.FETCH);
+        return (MLA) fetchOrDeleteWithId(id, DatabaseManager.getOrDelete.FETCH);
     }
 
     /**
@@ -96,7 +96,7 @@ public class MLADatabaseHelper extends DatabaseHelper {
      * @param id - ID of the MLA we want to delete
      */
     public void deleteMLA(String id) {
-        fetchOrDeleteWithId(id, DatabaseHelper.getOrDelete.DELETE);
+        fetchOrDeleteWithId(id, DatabaseManager.getOrDelete.DELETE);
     }
 
     @Override

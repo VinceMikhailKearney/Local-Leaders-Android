@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import industries.muskaqueers.thunderechosaber.DB.DatabaseHelper;
+import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.Party;
@@ -37,7 +37,7 @@ public class MLAInfoActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_mla_info);
 
         String mlaID = (String) getIntent().getSerializableExtra(MLA_EXTRA);
-        mla = DatabaseHelper.getMlaHelper().fetchMlaWithID(mlaID);
+        mla = DatabaseManager.mlaHelper().fetchMlaWithID(mlaID);
 
         profilePicture = (CircleImageView) findViewById(R.id.profile_picture);
         coverPhoto = (ImageView) findViewById(R.id.cover_photo);
@@ -51,7 +51,7 @@ public class MLAInfoActivity extends AppCompatActivity implements View.OnClickLi
         emailButton = (ImageButton) findViewById(R.id.email_button);
 
         profilePicture.setImageBitmap(mla.getImageBitmap());
-        this.mlaParty = DatabaseHelper.getPartyHelper().fetchParty(mla.getPartyAbbreviation().toUpperCase());
+        this.mlaParty = DatabaseManager.partyHelper().fetchParty(mla.getPartyAbbreviation().toUpperCase());
         if(this.mlaParty != null) {
             coverPhoto.setImageBitmap(this.mlaParty.getImageBitmap());
             Palette p = Palette.from(this.mlaParty.getImageBitmap()).generate();

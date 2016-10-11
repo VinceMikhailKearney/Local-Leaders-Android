@@ -7,7 +7,7 @@ import com.firebase.client.Firebase;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
-import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
+import industries.muskaqueers.thunderechosaber.DB.Database;
 import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
 import industries.muskaqueers.thunderechosaber.DB.PartyDatabaseHelper;
 import industries.muskaqueers.thunderechosaber.Managers.FirebaseManager;
@@ -24,7 +24,7 @@ public class LLApplication extends Application {
     public static Twitter twitter;
     public static TwitterManager twitterManager;
     // Local Database
-    private static DatabaseManager localDatabaseManager;
+    private static Database database;
     private static MLADatabaseHelper mlaDatabaseHelper;
     private static PartyDatabaseHelper partyDatabaseHelper;
 
@@ -32,7 +32,7 @@ public class LLApplication extends Application {
     public void onCreate() {
         super.onCreate();
         // First thing, lets set up the DB
-        this.localDatabaseManager = new DatabaseManager(this);
+        this.database = new Database(this);
         this.mlaDatabaseHelper = new MLADatabaseHelper();
         this.partyDatabaseHelper = new PartyDatabaseHelper();
         // Then set up the context
@@ -56,8 +56,8 @@ public class LLApplication extends Application {
         return partyDatabaseHelper;
     }
 
-    public static DatabaseManager getLocalDatabaseManager() {
-        return localDatabaseManager;
+    public static Database getDatabase() {
+        return database;
     }
 
     public static Context getAppContext() {

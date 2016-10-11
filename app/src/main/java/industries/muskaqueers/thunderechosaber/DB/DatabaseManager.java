@@ -1,108 +1,207 @@
 package industries.muskaqueers.thunderechosaber.DB;
 
-import android.content.Context;
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import industries.muskaqueers.thunderechosaber.LLApplication;
+import industries.muskaqueers.thunderechosaber.MLA;
+
+
 /**
- * Created by vincekearney on 21/09/2016.
+ * Created by vincekearney on 08/10/2016.
  */
 
-public class DatabaseManager extends SQLiteOpenHelper {
-    /* ---- TAG and Helper strings ---- */
+public class DatabaseManager {
+
     private static final String TAG = "DatabaseManager";
-    private static final String TYPE_TEXT = "TEXT";
-    private static final String TYPE_BLOB = "BLOB";
-    private static final String TYPE_INTEGER = "INTEGER";
-    private static final String formatTextType = String.format(" %s, ", TYPE_TEXT);
-    private static final String formatTextTypeEnd = String.format(" %s", TYPE_TEXT);
-    private static final String formatBlobType = String.format(" %s, ", TYPE_BLOB);
-    private static final String formatBlobTypeEnd = String.format(" %s", TYPE_BLOB);
-    private static final String formatIntegerType = String.format(" %s, ", TYPE_INTEGER);
-    private static final String formatIntegerTypeEnd = String.format(" %s", TYPE_BLOB);
-
-    /* ---- Database ---- */
-    private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "ThunderEchoSabre.db";
-
-    /* ---- MLA Table and Columns (in order) ---- */
-    public final String MLAS_TABLE = "MLAs";
-    public final String MLA_ID = "mla_id";
-    public final String MLA_FIRST_NAME = "first_name";
-    public final String MLA_LAST_NAME = "last_name";
-    public final String MLA_IMAGE_URL = "image_url";
-    public final String MLA_IMAGE_BITMAP = "image_bitmap";
-    public final String MLA_PARTY_ABBREVIATION = "party_abbreviation";
-    public final String MLA_PARTY_NAME = "party_name";
-    public final String MLA_TITLE = "title";
-    public final String MLA_TWITTER_HANDLE = "twitter_handle";
-    public final String MLA_CONSTITUENCY = "constituency";
-
-    /* ---- Party Table and Columns (in order) ---- */
-    public final String PARTY_TABLE = "PartyInfo";
-    public final String PARTY_ID = "party_id";
-    public final String PARTY_NAME = "party_name";
-    public final String PARTY_TWITTER_HANDLE = "party_twitter_handle";
-    public final String PARTY_IMAGE_URL = "party_image_url";
-    public final String PARTY_IMAGE_DATA = "image_data";
-
-    /* ---- Create table SQL string ---- */
-    private final String CREATE_MLA_TABLE =
-            "CREATE TABLE IF NOT EXISTS " + MLAS_TABLE + "("
-                    + MLA_ID + formatTextType
-                    + MLA_FIRST_NAME + formatTextType
-                    + MLA_LAST_NAME + formatTextType
-                    + MLA_IMAGE_URL + formatTextType
-                    + MLA_IMAGE_BITMAP + formatBlobType
-                    + MLA_PARTY_ABBREVIATION + formatTextType
-                    + MLA_PARTY_NAME + formatTextType
-                    + MLA_TITLE + formatTextType
-                    + MLA_TWITTER_HANDLE + formatTextType
-                    + MLA_CONSTITUENCY + formatTextTypeEnd + ")";
-
-    private final String CREATE_PARTY_TABLE =
-            "CREATE TABLE IF NOT EXISTS " + PARTY_TABLE + "("
-                    + PARTY_ID + formatTextType
-                    + PARTY_NAME + formatTextType
-                    + PARTY_TWITTER_HANDLE + formatTextType
-                    + PARTY_IMAGE_URL + formatTextType
-                    + PARTY_IMAGE_DATA + formatBlobTypeEnd + ")";
+    public enum getOrDelete {FETCH, DELETE}
+    private String tableName;
+    private String columnId;
+    private String columnConstituency;
 
     /**
-     * Above ^^^
-     * When creating the SQL database table we need to form a string that matches an exact pattern.
-     * I found this just a slightly easier way to read it when doing it in ToDooey :D.
-     * Essentially it just makes sure that the table is not already present in the DB (not to override it)
-     * then gives the table a name, assigns the columns that we want to use with their respective data type.
+     * Retrieve the localDB through the getter method.
+     * Done this way so that we can also set a Database when running tests
      */
+    private static Database localDB;
+    private static MLADatabaseHelper mlaHelper;
+    private static PartyDatabaseHelper partyHelper;
 
-    public DatabaseManager(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        Log.i(TAG, "Setting up DatabaseManager.");
-        // After we init the DatabaseManager it calls onCreate() and sets up the DB for us
+    public List<Object> createObjectAndAddToList(List<Object> list, Cursor cursor) {
+        return null;
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        Log.i(TAG, "Creating the MLA table --> " + CREATE_MLA_TABLE);
-        Log.i(TAG, "Creating the Party table --> " + CREATE_PARTY_TABLE);
-        // Here is the best way to see the string that creates the DB table
-        db.execSQL(CREATE_MLA_TABLE);
-        db.execSQL(CREATE_PARTY_TABLE);
+    public Object createObjectFrom(Cursor cursor) {
+        return null;
     }
 
-    /**
-     * For onUpgrade()
-     * Note: No point in using for Dev - We are better using 'Clear Data' in android settings.
-     * Then just running it so the version number does not need to increase.
-     * For release we need to migrate everything.
-     */
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // If we ever upgrade, which we won't for now, we do the shiz here.
-        Log.w(DatabaseManager.class.getName(), "Upgrading Database from " + oldVersion + " to " + newVersion);
-        db.execSQL("ALTER TABLE " + MLAS_TABLE);
-        // Then anything else like ADD/DELETE/MODIFY columns in table
+    public static void setLocalDB(Database manager) {
+        localDB = manager;
+        mlaHelper = new MLADatabaseHelper();
+        partyHelper = new PartyDatabaseHelper();
+    }
+
+    public void setLocalTableName(String table) {
+        this.tableName = table;
+    }
+
+    public void setLocalColumnId(String id) {
+        this.columnId = id;
+    }
+
+    public void setLocalColumnConstituency(String columnConstituency) {
+        this.columnConstituency = columnConstituency;
+    }
+
+    public static MLADatabaseHelper mlaHelper() {
+        if(mlaHelper == null)
+            return LLApplication.getLocalMlaHelper();
+
+        return mlaHelper;
+    }
+
+    public static PartyDatabaseHelper partyHelper() {
+        if(partyHelper == null)
+            return LLApplication.getLocalPartyHelper();
+
+        return partyHelper;
+    }
+
+    public void add(ContentValues values) {
+        // Open the db - I.e. return a writeable instance of the database so that we can save to it
+        openDatabase().insert(this.tableName, null, values);
+        // Close the database - Back to readable
+        closeDatabase();
+    }
+
+    public void update(ContentValues values, String search) {
+        if(values == null) {
+            Log.w(TAG, "update: Seems that we have null values");
+            return;
+        }
+        openDatabase().update(this.tableName, values, search, null);
+        closeDatabase();
+    }
+
+    public ContentValues newValues(String columnName, Object data) {
+        ContentValues values = new ContentValues();
+        if (data instanceof String)
+            values.put(columnName, (String) data);
+        else if (data instanceof byte[])
+            values.put(columnName, (byte[]) data);
+
+        return values;
+    }
+
+    public Object fetchOrDeleteWithId(String id, DatabaseManager.getOrDelete state) {
+        Object item = null;
+        Cursor cursor = cursorUsingID(id);
+
+        if (cursor.getCount() == 0)
+            return null;
+
+        if (cursor.moveToFirst() && cursor.getCount() == 1) {
+            String objectID = cursor.getString(0);
+            if (state == DatabaseManager.getOrDelete.DELETE) {
+                openDatabase().delete(this.tableName, this.columnId + " = \"" + objectID + "\"", null);
+            } else {
+                item = createObjectFrom(cursor);
+            }
+        } else { // We didn't fetch just ONE item - Which we of course expect to.
+            throw new IllegalStateException("Only supposed to fetch one. Count was -> " + cursor.getCount());
+        }
+
+        cursor.close();
+        closeDatabase();
+        return item;
+    }
+
+    public MLA fetchMlaWithConstituency(String constituency) {
+        MLA mla;
+        Cursor cursor = cursorUsingConstituency(constituency);
+
+        if (cursor.getCount() == 0)
+            return null;
+        else if (cursor.moveToFirst() && cursor.getCount() == 1)
+            mla = (MLA) createObjectFrom(cursor);
+        else
+            throw new IllegalStateException("Only meant to return one.");
+
+        cursor.close();
+        closeDatabase();
+        return mla;
+    }
+
+    private Cursor cursorUsingID(String id) {
+        String searchString = String.format("%s%s%s", "'", id, "'");
+        String query = "SELECT * FROM " + this.tableName + " WHERE " + this.columnId + " = " + searchString;
+        return createCursor(query);
+    }
+
+    private Cursor cursorUsingConstituency(String constituency) {
+        String search = String.format("%s%s%s", "'", constituency, "'");
+        String query = "SELECT * FROM " + this.tableName + " WHERE " + this.columnConstituency + search;
+        return createCursor(query);
+    }
+
+    private Cursor createCursor(String query) {
+        return openDatabase().rawQuery(query, null);
+    }
+
+    public List<Object> getAllObjects() {
+        String query = String.format("SELECT * FROM " + this.tableName);
+        List<Object> allObjects = new ArrayList<>();
+        Cursor cursor = openDatabase().rawQuery(query, null);
+
+        if(cursor.getCount() == 0)
+            return allObjects; // Return the empty array
+
+        // Starting at the first row, continue to move until past the last row.
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            allObjects = createObjectAndAddToList(allObjects, cursor);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        closeDatabase();
+        return allObjects;
+    }
+
+    public void deleteAll() {
+        // Query sets to select ALL from the To-Do table.
+        String query = "SELECT * FROM " + this.tableName;
+        Cursor cursor = openDatabase().rawQuery(query, null);
+        // Starting at the first row, continue to move until past the last row.
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            String objectID = cursor.getString(0);
+            openDatabase().delete(this.tableName, this.columnId + " = \"" + objectID + "\"", null);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        closeDatabase();
+    }
+
+    public Database getLocalDatabase() {
+        if(localDB == null)
+            localDB = LLApplication.getDatabase();
+        return localDB;
+    }
+
+    private SQLiteDatabase openDatabase() {
+        if (localDB == null)
+            localDB = LLApplication.getDatabase();
+        return localDB.getWritableDatabase();
+    }
+
+    private void closeDatabase() {
+        localDB.close();
     }
 }

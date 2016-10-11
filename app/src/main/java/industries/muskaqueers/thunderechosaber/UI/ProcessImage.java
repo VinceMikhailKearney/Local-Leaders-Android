@@ -9,7 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.net.URL;
 
 import de.greenrobot.event.EventBus;
-import industries.muskaqueers.thunderechosaber.DB.DatabaseHelper;
+import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
 import industries.muskaqueers.thunderechosaber.DatabaseEvent;
 
 /**
@@ -22,7 +22,7 @@ public class ProcessImage {
      * Just to sort of give a view of what is going on with this all:
      * This class will download an image via a URL as a bitmap. We then alter this to a byte
      * array that is saved against the MLA in the DB.
-     * When we are interacting with MLAs in the MLAFragment the DatabaseHelper will convert
+     * When we are interacting with MLAs in the MLAFragment the DatabaseManager will convert
      * this byte array to a Bitmap to make it easier for us to interact with :D
      */
 
@@ -57,12 +57,12 @@ public class ProcessImage {
                 super.onPostExecute(byteArray);
                 Log.d(TAG, "onPostExecute: Byte Array = " + byteArray.toString());
                 if(state == ProcessImage.type.MLA) {
-                    DatabaseHelper.getMlaHelper().updateImageData(DatabaseHelper.getMlaHelper().fetchMlaWithID(objectId), byteArray);
+                    DatabaseManager.mlaHelper().updateImageData(DatabaseManager.mlaHelper().fetchMlaWithID(objectId), byteArray);
                     totalMlaImageCount++;
                     if(totalMlaImageCount == 108) // When we have processed ALL images, that's when we update the fragment list
                         EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs));
                 } else if (state == ProcessImage.type.Party) {
-                    DatabaseHelper.getPartyHelper().updateImageData(DatabaseHelper.getPartyHelper().fetchParty(objectId), byteArray);
+                    DatabaseManager.partyHelper().updateImageData(DatabaseManager.partyHelper().fetchParty(objectId), byteArray);
                     EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateParties));
                     // Right now the above event is not caught anywhere, need to redesign some stuff first.
                 }

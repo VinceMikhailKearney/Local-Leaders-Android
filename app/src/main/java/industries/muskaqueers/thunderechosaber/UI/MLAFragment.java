@@ -15,12 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
+import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.R;
 
-import industries.muskaqueers.thunderechosaber.DB.DatabaseHelper;
 import industries.muskaqueers.thunderechosaber.DatabaseEvent;
 
 /**
@@ -62,7 +61,7 @@ public class MLAFragment extends Fragment {
 
         // Set the list of the fragment to all MLAs in the DB
         this.mlaAdapter = new MLAAdapter(this.mlaList);
-        for(Object mla : DatabaseHelper.getMlaHelper().getAllObjects()) {
+        for(Object mla : DatabaseManager.mlaHelper().getAllObjects()) {
             this.mlaList.add((MLA) mla);
         }
         mlaRecyclerView.setLayoutManager(layoutManager);
@@ -80,7 +79,7 @@ public class MLAFragment extends Fragment {
             Log.d(TAG, "onEvent: Just got told to update mlas");
 
             this.mlaList.clear();
-            for(Object mla : DatabaseHelper.getMlaHelper().getAllObjects()) {
+            for(Object mla : DatabaseManager.mlaHelper().getAllObjects()) {
                 this.mlaList.add((MLA) mla);
             }
 
