@@ -2,6 +2,7 @@ package industries.muskaqueers.thunderechosaber.UI;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
@@ -51,8 +52,13 @@ public class MLAInfoActivity extends AppCompatActivity implements View.OnClickLi
 
         profilePicture.setImageBitmap(mla.getImageBitmap());
         this.mlaParty = DatabaseHelper.getPartyHelper().fetchParty(mla.getPartyAbbreviation().toUpperCase());
-        if(this.mlaParty != null)
+        if(this.mlaParty != null) {
             coverPhoto.setImageBitmap(this.mlaParty.getImageBitmap());
+            Palette p = Palette.from(this.mlaParty.getImageBitmap()).generate();
+            findViewById(R.id.contact_bar).setBackgroundColor(p.getVibrantSwatch().getRgb());
+        } else{
+            coverPhoto.setBackgroundResource(R.color.blue1);
+        }
         name.setText(mla.getFullName());
         partyAbrv.setText(mla.getPartyAbbreviation().toUpperCase());
         title.setText(mla.getTitle());
