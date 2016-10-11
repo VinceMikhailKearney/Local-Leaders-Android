@@ -19,7 +19,6 @@ import industries.muskaqueers.thunderechosaber.MLA;
 public class DatabaseManager {
 
     private static final String TAG = "DatabaseManager";
-    public enum getOrDelete {FETCH, DELETE}
     private String tableName;
     private String searchingForString;
 
@@ -93,52 +92,33 @@ public class DatabaseManager {
         return values;
     }
 
-    public Object fetchOrDeleteWithId(String id, DatabaseManager.getOrDelete state) {
-        Object item = null;
-        Cursor cursor = cursorUsingString(id);
+    public void delete(String string) {
+        Cursor cursor = cursorUsingString(string);
+        if (cursor.moveToFirst() && cursor.getCount() == 1)
+            openDatabase().delete(this.tableName, this.searchingForString + " = \"" + cursor.getString(0) + "\"", null);
+        else
+            throw new IllegalStateException("Only supposed to fetch one. Count was -> " + cursor.getCount());
+        cursor.close();
+        closeDatabase();
+    }
 
+    public Object fetch(String string) {
+        Object item;
+        Cursor cursor = cursorUsingString(string);
         if (cursor.getCount() == 0)
             return null;
-        else if (cursor.moveToFirst() && cursor.getCount() == 1) {
-            String objectID = cursor.getString(0);
-            if (state == DatabaseManager.getOrDelete.DELETE) {
-                openDatabase().delete(this.tableName, this.searchingForString + " = \"" + objectID + "\"", null);
-            } else {
-                item = createObjectFrom(cursor);
-            }
-        } else { // We didn't fetch just ONE item - Which we of course expect to.
-            throw new IllegalStateException("Only supposed to fetch one. Count was -> " + cursor.getCount());
-        }
-
+        else if (cursor.moveToFirst() && cursor.getCount() == 1)
+            item = createObjectFrom(cursor);
+        else
+            throw new IllegalStateException("Only meant to return one. Count was == " + cursor.getCount());
         cursor.close();
         closeDatabase();
         return item;
     }
 
-    public MLA fetchMlaWithConstituency(String constituency) {
-        setSearchingForString(getLocalDatabase().MLA_CONSTITUENCY);
-        MLA mla;
-        Cursor cursor = cursorUsingString(constituency);
-
-        if (cursor.getCount() == 0)
-            return null;
-        else if (cursor.moveToFirst() && cursor.getCount() == 1)
-            mla = (MLA) createObjectFrom(cursor);
-        else
-            throw new IllegalStateException("Only meant to return one.");
-
-        cursor.close();
-        closeDatabase();
-        return mla;
-    }
-
     private Cursor cursorUsingString(String string) {
         String search = String.format("%s%s%s", "'", string, "'");
         String query = "SELECT * FROM " + this.tableName + " WHERE " + this.searchingForString + " = " + search;
-        return createCursor(query);
-    }
-
-    private Cursor createCursor(String query) {
         return openDatabase().rawQuery(query, null);
     }
 

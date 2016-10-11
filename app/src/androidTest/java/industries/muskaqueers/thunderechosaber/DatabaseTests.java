@@ -62,7 +62,7 @@ public class DatabaseTests {
         Assert.assertEquals(mlaHandler, testHandle);
 
         // Make sure we can delete a specific MLA
-        DatabaseManager.mlaHelper().deleteMLA(newC.getMLA_ID());
+        DatabaseManager.mlaHelper().delete(newC.getMLA_ID());
         Assert.assertNull(DatabaseManager.mlaHelper().fetchMlaWithID(newC.getMLA_ID()));
         // Now to finish make sure the DB contains only 2
         assertThat(DatabaseManager.mlaHelper().getAllObjects().size(), is(2));
@@ -96,7 +96,7 @@ public class DatabaseTests {
         Assert.assertNotNull(DatabaseManager.partyHelper().fetchParty(partyVince.getPartyId()));
 
         // Delete a specific party
-        DatabaseManager.partyHelper().deleteParty(partyVince.getPartyId());
+        DatabaseManager.partyHelper().delete(partyVince.getPartyId());
         // If we search for the party we just deleted we should get null
         Assert.assertNull(DatabaseManager.partyHelper().fetchParty(partyVince.getPartyId()));
         assertThat(DatabaseManager.partyHelper().getAllObjects().size(), is(2));

@@ -79,8 +79,6 @@ public class MLADatabaseHelper extends DatabaseManager {
         update(newValues(getLocalDatabase().MLA_IMAGE_BITMAP, byteArray), sqlSearch);
     }
 
-    /* ---- Fetch/Delete MLA ---- */
-
     /**
      * Convenience method to return a MLA with a matching ID
      * @param id - ID of the MLA we are fetching
@@ -88,15 +86,12 @@ public class MLADatabaseHelper extends DatabaseManager {
      */
     public MLA fetchMlaWithID(String id) {
         setSearchingForString(getLocalDatabase().MLA_ID);
-        return (MLA) fetchOrDeleteWithId(id, DatabaseManager.getOrDelete.FETCH);
+        return (MLA) fetch(id);
     }
 
-    /**
-     * Convenience method that just makes it easier to delete a MLA
-     * @param id - ID of the MLA we want to delete
-     */
-    public void deleteMLA(String id) {
-        fetchOrDeleteWithId(id, DatabaseManager.getOrDelete.DELETE);
+    public MLA fetchMlaWithConstituency(String constituency) {
+        setSearchingForString(getLocalDatabase().MLA_CONSTITUENCY);
+        return (MLA) fetch(constituency);
     }
 
     @Override

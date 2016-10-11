@@ -60,15 +60,7 @@ public class PartyDatabaseHelper extends DatabaseManager {
      */
     public Party fetchParty(String id) {
         setSearchingForString(getLocalDatabase().PARTY_ID);
-        return (Party) fetchOrDeleteWithId(id, DatabaseManager.getOrDelete.FETCH);
-    }
-
-    /**
-     * Convenience method that just makes it easier to delete a Party
-     * @param id - ID of the Party we want to delete
-     */
-    public void deleteParty(String id) {
-        fetchOrDeleteWithId(id, DatabaseManager.getOrDelete.DELETE);
+        return (Party) fetch(id);
     }
 
     @Override
