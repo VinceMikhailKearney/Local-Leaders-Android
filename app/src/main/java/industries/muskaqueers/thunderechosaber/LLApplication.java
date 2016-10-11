@@ -14,9 +14,6 @@ import industries.muskaqueers.thunderechosaber.Managers.FirebaseManager;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import io.fabric.sdk.android.Fabric;
 
-/**
- * Created by Andrew on 9/18/16.
- */
 public class LLApplication extends Application {
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = Credentials.getTwitterKey();
