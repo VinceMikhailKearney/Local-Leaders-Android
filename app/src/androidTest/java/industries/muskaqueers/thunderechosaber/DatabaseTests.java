@@ -69,4 +69,38 @@ public class DatabaseTests {
         DatabaseHelper.getMlaHelper().deleteAll();
         assertThat(DatabaseHelper.getMlaHelper().getAllObjects().size(), is(0));
     }
+
+    @Test
+    public void test_party_database() throws Exception {
+        // Add party so that we can check the deleteAll() works
+        Assert.assertNotNull(DatabaseHelper.getPartyHelper().addParty("123", "Thunder Echo Sabre", "@TESMAV", "www.whogivesafuck.com"));
+        // For testing, wipe the current DB
+        DatabaseHelper.getPartyHelper().deleteAll();
+        // Make sure the Party DB was wiped
+        assertThat(DatabaseHelper.getPartyHelper().getAllObjects().size(), is(0));
+
+        // Let's add some parties
+        Party partyVince = DatabaseHelper.getPartyHelper().addParty("1", "V", "@V", "www.V.com");
+        Assert.assertNotNull(partyVince);
+        Party partyMarc = DatabaseHelper.getPartyHelper().addParty("2", "M", "@M", "www.M.com");
+        Assert.assertNotNull(partyMarc);
+        Party partyAndrew = DatabaseHelper.getPartyHelper().addParty("3", "A", "@A", "www.A.com");
+        Assert.assertNotNull(partyAndrew);
+
+        // Check we successfully added the 3 parties
+        assertThat(DatabaseHelper.getPartyHelper().getAllObjects().size(), is(3));
+
+        // Make sure we can fetch a party with respect to the ID
+        Assert.assertNotNull(DatabaseHelper.getPartyHelper().fetchParty(partyVince.getPartyId()));
+
+        // Delete a specific party
+        DatabaseHelper.getPartyHelper().deleteParty(partyVince.getPartyId());
+        // If we search for the party we just deleted we should get null
+        Assert.assertNull(DatabaseHelper.getPartyHelper().fetchParty(partyVince.getPartyId()));
+        assertThat(DatabaseHelper.getPartyHelper().getAllObjects().size(), is(2));
+
+        // To finsih, wipe the DB of test Parties
+        DatabaseHelper.getPartyHelper().deleteAll();
+        assertThat(DatabaseHelper.getPartyHelper().getAllObjects().size(), is(0));
+    }
 }
