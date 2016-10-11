@@ -14,9 +14,9 @@ import industries.muskaqueers.thunderechosaber.LlApplication;
  * Created by vincekearney on 08/10/2016.
  */
 
-public class BaseDatabaseHelper {
+public class DatabaseHelper {
 
-    private static final String TAG = "BaseDatabaseHelper";
+    private static final String TAG = "DatabaseHelper";
     public enum getOrDelete {FETCH, DELETE}
     private String tableName;
     private String columnId;
@@ -91,7 +91,7 @@ public class BaseDatabaseHelper {
         return values;
     }
 
-    public Object fetchOrDelete(String id, BaseDatabaseHelper.getOrDelete state) {
+    public Object fetchOrDelete(String id, DatabaseHelper.getOrDelete state) {
         Object item = null;
         Cursor cursor = fetchCursor(id);
 
@@ -100,7 +100,7 @@ public class BaseDatabaseHelper {
 
         if (cursor.moveToFirst() && cursor.getCount() == 1) {
             String objectID = cursor.getString(0);
-            if (state == BaseDatabaseHelper.getOrDelete.DELETE) {
+            if (state == DatabaseHelper.getOrDelete.DELETE) {
                 openDatabase().delete(this.tableName, this.columnId + " = \"" + objectID + "\"", null);
             } else {
                 item = createObjectFrom(cursor);

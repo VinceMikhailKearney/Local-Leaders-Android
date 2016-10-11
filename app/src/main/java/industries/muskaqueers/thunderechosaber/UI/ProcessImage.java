@@ -9,7 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.net.URL;
 
 import de.greenrobot.event.EventBus;
-import industries.muskaqueers.thunderechosaber.DB.BaseDatabaseHelper;
+import industries.muskaqueers.thunderechosaber.DB.DatabaseHelper;
 import industries.muskaqueers.thunderechosaber.DatabaseEvent;
 
 /**
@@ -57,12 +57,12 @@ public class ProcessImage {
                 super.onPostExecute(byteArray);
                 Log.d(TAG, "onPostExecute: Byte Array = " + byteArray.toString());
                 if(state == ProcessImage.type.MLA) {
-                    BaseDatabaseHelper.getMlaHelper().updateImageData(BaseDatabaseHelper.getMlaHelper().fetchMLA(objectId), byteArray);
+                    DatabaseHelper.getMlaHelper().updateImageData(DatabaseHelper.getMlaHelper().fetchMLA(objectId), byteArray);
                     totalMlaImageCount++;
                     if(totalMlaImageCount == 108) // When we have processed ALL images, that's when we update the fragment list
                         EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs));
                 } else if (state == ProcessImage.type.Party) {
-                    BaseDatabaseHelper.getPartyHelper().updateImageData(BaseDatabaseHelper.getPartyHelper().fetchParty(objectId), byteArray);
+                    DatabaseHelper.getPartyHelper().updateImageData(DatabaseHelper.getPartyHelper().fetchParty(objectId), byteArray);
                     EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateParties));
                     // Right now the above event is not caught anywhere, need to redesign some stuff first.
                 }

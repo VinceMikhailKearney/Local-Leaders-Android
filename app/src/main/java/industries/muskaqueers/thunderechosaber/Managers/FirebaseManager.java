@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import industries.muskaqueers.thunderechosaber.DB.BaseDatabaseHelper;
+import industries.muskaqueers.thunderechosaber.DB.DatabaseHelper;
 import industries.muskaqueers.thunderechosaber.Party;
 import industries.muskaqueers.thunderechosaber.DatabaseEvent;
 import industries.muskaqueers.thunderechosaber.MLA;
@@ -42,7 +42,7 @@ public class FirebaseManager {
 
                 Log.d(TAG, "onDataChange MLA: Version = " + PasrserUtils.versionNumber((HashMap) dataSnapshot.getValue(), "version"));
 
-                if (BaseDatabaseHelper.getMlaHelper().getAllObjects().size() == 108)
+                if (DatabaseHelper.getMlaHelper().getAllObjects().size() == 108)
                     return; // This is hardcoded right now just to save myself bother. We really ought to sort this out properly
 
                 addMlasToDatabase(PasrserUtils.getMLAsFromMap((HashMap) dataSnapshot.getValue(), "mlas"));
@@ -83,7 +83,7 @@ public class FirebaseManager {
      */
     private void addMlasToDatabase(List<MLA> mlas) {
         for (MLA mla : mlas) {
-            MLA addMLA = BaseDatabaseHelper.getMlaHelper().addMLA(mla.getMLA_ID(),
+            MLA addMLA = DatabaseHelper.getMlaHelper().addMLA(mla.getMLA_ID(),
                     mla.getFirstName(),
                     mla.getLastName(),
                     mla.getImageURL(),
@@ -93,7 +93,7 @@ public class FirebaseManager {
                     mla.getConstituency());
 
             // Now that the MLA is in the DB, let's update the TwitterHandle
-            BaseDatabaseHelper.getMlaHelper().updateTwitterHandle(addMLA, PasrserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
+            DatabaseHelper.getMlaHelper().updateTwitterHandle(addMLA, PasrserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
             // Async download the image and store in DB against the MLA
             imageProcessor.getDataFromImage(mla.getImageURL(), mla.getMLA_ID(), ProcessImage.type.MLA);
         }
@@ -103,7 +103,7 @@ public class FirebaseManager {
 
     private void addPartiesToDatabase(List<Party> parties) {
         for(Party party : parties) {
-            Party addParty = BaseDatabaseHelper.getPartyHelper().addParty(party.getPartyId(),
+            Party addParty = DatabaseHelper.getPartyHelper().addParty(party.getPartyId(),
                     party.getName(),
                     party.getTwitterHandle(),
                     party.getImageURL());

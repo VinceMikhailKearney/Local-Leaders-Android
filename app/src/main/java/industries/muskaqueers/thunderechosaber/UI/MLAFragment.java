@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import industries.muskaqueers.thunderechosaber.DB.BaseDatabaseHelper;
+import industries.muskaqueers.thunderechosaber.DB.DatabaseHelper;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.R;
@@ -59,7 +59,7 @@ public class MLAFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         // Set the list of the fragment to all MLAs in the DB
-        for(Object mla : BaseDatabaseHelper.getMlaHelper().getAllObjects()) {
+        for(Object mla : DatabaseHelper.getMlaHelper().getAllObjects()) {
             this.mlaList.add((MLA) mla);
         }
         this.mlaAdapter = new MLA_Adapter(this.mlaList);
@@ -78,7 +78,7 @@ public class MLAFragment extends Fragment {
             Log.d(TAG, "onEvent: Just got told to update mlas");
 
             this.mlaList.clear();
-            for(Object mla : BaseDatabaseHelper.getMlaHelper().getAllObjects()) {
+            for(Object mla : DatabaseHelper.getMlaHelper().getAllObjects()) {
                 this.mlaList.add((MLA) mla);
             }
 

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import industries.muskaqueers.thunderechosaber.DB.BaseDatabaseHelper;
+import industries.muskaqueers.thunderechosaber.DB.DatabaseHelper;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.Party;
@@ -36,7 +36,7 @@ public class MLA_Info_Activity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_mla_info);
 
         String mlaID = (String) getIntent().getSerializableExtra(MLA_EXTRA);
-        mla = BaseDatabaseHelper.getMlaHelper().fetchMLA(mlaID);
+        mla = DatabaseHelper.getMlaHelper().fetchMLA(mlaID);
 
         profilePicture = (CircleImageView) findViewById(R.id.profile_picture);
         coverPhoto = (ImageView) findViewById(R.id.cover_photo);
@@ -50,7 +50,7 @@ public class MLA_Info_Activity extends AppCompatActivity implements View.OnClick
         emailButton = (ImageButton) findViewById(R.id.email_button);
 
         profilePicture.setImageBitmap(mla.getImageBitmap());
-        this.mlaParty = BaseDatabaseHelper.getPartyHelper().fetchParty(mla.getPartyAbbreviation().toUpperCase());
+        this.mlaParty = DatabaseHelper.getPartyHelper().fetchParty(mla.getPartyAbbreviation().toUpperCase());
         if(this.mlaParty != null)
             coverPhoto.setImageBitmap(this.mlaParty.getImageBitmap());
         name.setText(mla.getFullName());

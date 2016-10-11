@@ -13,7 +13,7 @@ import industries.muskaqueers.thunderechosaber.Party;
  * Created by vincekearney on 06/10/2016.
  */
 
-public class PartyDatabaseHelper extends BaseDatabaseHelper {
+public class PartyDatabaseHelper extends DatabaseHelper {
 
     private static final String TAG = "PartyDatabaseHelper";
 
@@ -60,7 +60,7 @@ public class PartyDatabaseHelper extends BaseDatabaseHelper {
      * @return - Party
      */
     public Party fetchParty(String id) {
-        return (Party) fetchOrDelete(id, BaseDatabaseHelper.getOrDelete.FETCH);
+        return (Party) fetchOrDelete(id, DatabaseHelper.getOrDelete.FETCH);
     }
 
     /**
@@ -68,7 +68,7 @@ public class PartyDatabaseHelper extends BaseDatabaseHelper {
      * @param id - ID of the Party we want to delete
      */
     public void deleteParty(String id) {
-        fetchOrDelete(id, BaseDatabaseHelper.getOrDelete.DELETE);
+        fetchOrDelete(id, DatabaseHelper.getOrDelete.DELETE);
     }
 
     @Override
