@@ -17,7 +17,7 @@ import io.fabric.sdk.android.Fabric;
 /**
  * Created by Andrew on 9/18/16.
  */
-public class LlApplication extends Application {
+public class LLApplication extends Application {
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = Credentials.getTwitterKey();
     private static final String TWITTER_SECRET = Credentials.getTwitterSecret();

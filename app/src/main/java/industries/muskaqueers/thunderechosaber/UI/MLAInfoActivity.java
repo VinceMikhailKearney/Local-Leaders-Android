@@ -2,6 +2,7 @@ package industries.muskaqueers.thunderechosaber.UI;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
@@ -16,9 +17,9 @@ import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.Party;
 import industries.muskaqueers.thunderechosaber.R;
 
-public class MLA_Info_Activity extends AppCompatActivity implements View.OnClickListener {
+public class MLAInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "MLA_Info_Activity";
+    private static final String TAG = "MLAInfoActivity";
     public static final String MLA_EXTRA = "MLA_EXTRA";
 
     private MLA mla;
@@ -51,8 +52,13 @@ public class MLA_Info_Activity extends AppCompatActivity implements View.OnClick
 
         profilePicture.setImageBitmap(mla.getImageBitmap());
         this.mlaParty = DatabaseHelper.getPartyHelper().fetchParty(mla.getPartyAbbreviation().toUpperCase());
-        if(this.mlaParty != null)
+        if(this.mlaParty != null) {
             coverPhoto.setImageBitmap(this.mlaParty.getImageBitmap());
+            Palette p = Palette.from(this.mlaParty.getImageBitmap()).generate();
+            findViewById(R.id.contact_bar).setBackgroundColor(p.getVibrantSwatch().getRgb());
+        } else{
+            coverPhoto.setBackgroundResource(R.color.blue1);
+        }
         name.setText(mla.getFullName());
         partyAbrv.setText(mla.getPartyAbbreviation().toUpperCase());
         title.setText(mla.getTitle());
@@ -78,7 +84,7 @@ public class MLA_Info_Activity extends AppCompatActivity implements View.OnClick
                 break;
             }
             case R.id.email_button:
-                Toast.makeText(MLA_Info_Activity.this, "Coming soon...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MLAInfoActivity.this, "Coming soon...", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

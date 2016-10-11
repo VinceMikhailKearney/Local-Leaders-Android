@@ -15,10 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import industries.muskaqueers.thunderechosaber.DB.DatabaseHelper;
+import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.R;
+
+import industries.muskaqueers.thunderechosaber.DB.DatabaseHelper;
 import industries.muskaqueers.thunderechosaber.DatabaseEvent;
 
 /**
@@ -30,7 +32,7 @@ public class MLAFragment extends Fragment {
     private static final String TAG = "MLAFragment";
     private RecyclerView mlaRecyclerView;
     private List<MLA> mlaList = new ArrayList<>();
-    private MLA_Adapter mlaAdapter;
+    private MLAAdapter mlaAdapter;
 
     // ---------- Lifecycle Methods
     @Override
@@ -59,10 +61,10 @@ public class MLAFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         // Set the list of the fragment to all MLAs in the DB
+        this.mlaAdapter = new MLAAdapter(this.mlaList);
         for(Object mla : DatabaseHelper.getMlaHelper().getAllObjects()) {
             this.mlaList.add((MLA) mla);
         }
-        this.mlaAdapter = new MLA_Adapter(this.mlaList);
         mlaRecyclerView.setLayoutManager(layoutManager);
         mlaRecyclerView.setAdapter(this.mlaAdapter);
 

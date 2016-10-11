@@ -68,7 +68,7 @@ public abstract class PasrserUtils {
      */
     public static String findHandleFor(String firstName, String lastName) {
         String twitterHandle = "";
-        BufferedReader reader = new BufferedReader(new InputStreamReader(LlApplication.getAppContext().getResources().openRawResource(R.raw.elected_candidates)));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(LLApplication.getAppContext().getResources().openRawResource(R.raw.elected_candidates)));
         String line;
 
         try {

@@ -1,6 +1,7 @@
 package industries.muskaqueers.thunderechosaber.Managers;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -14,7 +15,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import industries.muskaqueers.thunderechosaber.LlApplication;
+import de.greenrobot.event.EventBus;
+import industries.muskaqueers.thunderechosaber.Events.TwitterEvent;
+import industries.muskaqueers.thunderechosaber.LLApplication;
 import retrofit2.Call;
 
 /**
@@ -36,9 +39,12 @@ public class TwitterManager {
         if (username.charAt(0) == '@') {
             username = username.substring(1);
         }
+        Log.d(TAG, "We are getting tweets for user: " + username);
 
         final List<Tweet> tweetList = new ArrayList<>();
-        SearchService searchService = LlApplication.twitter.core.getApiClient().getSearchService();
+        final List<String> tweetListBody = new ArrayList<>();
+
+        SearchService searchService = LLApplication.twitter.core.getApiClient().getSearchService();
         Call<Search> call = searchService.tweets(username, null, null, null, null, null, null, null, null, null);
         call.enqueue(new Callback<Search>() {
                          @Override
@@ -46,11 +52,14 @@ public class TwitterManager {
                              final List<Tweet> tweets = result.data.tweets;
                              for (Tweet tweet : tweets) {
                                  tweetList.add(tweet);
+                                 tweetListBody.add(tweet.text);
                              }
+                             EventBus.getDefault().post(new TwitterEvent.RecentTweets(tweetListBody));
                          }
 
                          @Override
                          public void failure(TwitterException exception) {
+                             Log.d(TAG, "Something went wrong");
                              exception.printStackTrace();
                          }
                      }

@@ -8,8 +8,9 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import industries.muskaqueers.thunderechosaber.LlApplication;
+import industries.muskaqueers.thunderechosaber.LLApplication;
 import industries.muskaqueers.thunderechosaber.MLA;
+
 
 /**
  * Created by vincekearney on 08/10/2016.
@@ -59,14 +60,14 @@ public class DatabaseHelper {
 
     public static MLADatabaseHelper getMlaHelper() {
         if(mlaHelper == null)
-            return LlApplication.getLocalMlaHelper();
+            return LLApplication.getLocalMlaHelper();
 
         return mlaHelper;
     }
 
     public static PartyDatabaseHelper getPartyHelper() {
         if(partyHelper == null)
-            return LlApplication.getLocalPartyHelper();
+            return LLApplication.getLocalPartyHelper();
 
         return partyHelper;
     }
@@ -190,13 +191,13 @@ public class DatabaseHelper {
 
     public DatabaseManager getLocalDatabase() {
         if(localDB == null)
-            localDB = LlApplication.getLocalDatabaseManager();
+            localDB = LLApplication.getLocalDatabaseManager();
         return localDB;
     }
 
     private SQLiteDatabase openDatabase() {
         if (localDB == null)
-            localDB = LlApplication.getLocalDatabaseManager();
+            localDB = LLApplication.getLocalDatabaseManager();
         return localDB.getWritableDatabase();
     }
 

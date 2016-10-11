@@ -19,12 +19,12 @@ import industries.muskaqueers.thunderechosaber.R;
  * Created by vincekearney on 24/09/2016.
  */
 
-public class MLA_Adapter extends RecyclerView.Adapter<MLA_Adapter.MLAViewHolder> {
+public class MLAAdapter extends RecyclerView.Adapter<MLAAdapter.MLAViewHolder> {
 
     private static final String TAG = "MLAAdapter";
     private List<MLA> mlaList;
 
-    public MLA_Adapter(List<MLA> list) {
+    public MLAAdapter(List<MLA> list) {
         setMlaList(list);
     }
 
@@ -93,8 +93,8 @@ public class MLA_Adapter extends RecyclerView.Adapter<MLA_Adapter.MLAViewHolder>
 
         @Override
         public void onClick(View view) {
-            Intent showDetail = new Intent(view.getContext(), MLA_Info_Activity.class);
-            showDetail.putExtra(MLA_Info_Activity.MLA_EXTRA, viewMLA.getMLA_ID());
+            Intent showDetail = new Intent(view.getContext(), MLAInfoActivity.class);
+            showDetail.putExtra(MLAInfoActivity.MLA_EXTRA, viewMLA.getMLA_ID());
             view.getContext().startActivity(showDetail);
         }
     }
