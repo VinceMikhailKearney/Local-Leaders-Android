@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import industries.muskaqueers.thunderechosaber.LlApplication;
+import industries.muskaqueers.thunderechosaber.MLA;
 
 /**
  * Created by vincekearney on 08/10/2016.
@@ -20,6 +21,7 @@ public class DatabaseHelper {
     public enum getOrDelete {FETCH, DELETE}
     private String tableName;
     private String columnId;
+    private String columnConstituency;
 
     /**
      * Retrieve the localDB through the getter method.
@@ -49,6 +51,10 @@ public class DatabaseHelper {
 
     public void setLocalColumnId(String id) {
         this.columnId = id;
+    }
+
+    public void setLocalColumnConstituency(String columnConstituency) {
+        this.columnConstituency = columnConstituency;
     }
 
     public static MLADatabaseHelper getMlaHelper() {
@@ -93,7 +99,7 @@ public class DatabaseHelper {
 
     public Object fetchOrDelete(String id, DatabaseHelper.getOrDelete state) {
         Object item = null;
-        Cursor cursor = fetchCursor(id);
+        Cursor cursor = cursorUsingID(id);
 
         if (cursor.getCount() == 0)
             return null;
@@ -114,9 +120,35 @@ public class DatabaseHelper {
         return item;
     }
 
-    private Cursor fetchCursor(String id) {
+    public MLA fetchMlaWithConstituency(String constituency) {
+        MLA mla;
+        Cursor cursor = cursorUsingConstituency(constituency);
+
+        if (cursor.getCount() == 0)
+            return null;
+        else if (cursor.moveToFirst() && cursor.getCount() == 1)
+            mla = (MLA) createObjectFrom(cursor);
+        else
+            throw new IllegalStateException("Only meant to return one.");
+
+        cursor.close();
+        closeDatabase();
+        return mla;
+    }
+
+    private Cursor cursorUsingID(String id) {
         String searchString = String.format("%s%s%s", "'", id, "'");
         String query = "SELECT * FROM " + this.tableName + " WHERE " + this.columnId + " = " + searchString;
+        return createCursor(query);
+    }
+
+    private Cursor cursorUsingConstituency(String constituency) {
+        String search = String.format("%s%s%s", "'", constituency, "'");
+        String query = "SELECT * FROM " + this.tableName + " WHERE " + this.columnConstituency + search;
+        return createCursor(query);
+    }
+
+    private Cursor createCursor(String query) {
         return openDatabase().rawQuery(query, null);
     }
 

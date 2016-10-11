@@ -20,6 +20,7 @@ public class MLADatabaseHelper extends DatabaseHelper {
     public MLADatabaseHelper() {
         setLocalTableName(getLocalDatabase().MLAS_TABLE);
         setLocalColumnId(getLocalDatabase().MLA_ID);
+        setLocalColumnConstituency(getLocalDatabase().MLA_CONSTITUENCY);
     }
 
     /**
@@ -34,7 +35,7 @@ public class MLADatabaseHelper extends DatabaseHelper {
         Log.i(TAG, "Adding a MLA to DB");
 
         // First lets make sure that we haven't already added a MLA with their ID
-        if (fetchMLA(mlaID) == null) {
+        if (fetchMlaWithID(mlaID) == null) {
             ContentValues mlaValues = new ContentValues();
             mlaValues.put(getLocalDatabase().MLA_ID, mlaID);
             mlaValues.put(getLocalDatabase().MLA_FIRST_NAME, firstName);
@@ -50,7 +51,7 @@ public class MLADatabaseHelper extends DatabaseHelper {
             add(mlaValues);
         }
 
-        return fetchMLA(mlaID);
+        return fetchMlaWithID(mlaID);
     }
 
     /**
@@ -86,7 +87,7 @@ public class MLADatabaseHelper extends DatabaseHelper {
      * @param id - ID of the MLA we are fetching
      * @return - MLA
      */
-    public MLA fetchMLA(String id) {
+    public MLA fetchMlaWithID(String id) {
         return (MLA) fetchOrDelete(id, DatabaseHelper.getOrDelete.FETCH);
     }
 

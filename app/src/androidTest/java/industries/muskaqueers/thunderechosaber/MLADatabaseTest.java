@@ -51,18 +51,18 @@ public class MLADatabaseTest {
         assertThat(testHelper.getAllObjects().size(), is(3));
 
         // Search for a MLA with ID = newC1.getMLA_ID()
-        MLA searchForNewC1 = testHelper.fetchMLA(newC1.getMLA_ID());
+        MLA searchForNewC1 = testHelper.fetchMlaWithID(newC1.getMLA_ID());
         Assert.assertNotNull(searchForNewC1);
 
         // Now let's make sure that we can add a TwitterHandle
         String testHandle = "@VinceBoiiiii";
         testHelper.updateTwitterHandle(searchForNewC1, testHandle);
-        String mlaHandler = testHelper.fetchMLA(searchForNewC1.getMLA_ID()).getTwitterHandle();
+        String mlaHandler = testHelper.fetchMlaWithID(searchForNewC1.getMLA_ID()).getTwitterHandle();
         Assert.assertEquals(mlaHandler, testHandle);
 
         // Make sure we can delete a specific MLA
         testHelper.deleteMLA(newC.getMLA_ID());
-        Assert.assertNull(testHelper.fetchMLA(newC.getMLA_ID()));
+        Assert.assertNull(testHelper.fetchMlaWithID(newC.getMLA_ID()));
         // Now to finish make sure the DB contains only 2
         assertThat(testHelper.getAllObjects().size(), is(2));
 

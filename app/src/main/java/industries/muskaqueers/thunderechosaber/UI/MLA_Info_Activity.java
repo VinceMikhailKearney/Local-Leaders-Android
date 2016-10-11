@@ -36,7 +36,7 @@ public class MLA_Info_Activity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_mla_info);
 
         String mlaID = (String) getIntent().getSerializableExtra(MLA_EXTRA);
-        mla = DatabaseHelper.getMlaHelper().fetchMLA(mlaID);
+        mla = DatabaseHelper.getMlaHelper().fetchMlaWithID(mlaID);
 
         profilePicture = (CircleImageView) findViewById(R.id.profile_picture);
         coverPhoto = (ImageView) findViewById(R.id.cover_photo);

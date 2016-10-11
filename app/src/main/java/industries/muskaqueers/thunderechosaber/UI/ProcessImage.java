@@ -57,7 +57,7 @@ public class ProcessImage {
                 super.onPostExecute(byteArray);
                 Log.d(TAG, "onPostExecute: Byte Array = " + byteArray.toString());
                 if(state == ProcessImage.type.MLA) {
-                    DatabaseHelper.getMlaHelper().updateImageData(DatabaseHelper.getMlaHelper().fetchMLA(objectId), byteArray);
+                    DatabaseHelper.getMlaHelper().updateImageData(DatabaseHelper.getMlaHelper().fetchMlaWithID(objectId), byteArray);
                     totalMlaImageCount++;
                     if(totalMlaImageCount == 108) // When we have processed ALL images, that's when we update the fragment list
                         EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs));
