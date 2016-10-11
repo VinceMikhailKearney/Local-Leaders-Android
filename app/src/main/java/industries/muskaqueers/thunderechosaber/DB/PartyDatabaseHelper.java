@@ -19,7 +19,6 @@ public class PartyDatabaseHelper extends DatabaseManager {
 
     public PartyDatabaseHelper() {
         setLocalTableName(getLocalDatabase().PARTY_TABLE);
-        setLocalColumnId(getLocalDatabase().PARTY_ID);
     }
 
     public Party addParty(String id, String name, String twitter, String url) {
@@ -60,6 +59,7 @@ public class PartyDatabaseHelper extends DatabaseManager {
      * @return - Party
      */
     public Party fetchParty(String id) {
+        setSearchingForString(getLocalDatabase().PARTY_ID);
         return (Party) fetchOrDeleteWithId(id, DatabaseManager.getOrDelete.FETCH);
     }
 

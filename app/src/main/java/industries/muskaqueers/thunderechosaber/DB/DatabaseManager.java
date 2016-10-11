@@ -21,8 +21,7 @@ public class DatabaseManager {
     private static final String TAG = "DatabaseManager";
     public enum getOrDelete {FETCH, DELETE}
     private String tableName;
-    private String columnId;
-    private String columnConstituency;
+    private String searchingForString;
 
     /**
      * Retrieve the localDB through the getter method.
@@ -50,12 +49,8 @@ public class DatabaseManager {
         this.tableName = table;
     }
 
-    public void setLocalColumnId(String id) {
-        this.columnId = id;
-    }
-
-    public void setLocalColumnConstituency(String columnConstituency) {
-        this.columnConstituency = columnConstituency;
+    public void setSearchingForString(String string) {
+        this.searchingForString = string;
     }
 
     public static MLADatabaseHelper mlaHelper() {
@@ -100,15 +95,14 @@ public class DatabaseManager {
 
     public Object fetchOrDeleteWithId(String id, DatabaseManager.getOrDelete state) {
         Object item = null;
-        Cursor cursor = cursorUsingID(id);
+        Cursor cursor = cursorUsingString(id);
 
         if (cursor.getCount() == 0)
             return null;
-
-        if (cursor.moveToFirst() && cursor.getCount() == 1) {
+        else if (cursor.moveToFirst() && cursor.getCount() == 1) {
             String objectID = cursor.getString(0);
             if (state == DatabaseManager.getOrDelete.DELETE) {
-                openDatabase().delete(this.tableName, this.columnId + " = \"" + objectID + "\"", null);
+                openDatabase().delete(this.tableName, this.searchingForString + " = \"" + objectID + "\"", null);
             } else {
                 item = createObjectFrom(cursor);
             }
@@ -122,8 +116,9 @@ public class DatabaseManager {
     }
 
     public MLA fetchMlaWithConstituency(String constituency) {
+        setSearchingForString(getLocalDatabase().MLA_CONSTITUENCY);
         MLA mla;
-        Cursor cursor = cursorUsingConstituency(constituency);
+        Cursor cursor = cursorUsingString(constituency);
 
         if (cursor.getCount() == 0)
             return null;
@@ -137,15 +132,9 @@ public class DatabaseManager {
         return mla;
     }
 
-    private Cursor cursorUsingID(String id) {
-        String searchString = String.format("%s%s%s", "'", id, "'");
-        String query = "SELECT * FROM " + this.tableName + " WHERE " + this.columnId + " = " + searchString;
-        return createCursor(query);
-    }
-
-    private Cursor cursorUsingConstituency(String constituency) {
-        String search = String.format("%s%s%s", "'", constituency, "'");
-        String query = "SELECT * FROM " + this.tableName + " WHERE " + this.columnConstituency + " = " + search;
+    private Cursor cursorUsingString(String string) {
+        String search = String.format("%s%s%s", "'", string, "'");
+        String query = "SELECT * FROM " + this.tableName + " WHERE " + this.searchingForString + " = " + search;
         return createCursor(query);
     }
 
@@ -181,7 +170,7 @@ public class DatabaseManager {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             String objectID = cursor.getString(0);
-            openDatabase().delete(this.tableName, this.columnId + " = \"" + objectID + "\"", null);
+            openDatabase().delete(this.tableName, this.searchingForString + " = \"" + objectID + "\"", null);
             cursor.moveToNext();
         }
 

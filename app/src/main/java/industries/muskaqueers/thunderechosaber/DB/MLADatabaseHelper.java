@@ -18,9 +18,8 @@ public class MLADatabaseHelper extends DatabaseManager {
     private static final String TAG = "MLADatabaseHelper";
 
     public MLADatabaseHelper() {
+        /** Please note that we do not set the 'searchingFor' string as we do that at time of search **/
         setLocalTableName(getLocalDatabase().MLAS_TABLE);
-        setLocalColumnId(getLocalDatabase().MLA_ID);
-        setLocalColumnConstituency(getLocalDatabase().MLA_CONSTITUENCY);
     }
 
     /**
@@ -88,6 +87,7 @@ public class MLADatabaseHelper extends DatabaseManager {
      * @return - MLA
      */
     public MLA fetchMlaWithID(String id) {
+        setSearchingForString(getLocalDatabase().MLA_ID);
         return (MLA) fetchOrDeleteWithId(id, DatabaseManager.getOrDelete.FETCH);
     }
 
