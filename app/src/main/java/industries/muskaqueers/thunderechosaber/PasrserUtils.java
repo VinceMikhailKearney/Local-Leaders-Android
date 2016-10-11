@@ -43,15 +43,21 @@ public abstract class PasrserUtils {
         return allMLAs;
     }
 
-    public static Long versionNumber(HashMap<String, Object> hashMap, String key) {
-        return (Long) hashMap.get(key);
-    }
+    public static List<Party> getPartiesFromArray(List<Object> partyArray) throws NullPointerException {
+        List<Party> allParties = new ArrayList<>();
+        for(int i = 0; i < partyArray.size(); i++) {
+            HashMap<String, Object> partyMap = (HashMap) partyArray.get(i);
+            Party newParty = new Party();
+            // For now the easiest way to access a party in the DB is via it's name. I prefer to interact with the ID attribute.
+            /* ToDo - Will improve this later. */
+            newParty.setPartyId(stringFromKey(partyMap, "name"));
+            newParty.setName(stringFromKey(partyMap, "name"));
+            newParty.setTwitterHandle(stringFromKey(partyMap, "twitter_handle"));
+            newParty.setImageURL(stringFromKey(partyMap, "image_url"));
 
-    /**
-     * Convenive method for getting the string value from a key in the map
-     */
-    private static String stringFromKey(HashMap<String, Object> map, String key) {
-        return map.get(key).toString();
+            allParties.add(newParty);
+        }
+        return allParties;
     }
 
     /**
@@ -62,7 +68,7 @@ public abstract class PasrserUtils {
      */
     public static String findHandleFor(String firstName, String lastName) {
         String twitterHandle = "";
-        BufferedReader reader = new BufferedReader(new InputStreamReader(ThunderEchoSaberApplication.getAppContext().getResources().openRawResource(R.raw.elected_candidates)));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(LLApplication.getAppContext().getResources().openRawResource(R.raw.elected_candidates)));
         String line;
 
         try {
@@ -84,5 +90,16 @@ public abstract class PasrserUtils {
 
         Log.d(TAG, "findHandleFor: " + firstName + " " + lastName + " = " + twitterHandle);
         return twitterHandle;
+    }
+
+    public static Long versionNumber(HashMap<String, Object> hashMap, String key) {
+        return (Long) hashMap.get(key);
+    }
+
+    /**
+     * Convenive method for getting the string value from a key in the map
+     */
+    private static String stringFromKey(HashMap<String, Object> map, String key) {
+        return map.get(key).toString();
     }
 }

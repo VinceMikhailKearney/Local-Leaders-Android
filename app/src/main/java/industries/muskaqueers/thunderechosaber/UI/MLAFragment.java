@@ -19,7 +19,9 @@ import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.R;
-import industries.muskaqueers.thunderechosaber.ThunderEchoSabreEvent;
+
+import industries.muskaqueers.thunderechosaber.DB.DatabaseHelper;
+import industries.muskaqueers.thunderechosaber.DatabaseEvent;
 
 /**
  * Created by Andrew on 9/23/16.
@@ -31,7 +33,6 @@ public class MLAFragment extends Fragment {
     private RecyclerView mlaRecyclerView;
     private List<MLA> mlaList = new ArrayList<>();
     private MLAAdapter mlaAdapter;
-    private MLADatabaseHelper mlaDatabaseHelper;
 
     // ---------- Lifecycle Methods
     @Override
@@ -59,11 +60,11 @@ public class MLAFragment extends Fragment {
         mlaRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
-        // Get an instance of the MLADBHelper
-        this.mlaDatabaseHelper = new MLADatabaseHelper();
         // Set the list of the fragment to all MLAs in the DB
-        this.mlaList = this.mlaDatabaseHelper.getAllMLAs();
         this.mlaAdapter = new MLAAdapter(this.mlaList);
+        for(Object mla : DatabaseHelper.getMlaHelper().getAllObjects()) {
+            this.mlaList.add((MLA) mla);
+        }
         mlaRecyclerView.setLayoutManager(layoutManager);
         mlaRecyclerView.setAdapter(this.mlaAdapter);
 
@@ -74,12 +75,17 @@ public class MLAFragment extends Fragment {
      * EventBus listener
      * @param event - Event object that states what the event is for along with containing information such as a specific MLA
      */
-    public void onEvent(ThunderEchoSabreEvent event) {
-        if(event.getEventType() == ThunderEchoSabreEvent.eventBusEventType.UPDATE_MLAS) {
+    public void onEvent(DatabaseEvent event) {
+        if(event.getEventType() == DatabaseEvent.type.UpdateMLAs) {
             Log.d(TAG, "onEvent: Just got told to update mlas");
-            this.mlaList = this.mlaDatabaseHelper.getAllMLAs();
+
+            this.mlaList.clear();
+            for(Object mla : DatabaseHelper.getMlaHelper().getAllObjects()) {
+                this.mlaList.add((MLA) mla);
+            }
+
             this.mlaAdapter.setMlaList(this.mlaList);
-        } else if(event.getEventType() == ThunderEchoSabreEvent.eventBusEventType.ON_CLICK_MLA) {
+        } else if(event.getEventType() == DatabaseEvent.type.OnClickMla) {
             Log.d(TAG, "onEvent: Clicked MLA");
             MLA thisMLA = event.getMLA();
             if(thisMLA.getTwitterHandle().length() == 0) {

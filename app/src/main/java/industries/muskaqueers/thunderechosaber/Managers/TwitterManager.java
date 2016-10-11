@@ -17,10 +17,8 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.Events.TwitterEvent;
-import industries.muskaqueers.thunderechosaber.ThunderEchoSaberApplication;
+import industries.muskaqueers.thunderechosaber.LLApplication;
 import retrofit2.Call;
-
-import static industries.muskaqueers.thunderechosaber.Events.TwitterEvent.*;
 
 /**
  * Twitter Manager
@@ -45,7 +43,8 @@ public class TwitterManager {
 
         final List<Tweet> tweetList = new ArrayList<>();
         final List<String> tweetListBody = new ArrayList<>();
-        SearchService searchService = ThunderEchoSaberApplication.twitter.core.getApiClient().getSearchService();
+
+        SearchService searchService = LLApplication.twitter.core.getApiClient().getSearchService();
         Call<Search> call = searchService.tweets(username, null, null, null, null, null, null, null, null, null);
         call.enqueue(new Callback<Search>() {
                          @Override

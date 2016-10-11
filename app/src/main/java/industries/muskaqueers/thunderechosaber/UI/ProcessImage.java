@@ -9,8 +9,8 @@ import java.io.ByteArrayOutputStream;
 import java.net.URL;
 
 import de.greenrobot.event.EventBus;
-import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
-import industries.muskaqueers.thunderechosaber.ThunderEchoSabreEvent;
+import industries.muskaqueers.thunderechosaber.DB.DatabaseHelper;
+import industries.muskaqueers.thunderechosaber.DatabaseEvent;
 
 /**
  * Created by vincekearney on 01/10/2016.
@@ -27,10 +27,11 @@ public class ProcessImage {
      */
 
     private static final String TAG = "ProcessImage";
-    private MLADatabaseHelper databaseHelper;
+    public enum type {Party, MLA}
+    private int totalMlaImageCount;
 
     public ProcessImage() {
-        this.databaseHelper = new MLADatabaseHelper();
+        this.totalMlaImageCount = 0; // We increment this with every image we process for the MLAs
     }
 
     /**
@@ -46,17 +47,25 @@ public class ProcessImage {
 
     /**
      * Method for getting data from an image that we download from the URL of a MLA
-     * @param url - URL of the MLA
-     * @param mlaID - ID of the MLA so we can update the image data of the given MLA once downloaded
+     * @param url - URL of the MLA/Party
+     * @param objectId - ID of the MLA/Party so we can update the image data of the given MLA once downloaded
      */
-    public void getDataFromImage(String url, final String mlaID) {
+    public void getDataFromImage(String url, final String objectId, final type state) {
         BitmapFromImage bitFromImage = new BitmapFromImage() {
             @Override
             protected void onPostExecute(byte[] byteArray) {
                 super.onPostExecute(byteArray);
                 Log.d(TAG, "onPostExecute: Byte Array = " + byteArray.toString());
-                databaseHelper.updateImageData(databaseHelper.fetchMLA(mlaID), byteArray);
-                EventBus.getDefault().post(new ThunderEchoSabreEvent(ThunderEchoSabreEvent.eventBusEventType.UPDATE_MLAS));
+                if(state == ProcessImage.type.MLA) {
+                    DatabaseHelper.getMlaHelper().updateImageData(DatabaseHelper.getMlaHelper().fetchMLA(objectId), byteArray);
+                    totalMlaImageCount++;
+                    if(totalMlaImageCount == 108) // When we have processed ALL images, that's when we update the fragment list
+                        EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs));
+                } else if (state == ProcessImage.type.Party) {
+                    DatabaseHelper.getPartyHelper().updateImageData(DatabaseHelper.getPartyHelper().fetchParty(objectId), byteArray);
+                    EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateParties));
+                    // Right now the above event is not caught anywhere, need to redesign some stuff first.
+                }
             }
         };
         bitFromImage.execute(url);
