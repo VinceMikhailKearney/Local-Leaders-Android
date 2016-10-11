@@ -52,6 +52,9 @@ public class DatabaseTests {
         MLA searchForNewC1 = DatabaseManager.mlaHelper().fetchMlaWithID(newC1.getMLA_ID());
         Assert.assertNotNull(searchForNewC1);
 
+        // Ensure that we can fetch a MLA with constituency
+        Assert.assertNotNull(DatabaseManager.mlaHelper().fetchMlaWithConstituency(searchForNewC1.getConstituency()));
+
         // Now let's make sure that we can add a TwitterHandle
         String testHandle = "@VinceBoiiiii";
         DatabaseManager.mlaHelper().updateTwitterHandle(searchForNewC1, testHandle);

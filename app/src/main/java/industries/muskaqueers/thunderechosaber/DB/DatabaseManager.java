@@ -145,7 +145,7 @@ public class DatabaseManager {
 
     private Cursor cursorUsingConstituency(String constituency) {
         String search = String.format("%s%s%s", "'", constituency, "'");
-        String query = "SELECT * FROM " + this.tableName + " WHERE " + this.columnConstituency + search;
+        String query = "SELECT * FROM " + this.tableName + " WHERE " + this.columnConstituency + " = " + search;
         return createCursor(query);
     }
 
