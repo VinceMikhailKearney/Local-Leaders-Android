@@ -39,7 +39,7 @@ public class DatabaseHelper {
         return null;
     }
 
-    public void setLocalDB(DatabaseManager manager) {
+    public static void setLocalDB(DatabaseManager manager) {
         localDB = manager;
         mlaHelper = new MLADatabaseHelper();
         partyHelper = new PartyDatabaseHelper();
@@ -97,7 +97,7 @@ public class DatabaseHelper {
         return values;
     }
 
-    public Object fetchOrDelete(String id, DatabaseHelper.getOrDelete state) {
+    public Object fetchOrDeleteWithId(String id, DatabaseHelper.getOrDelete state) {
         Object item = null;
         Cursor cursor = cursorUsingID(id);
 
@@ -156,6 +156,10 @@ public class DatabaseHelper {
         String query = String.format("SELECT * FROM " + this.tableName);
         List<Object> allObjects = new ArrayList<>();
         Cursor cursor = openDatabase().rawQuery(query, null);
+
+        if(cursor.getCount() == 0)
+            return allObjects; // Return the empty array
+
         // Starting at the first row, continue to move until past the last row.
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {

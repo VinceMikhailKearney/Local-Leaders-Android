@@ -60,7 +60,7 @@ public class PartyDatabaseHelper extends DatabaseHelper {
      * @return - Party
      */
     public Party fetchParty(String id) {
-        return (Party) fetchOrDelete(id, DatabaseHelper.getOrDelete.FETCH);
+        return (Party) fetchOrDeleteWithId(id, DatabaseHelper.getOrDelete.FETCH);
     }
 
     /**
@@ -68,7 +68,7 @@ public class PartyDatabaseHelper extends DatabaseHelper {
      * @param id - ID of the Party we want to delete
      */
     public void deleteParty(String id) {
-        fetchOrDelete(id, DatabaseHelper.getOrDelete.DELETE);
+        fetchOrDeleteWithId(id, DatabaseHelper.getOrDelete.DELETE);
     }
 
     @Override

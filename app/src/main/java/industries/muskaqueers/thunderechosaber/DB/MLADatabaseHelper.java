@@ -88,7 +88,7 @@ public class MLADatabaseHelper extends DatabaseHelper {
      * @return - MLA
      */
     public MLA fetchMlaWithID(String id) {
-        return (MLA) fetchOrDelete(id, DatabaseHelper.getOrDelete.FETCH);
+        return (MLA) fetchOrDeleteWithId(id, DatabaseHelper.getOrDelete.FETCH);
     }
 
     /**
@@ -96,7 +96,7 @@ public class MLADatabaseHelper extends DatabaseHelper {
      * @param id - ID of the MLA we want to delete
      */
     public void deleteMLA(String id) {
-        fetchOrDelete(id, DatabaseHelper.getOrDelete.DELETE);
+        fetchOrDeleteWithId(id, DatabaseHelper.getOrDelete.DELETE);
     }
 
     @Override
