@@ -18,6 +18,7 @@ import industries.muskaqueers.thunderechosaber.DatabaseEvent;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.PasrserUtils;
 import industries.muskaqueers.thunderechosaber.UI.ProcessImage;
+import industries.muskaqueers.thunderechosaber.Utils.MLAThread;
 
 /**
  * Created by vincekearney on 20/09/2016.
@@ -27,8 +28,14 @@ public class FirebaseManager {
     public DatabaseReference firebaseMlaReference;
     public DatabaseReference firebasePartyReference;
     private ProcessImage imageProcessor;
+    private int imageDownloadCount;
+    private int imageThreshold;
 
     public FirebaseManager() {
+        // Register on the EventBus
+        EventBus.getDefault().register(this);
+        imageDownloadCount = 0;
+
         this.imageProcessor = new ProcessImage();
 
         this.firebaseMlaReference = FirebaseDatabase.getInstance().getReference("MLASJSON");
@@ -40,12 +47,14 @@ public class FirebaseManager {
                     return;
                 }
 
-                Log.d(TAG, "onDataChange MLA: Version = " + PasrserUtils.versionNumber((HashMap) dataSnapshot.getValue(), "version"));
+                HashMap dataSnapShotMap = (HashMap) dataSnapshot.getValue();
+                Log.d(TAG, "onDataChange MLA: Version = " + PasrserUtils.versionNumber(dataSnapShotMap, "version"));
 
-                if (DatabaseManager.mlaHelper().getAllObjects().size() == 108)
+                imageThreshold = dataSnapShotMap.size();
+                if (DatabaseManager.mlaHelper().size() == dataSnapShotMap.size())
                     return; // This is hardcoded right now just to save myself bother. We really ought to sort this out properly
 
-                addMlasToDatabase(PasrserUtils.getMLAsFromMap((HashMap) dataSnapshot.getValue(), "mlas"));
+                PasrserUtils.getMLAsFromMap((HashMap) dataSnapshot.getValue(), "mlas");
             }
 
             @Override
@@ -63,8 +72,12 @@ public class FirebaseManager {
                     return;
                 }
 
+                List<Object> dataSnapShotArray = (List) dataSnapshot.getValue();
+                if(DatabaseManager.partyHelper().size() == dataSnapShotArray.size())
+                    return;
+
                 try {
-                    addPartiesToDatabase(PasrserUtils.getPartiesFromArray((List<Object>) dataSnapshot.getValue()));
+                    addPartiesToDatabase(PasrserUtils.getPartiesFromArray(dataSnapShotArray));
                 } catch (NullPointerException e) {
                     Log.w(TAG, "onDataChange: Well something fucked up",e);
                 }
@@ -77,28 +90,34 @@ public class FirebaseManager {
         });
     }
 
-    /**
-     * After getting MLAs from HashMap we save each of them to the DB. Updating the twitter handle and image data of each one as well.
-     * @param mlas - Array of all MLAs in the map
-     */
-    private void addMlasToDatabase(List<MLA> mlas) {
-        for (MLA mla : mlas) {
-            MLA addMLA = DatabaseManager.mlaHelper().addMLA(mla.getMLA_ID(),
-                    mla.getFirstName(),
-                    mla.getLastName(),
-                    mla.getImageURL(),
-                    mla.getPartyAbbreviation(),
-                    mla.getPartyName(),
-                    mla.getTitle(),
-                    mla.getConstituency());
+    public void onEvent(DatabaseEvent event) {
+        if(event.getEventType() == DatabaseEvent.type.ProcessMLAs) {
+            Log.d(TAG, "onEvent: Received a process mlas event. The array size = " + event.getMlaList().size());
 
-            // Now that the MLA is in the DB, let's update the TwitterHandle
-            DatabaseManager.mlaHelper().updateTwitterHandle(addMLA, PasrserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
-            // Async download the image and store in DB against the MLA
-            imageProcessor.getDataFromImage(mla.getImageURL(), mla.getMLA_ID(), ProcessImage.type.MLA);
+            for (MLA mla : event.getMlaList()) {
+                MLA addMLA = DatabaseManager.mlaHelper().addMLA(mla.getMLA_ID(),
+                        mla.getFirstName(),
+                        mla.getLastName(),
+                        mla.getImageURL(),
+                        mla.getPartyAbbreviation(),
+                        mla.getPartyName(),
+                        mla.getTitle(),
+                        mla.getConstituency());
+
+                // Now that the MLA is in the DB, let's update the TwitterHandle
+                DatabaseManager.mlaHelper().updateTwitterHandle(addMLA, PasrserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
+                // Async download the image and store in DB against the MLA
+                imageProcessor.getDataFromImage(mla.getImageURL(), mla.getMLA_ID(), ProcessImage.type.MLA);
+            }
+
+            EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs));
+            
+        } else if(event.getEventType() == DatabaseEvent.type.DownloadedImage) {
+            imageDownloadCount++;
+            if((imageDownloadCount != 0 && imageDownloadCount % 10 == 0) || imageDownloadCount == imageThreshold) {
+                EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs));
+            }
         }
-
-        EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs));
     }
 
     private void addPartiesToDatabase(List<Party> parties) {

@@ -28,11 +28,8 @@ public class ProcessImage {
 
     private static final String TAG = "ProcessImage";
     public enum type {Party, MLA}
-    private int totalMlaImageCount;
 
-    public ProcessImage() {
-        this.totalMlaImageCount = 0; // We increment this with every image we process for the MLAs
-    }
+    public ProcessImage() {}
 
     /**
      * Returns a bitmap as byte array
@@ -58,9 +55,7 @@ public class ProcessImage {
                 Log.d(TAG, "onPostExecute: Byte Array = " + byteArray.toString());
                 if(state == ProcessImage.type.MLA) {
                     DatabaseManager.mlaHelper().updateImageData(DatabaseManager.mlaHelper().fetchMlaWithID(objectId), byteArray);
-                    totalMlaImageCount++;
-                    if(totalMlaImageCount == 108) // When we have processed ALL images, that's when we update the fragment list
-                        EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs));
+                    EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.DownloadedImage));
                 } else if (state == ProcessImage.type.Party) {
                     DatabaseManager.partyHelper().updateImageData(DatabaseManager.partyHelper().fetchParty(objectId), byteArray);
                     EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateParties));

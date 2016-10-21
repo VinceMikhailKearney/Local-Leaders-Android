@@ -66,6 +66,10 @@ public class DatabaseManager {
         return partyHelper;
     }
 
+    public int size() {
+        return this.getAllObjects().size();
+    }
+
     public void add(ContentValues values) {
         // Open the db - I.e. return a writeable instance of the database so that we can save to it
         openDatabase().insert(this.tableName, null, values);

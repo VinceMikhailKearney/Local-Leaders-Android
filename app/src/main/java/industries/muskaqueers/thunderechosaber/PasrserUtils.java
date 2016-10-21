@@ -6,8 +6,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by vincekearney on 25/09/2016.
@@ -23,6 +26,9 @@ public abstract class PasrserUtils {
      * @return - Array of MLAs from the map that we pass in
      */
     public static List<MLA> getMLAsFromMap(HashMap<String, Object> hashMap, String key) {
+        int start = 0;
+        int end = 9;
+
         ArrayList<Object> arrayList = (ArrayList) hashMap.get(key);
         List<MLA> allMLAs = new ArrayList<>();
         for (int i = 0; i < arrayList.size(); i++) {
@@ -38,6 +44,18 @@ public abstract class PasrserUtils {
             newMLA.setConstituency(stringFromKey(mlaMap, "ConstituencyName"));
 
             allMLAs.add(newMLA);
+
+            int endOfArray = arrayList.size() - 1;
+            if((i != 0 && i % 10 == 0) || i == endOfArray) {
+                DatabaseEvent event = new DatabaseEvent(DatabaseEvent.type.ProcessMLAs);
+                /* If we are at the end of the array, we need to explicity rest the value of end */
+                if(i == endOfArray) end = (allMLAs.size());
+                Log.d(TAG, "getMLAsFromMap: End of array = " + endOfArray +"   Value of i = " + i + "    Size of the MLAs array = " + allMLAs.size());
+                event.setMlaList(allMLAs.subList(start, end));
+                EventBus.getDefault().post(event);
+                start = end;
+                end =  end + 10;
+            }
         }
 
         return allMLAs;

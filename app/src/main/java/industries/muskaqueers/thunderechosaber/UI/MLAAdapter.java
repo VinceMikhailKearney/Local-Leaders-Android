@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import industries.muskaqueers.thunderechosaber.DatabaseEvent;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.R;
 
@@ -51,6 +52,11 @@ public class MLAAdapter extends RecyclerView.Adapter<MLAAdapter.MLAViewHolder> {
 
     public MLA getItem(int position) {
         return this.mlaList.get(position);
+    }
+
+    public void onEvent(DatabaseEvent event) {
+        if(event.getEventType() == DatabaseEvent.type.DownloadedImage){
+        }
     }
 
     // ---------- Adapter ViewHolder
