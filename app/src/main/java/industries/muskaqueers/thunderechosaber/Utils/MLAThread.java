@@ -1,5 +1,7 @@
 package industries.muskaqueers.thunderechosaber.Utils;
 
+import android.util.Log;
+
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -23,12 +25,13 @@ public class MLAThread extends Thread {
         this.mlaArray = array;
         this.imageProcessor = new ProcessImage();
         this.downloadImageCount = 0;
+        EventBus.getDefault().register(this);
     }
 
     public void run()
     {
         for (MLA mla : mlaArray) {
-            MLA addMLA = DatabaseManager.mlaHelper().addMLA(mla.getMLA_ID(),
+            DatabaseManager.mlaHelper().addMLA(mla.getMLA_ID(),
                     mla.getFirstName(),
                     mla.getLastName(),
                     mla.getImageURL(),
@@ -38,7 +41,7 @@ public class MLAThread extends Thread {
                     mla.getConstituency());
 
             // Now that the MLA is in the DB, let's update the TwitterHandle
-            DatabaseManager.mlaHelper().updateTwitterHandle(addMLA, ParserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
+            DatabaseManager.mlaHelper().updateTwitterHandle(mla, ParserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
             // Async download the image and store in DB against the MLA
             imageProcessor.getDataFromImage(mla.getImageURL(), mla.getMLA_ID(), ProcessImage.type.MLA);
         }
@@ -48,9 +51,10 @@ public class MLAThread extends Thread {
 
     public void onEvent(DatabaseEvent event) {
         if(event.getEventType() == DatabaseEvent.type.DownloadedImage) {
-            this.downloadImageCount++;
-
-            if(this.downloadImageCount == 10) {
+            downloadImageCount++;
+            if(downloadImageCount == DatabaseManager.mlaHelper().getTotalMlaCount())
+                Log.d("MLAThread", "onEvent: DOWNLOADED ALL THE MLA IMAGES.\n\nThe download count = " + downloadImageCount + "\n\n Total count = " + DatabaseManager.mlaHelper().getTotalMlaCount());
+            if((downloadImageCount != 0 && downloadImageCount % 5 == 0) || downloadImageCount == DatabaseManager.mlaHelper().getTotalMlaCount()) {
                 EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs));
             }
         }

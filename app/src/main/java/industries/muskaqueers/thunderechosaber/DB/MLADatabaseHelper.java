@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import industries.muskaqueers.thunderechosaber.MLA;
@@ -16,10 +19,13 @@ import industries.muskaqueers.thunderechosaber.MLA;
 public class MLADatabaseHelper extends DatabaseManager {
 
     private static final String TAG = "MLADatabaseHelper";
+    // This is the expected total count rather than what is in the Database
+    private static int totalMlaCount;
 
     public MLADatabaseHelper() {
         /** Please note that we do not set the 'searchingFor' string as we do that at time of search **/
         setLocalTableName(getLocalDatabase().MLAS_TABLE);
+        totalMlaCount = -1; // If -1, we have yet to interact with it.
     }
 
     /**
@@ -92,6 +98,31 @@ public class MLADatabaseHelper extends DatabaseManager {
     public MLA fetchMlaWithConstituency(String constituency) {
         setSearchingForString(getLocalDatabase().MLA_CONSTITUENCY);
         return (MLA) fetch(constituency);
+    }
+
+    @Override
+    public List<Object> getAllObjects() {
+        List<MLA> mlas = new ArrayList<>();
+        for(Object obj : super.getAllObjects()) {
+            mlas.add((MLA) obj);
+        }
+
+        Collections.sort(mlas, new Comparator<MLA>() {
+            @Override
+            public int compare(MLA mla1, MLA mla2) {
+                return mla1.getFirstName().compareTo(mla2.getFirstName());
+            }
+        });
+
+        return new ArrayList<Object>(mlas);
+    }
+
+    public static void setTotalMlaCount(int count) {
+        totalMlaCount = count;
+    }
+
+    public int getTotalMlaCount() {
+        return totalMlaCount;
     }
 
     @Override

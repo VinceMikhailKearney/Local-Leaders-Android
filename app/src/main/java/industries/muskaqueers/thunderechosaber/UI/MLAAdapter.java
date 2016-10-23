@@ -12,7 +12,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import industries.muskaqueers.thunderechosaber.DatabaseEvent;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.R;
 
@@ -54,11 +53,6 @@ public class MLAAdapter extends RecyclerView.Adapter<MLAAdapter.MLAViewHolder> {
         return this.mlaList.get(position);
     }
 
-    public void onEvent(DatabaseEvent event) {
-        if(event.getEventType() == DatabaseEvent.type.DownloadedImage){
-        }
-    }
-
     // ---------- Adapter ViewHolder
     public class MLAViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private MLA viewMLA;
@@ -69,6 +63,7 @@ public class MLAAdapter extends RecyclerView.Adapter<MLAAdapter.MLAViewHolder> {
 
         public MLAViewHolder(View itemView) {
             super(itemView);
+            this.setIsRecyclable(false);
             nameTextView = (TextView) itemView.findViewById(R.id.name);
             partyTextView = (TextView) itemView.findViewById(R.id.party_name);
             positionTextView = (TextView) itemView.findViewById(R.id.position);

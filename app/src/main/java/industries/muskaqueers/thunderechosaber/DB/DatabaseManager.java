@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import industries.muskaqueers.thunderechosaber.LLApplication;
-import industries.muskaqueers.thunderechosaber.MLA;
 
 
 /**
@@ -74,7 +73,7 @@ public class DatabaseManager {
         // Open the db - I.e. return a writeable instance of the database so that we can save to it
         openDatabase().insert(this.tableName, null, values);
         // Close the database - Back to readable
-        closeDatabase();
+//        closeDatabase();
     }
 
     public void update(ContentValues values, String search) {
@@ -83,7 +82,7 @@ public class DatabaseManager {
             return;
         }
         openDatabase().update(this.tableName, values, search, null);
-        closeDatabase();
+//        closeDatabase();
     }
 
     public ContentValues newValues(String columnName, Object data) {
@@ -103,7 +102,7 @@ public class DatabaseManager {
         else
             throw new IllegalStateException("Only supposed to fetch one. Count was -> " + cursor.getCount());
         cursor.close();
-        closeDatabase();
+//        closeDatabase();
     }
 
     public Object fetch(String string) {
@@ -116,7 +115,7 @@ public class DatabaseManager {
         else
             throw new IllegalStateException("Only meant to return one. Count was == " + cursor.getCount());
         cursor.close();
-        closeDatabase();
+//        closeDatabase();
         return item;
     }
 
@@ -142,7 +141,7 @@ public class DatabaseManager {
         }
 
         cursor.close();
-        closeDatabase();
+//        closeDatabase();
         return allObjects;
     }
 
@@ -159,7 +158,7 @@ public class DatabaseManager {
         }
 
         cursor.close();
-        closeDatabase();
+//        closeDatabase();
     }
 
     public Database getLocalDatabase() {
@@ -174,7 +173,7 @@ public class DatabaseManager {
         return localDB.getWritableDatabase();
     }
 
-    private void closeDatabase() {
-        localDB.close();
-    }
+//    private void closeDatabase() {
+//        localDB.close();
+//    }
 }

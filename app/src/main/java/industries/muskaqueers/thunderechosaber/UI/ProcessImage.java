@@ -52,7 +52,8 @@ public class ProcessImage {
             @Override
             protected void onPostExecute(byte[] byteArray) {
                 super.onPostExecute(byteArray);
-                Log.d(TAG, "onPostExecute: Byte Array = " + byteArray.toString());
+                if(byteArray != null)
+                    Log.d(TAG, "onPostExecute: Byte Array = " + byteArray.toString());
                 if(state == ProcessImage.type.MLA) {
                     DatabaseManager.mlaHelper().updateImageData(DatabaseManager.mlaHelper().fetchMlaWithID(objectId), byteArray);
                     EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.DownloadedImage));

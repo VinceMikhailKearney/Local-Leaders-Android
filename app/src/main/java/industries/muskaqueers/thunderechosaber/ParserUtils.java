@@ -48,9 +48,8 @@ public abstract class ParserUtils {
             int endOfArray = arrayList.size() - 1;
             if((i != 0 && i % 10 == 0) || i == endOfArray) {
                 DatabaseEvent event = new DatabaseEvent(DatabaseEvent.type.ProcessMLAs);
-                /* If we are at the end of the array, we need to explicity rest the value of end */
+                /* If we are at the end of the array, we need to explicity reset the value of end */
                 if(i == endOfArray) end = (allMLAs.size());
-                Log.d(TAG, "getMLAsFromMap: End of array = " + endOfArray +"   Value of i = " + i + "    Size of the MLAs array = " + allMLAs.size());
                 event.setMlaList(allMLAs.subList(start, end));
                 EventBus.getDefault().post(event);
                 start = end;

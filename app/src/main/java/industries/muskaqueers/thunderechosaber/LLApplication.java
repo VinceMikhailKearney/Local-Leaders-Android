@@ -39,10 +39,10 @@ public class LLApplication extends Application {
         // Then set up the context
         this.appContext = getApplicationContext();
         // Now set up twitter
-        authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig));
-        twitter = Twitter.getInstance();
-        twitterManager = new TwitterManager();
+//        authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+//        Fabric.with(this, new Twitter(authConfig));
+//        twitter = Twitter.getInstance();
+//        twitterManager = new TwitterManager();
         // Lastly Firebase
         Firebase.setAndroidContext(this);
         // We just need to init the FirebaseManager here to pull the information down. We don't need an instance of it.

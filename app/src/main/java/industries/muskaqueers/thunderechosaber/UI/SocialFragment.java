@@ -40,11 +40,11 @@ public class SocialFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_social, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 
-        try {
-            TwitterManager.getTweetsForUser("@AndyAllen88");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            TwitterManager.getTweetsForUser("@AndyAllen88");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         return view;
     }

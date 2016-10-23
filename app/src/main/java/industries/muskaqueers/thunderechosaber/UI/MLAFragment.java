@@ -74,7 +74,7 @@ public class MLAFragment extends Fragment {
      * EventBus listener
      * @param event - Event object that states what the event is for along with containing information such as a specific MLA
      */
-    public void onEvent(DatabaseEvent event) {
+    public void onEventMainThread(DatabaseEvent event) {
         if(event.getEventType() == DatabaseEvent.type.UpdateMLAs) {
             Log.d(TAG, "onEvent: Just got told to update mlas");
 

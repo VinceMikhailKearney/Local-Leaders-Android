@@ -8,16 +8,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
+import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.ParserUtils;
 import industries.muskaqueers.thunderechosaber.Party;
 import industries.muskaqueers.thunderechosaber.DatabaseEvent;
-import industries.muskaqueers.thunderechosaber.MLA;
-import industries.muskaqueers.thunderechosaber.UI.ProcessImage;
+import industries.muskaqueers.thunderechosaber.Utils.MLAThread;
+import industries.muskaqueers.thunderechosaber.Utils.PartyThread;
 
 /**
  * Created by vincekearney on 20/09/2016.
@@ -26,16 +28,10 @@ public class FirebaseManager {
     private static final String TAG = "FirebaseManager";
     public DatabaseReference firebaseMlaReference;
     public DatabaseReference firebasePartyReference;
-    private ProcessImage imageProcessor;
-    private int imageDownloadCount;
-    private int imageThreshold;
 
     public FirebaseManager() {
         // Register on the EventBus
         EventBus.getDefault().register(this);
-        imageDownloadCount = 0;
-
-        this.imageProcessor = new ProcessImage();
 
         this.firebaseMlaReference = FirebaseDatabase.getInstance().getReference("MLASJSON");
         this.firebaseMlaReference.addValueEventListener(new ValueEventListener() {
@@ -49,11 +45,12 @@ public class FirebaseManager {
                 HashMap dataSnapShotMap = (HashMap) dataSnapshot.getValue();
                 Log.d(TAG, "onDataChange MLA: Version = " + ParserUtils.versionNumber(dataSnapShotMap, "version"));
 
-                imageThreshold = dataSnapShotMap.size();
-                if (DatabaseManager.mlaHelper().size() == dataSnapShotMap.size())
+                List<Object> array = (List) dataSnapShotMap.get("mlas");
+                DatabaseManager.mlaHelper().setTotalMlaCount(array.size());
+                if (DatabaseManager.mlaHelper().size() == array.size())
                     return; // This is hardcoded right now just to save myself bother. We really ought to sort this out properly
 
-                ParserUtils.getMLAsFromMap((HashMap) dataSnapshot.getValue(), "mlas");
+                ParserUtils.getMLAsFromMap(dataSnapShotMap, "mlas");
             }
 
             @Override
@@ -91,43 +88,17 @@ public class FirebaseManager {
 
     public void onEvent(DatabaseEvent event) {
         if(event.getEventType() == DatabaseEvent.type.ProcessMLAs) {
-            Log.d(TAG, "onEvent: Received a process mlas event. The array size = " + event.getMlaList().size());
-
+            List<MLA> list = new ArrayList<>();
             for (MLA mla : event.getMlaList()) {
-                MLA addMLA = DatabaseManager.mlaHelper().addMLA(mla.getMLA_ID(),
-                        mla.getFirstName(),
-                        mla.getLastName(),
-                        mla.getImageURL(),
-                        mla.getPartyAbbreviation(),
-                        mla.getPartyName(),
-                        mla.getTitle(),
-                        mla.getConstituency());
-
-                // Now that the MLA is in the DB, let's update the TwitterHandle
-                DatabaseManager.mlaHelper().updateTwitterHandle(addMLA, ParserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
-                // Async download the image and store in DB against the MLA
-                imageProcessor.getDataFromImage(mla.getImageURL(), mla.getMLA_ID(), ProcessImage.type.MLA);
+                list.add(mla);
             }
-
-            EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs));
-            
-        } else if(event.getEventType() == DatabaseEvent.type.DownloadedImage) {
-            imageDownloadCount++;
-            if((imageDownloadCount != 0 && imageDownloadCount % 10 == 0) || imageDownloadCount == imageThreshold) {
-                EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs));
-            }
+            MLAThread thread = new MLAThread(list);
+            thread.start();
         }
     }
 
     private void addPartiesToDatabase(List<Party> parties) {
-        for(Party party : parties) {
-            Party addParty = DatabaseManager.partyHelper().addParty(party.getPartyId(),
-                    party.getName(),
-                    party.getTwitterHandle(),
-                    party.getImageURL());
-
-            Log.i(TAG, "addPartiesToDatabase: Party " + addParty);
-            imageProcessor.getDataFromImage(party.getImageURL(), party.getPartyId(), ProcessImage.type.Party);
-        }
+        PartyThread thread = new PartyThread(parties);
+        thread.start();
     }
 }
