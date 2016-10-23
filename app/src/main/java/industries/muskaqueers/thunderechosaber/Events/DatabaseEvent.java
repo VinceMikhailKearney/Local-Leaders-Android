@@ -15,6 +15,7 @@ public class DatabaseEvent {
     private type eventType;
     private MLA mla;
     private List<MLA> mlaList;
+    private int threadNumber;
 
     public DatabaseEvent(type type) {
         this.eventType = type;
@@ -38,5 +39,14 @@ public class DatabaseEvent {
 
     public type getEventType() {
         return this.eventType;
+    }
+
+    public DatabaseEvent setThreadNumber(int number) {
+        this.threadNumber = number;
+        return this;
+    }
+
+    public int getThreadNumber() {
+        return this.threadNumber;
     }
 }

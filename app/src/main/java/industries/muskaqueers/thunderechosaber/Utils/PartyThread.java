@@ -16,7 +16,7 @@ public class PartyThread extends Thread {
 
     public PartyThread(List<Party> array) {
         this.partyList = array;
-        this.processImage = new ProcessImage();
+        this.processImage = new ProcessImage(0); // Does not apply here.
     }
 
     public void run()

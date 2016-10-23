@@ -20,11 +20,13 @@ public class MLAThread extends Thread {
     private List<MLA> mlaArray;
     private ProcessImage imageProcessor;
     private int downloadImageCount;
+    private int threadNumber;
 
-    public MLAThread(List<MLA> array) {
+    public MLAThread(List<MLA> array, int threadNumber) {
         this.mlaArray = array;
-        this.imageProcessor = new ProcessImage();
+        this.imageProcessor = new ProcessImage(threadNumber);
         this.downloadImageCount = 0;
+        this.threadNumber = threadNumber;
         EventBus.getDefault().register(this);
     }
 
@@ -50,13 +52,10 @@ public class MLAThread extends Thread {
     }
 
     public void onEvent(DatabaseEvent event) {
-        if(event.getEventType() == DatabaseEvent.type.DownloadedImage) {
+        if(event.getEventType() == DatabaseEvent.type.DownloadedImage && this.threadNumber == event.getThreadNumber()) {
             downloadImageCount++;
-            if(downloadImageCount == DatabaseManager.mlaHelper().getTotalMlaCount())
-                Log.d("MLAThread", "onEvent: DOWNLOADED ALL THE MLA IMAGES.\n\nThe download count = " + downloadImageCount + "\n\n Total count = " + DatabaseManager.mlaHelper().getTotalMlaCount());
-            if((downloadImageCount != 0 && downloadImageCount % 5 == 0) || downloadImageCount == DatabaseManager.mlaHelper().getTotalMlaCount()) {
-                EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs));
-            }
+            if(downloadImageCount == 10 || downloadImageCount == (DatabaseManager.mlaHelper().getTotalMlaCount() - 100))
+                EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs)); 
         }
     }
 }

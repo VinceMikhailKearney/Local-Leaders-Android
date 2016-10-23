@@ -28,10 +28,12 @@ public class FirebaseManager {
     private static final String TAG = "FirebaseManager";
     public DatabaseReference firebaseMlaReference;
     public DatabaseReference firebasePartyReference;
+    private int i;
 
     public FirebaseManager() {
         // Register on the EventBus
         EventBus.getDefault().register(this);
+        i = 0;
 
         this.firebaseMlaReference = FirebaseDatabase.getInstance().getReference("MLASJSON");
         this.firebaseMlaReference.addValueEventListener(new ValueEventListener() {
@@ -92,8 +94,9 @@ public class FirebaseManager {
             for (MLA mla : event.getMlaList()) {
                 list.add(mla);
             }
-            MLAThread thread = new MLAThread(list);
+            MLAThread thread = new MLAThread(list, i);
             thread.start();
+            i++;
         }
     }
 

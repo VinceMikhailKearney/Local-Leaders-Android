@@ -28,8 +28,11 @@ public class ProcessImage {
 
     private static final String TAG = "ProcessImage";
     public enum type {Party, MLA}
+    private int threadNumber;
 
-    public ProcessImage() {}
+    public ProcessImage(int number) {
+        this.threadNumber = number;
+    }
 
     /**
      * Returns a bitmap as byte array
@@ -56,7 +59,7 @@ public class ProcessImage {
                     Log.d(TAG, "onPostExecute: Byte Array = " + byteArray.toString());
                 if(state == ProcessImage.type.MLA) {
                     DatabaseManager.mlaHelper().updateImageData(DatabaseManager.mlaHelper().fetchMlaWithID(objectId), byteArray);
-                    EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.DownloadedImage));
+                    EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.DownloadedImage).setThreadNumber(threadNumber));
                 } else if (state == ProcessImage.type.Party) {
                     DatabaseManager.partyHelper().updateImageData(DatabaseManager.partyHelper().fetchParty(objectId), byteArray);
                     EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateParties));
