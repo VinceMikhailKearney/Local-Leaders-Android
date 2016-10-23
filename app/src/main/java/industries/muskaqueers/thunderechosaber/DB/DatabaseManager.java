@@ -71,9 +71,7 @@ public class DatabaseManager {
 
     public void add(ContentValues values) {
         // Open the db - I.e. return a writeable instance of the database so that we can save to it
-        openDatabase().insert(this.tableName, null, values);
-        // Close the database - Back to readable
-//        closeDatabase();
+        writeableDatabase().insert(this.tableName, null, values);
     }
 
     public void update(ContentValues values, String search) {
@@ -81,8 +79,7 @@ public class DatabaseManager {
             Log.w(TAG, "update: Seems that we have null values");
             return;
         }
-        openDatabase().update(this.tableName, values, search, null);
-//        closeDatabase();
+        writeableDatabase().update(this.tableName, values, search, null);
     }
 
     public ContentValues newValues(String columnName, Object data) {
@@ -98,11 +95,10 @@ public class DatabaseManager {
     public void delete(String string) {
         Cursor cursor = cursorUsingString(string);
         if (cursor.moveToFirst() && cursor.getCount() == 1)
-            openDatabase().delete(this.tableName, this.searchingForString + " = \"" + cursor.getString(0) + "\"", null);
+            writeableDatabase().delete(this.tableName, this.searchingForString + " = \"" + cursor.getString(0) + "\"", null);
         else
             throw new IllegalStateException("Only supposed to fetch one. Count was -> " + cursor.getCount());
         cursor.close();
-//        closeDatabase();
     }
 
     public Object fetch(String string) {
@@ -115,20 +111,19 @@ public class DatabaseManager {
         else
             throw new IllegalStateException("Only meant to return one. Count was == " + cursor.getCount());
         cursor.close();
-//        closeDatabase();
         return item;
     }
 
     private Cursor cursorUsingString(String string) {
         String search = String.format("%s%s%s", "'", string, "'");
         String query = "SELECT * FROM " + this.tableName + " WHERE " + this.searchingForString + " = " + search;
-        return openDatabase().rawQuery(query, null);
+        return readableDatabase().rawQuery(query, null);
     }
 
     public List<Object> getAllObjects() {
         String query = String.format("SELECT * FROM " + this.tableName);
         List<Object> allObjects = new ArrayList<>();
-        Cursor cursor = openDatabase().rawQuery(query, null);
+        Cursor cursor = readableDatabase().rawQuery(query, null);
 
         if(cursor.getCount() == 0)
             return allObjects; // Return the empty array
@@ -141,24 +136,22 @@ public class DatabaseManager {
         }
 
         cursor.close();
-//        closeDatabase();
         return allObjects;
     }
 
     public void deleteAll() {
         // Query sets to select ALL from the To-Do table.
         String query = "SELECT * FROM " + this.tableName;
-        Cursor cursor = openDatabase().rawQuery(query, null);
+        Cursor cursor = readableDatabase().rawQuery(query, null);
         // Starting at the first row, continue to move until past the last row.
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             String objectID = cursor.getString(0);
-            openDatabase().delete(this.tableName, this.searchingForString + " = \"" + objectID + "\"", null);
+            writeableDatabase().delete(this.tableName, this.searchingForString + " = \"" + objectID + "\"", null);
             cursor.moveToNext();
         }
 
         cursor.close();
-//        closeDatabase();
     }
 
     public Database getLocalDatabase() {
@@ -167,13 +160,15 @@ public class DatabaseManager {
         return localDB;
     }
 
-    private SQLiteDatabase openDatabase() {
+    private SQLiteDatabase writeableDatabase() {
         if (localDB == null)
             localDB = LLApplication.getDatabase();
         return localDB.getWritableDatabase();
     }
 
-//    private void closeDatabase() {
-//        localDB.close();
-//    }
+    private SQLiteDatabase readableDatabase() {
+        if (localDB == null)
+            localDB = LLApplication.getDatabase();
+        return localDB.getReadableDatabase();
+    }
 }
