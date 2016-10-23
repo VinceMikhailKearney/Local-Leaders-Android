@@ -17,7 +17,7 @@ import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.ParserUtils;
 import industries.muskaqueers.thunderechosaber.Party;
-import industries.muskaqueers.thunderechosaber.DatabaseEvent;
+import industries.muskaqueers.thunderechosaber.Events.DatabaseEvent;
 import industries.muskaqueers.thunderechosaber.Utils.MLAThread;
 import industries.muskaqueers.thunderechosaber.Utils.PartyThread;
 

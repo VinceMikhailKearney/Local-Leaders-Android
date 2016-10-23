@@ -10,7 +10,7 @@ import java.net.URL;
 
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
-import industries.muskaqueers.thunderechosaber.DatabaseEvent;
+import industries.muskaqueers.thunderechosaber.Events.DatabaseEvent;
 
 /**
  * Created by vincekearney on 01/10/2016.

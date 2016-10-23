@@ -20,7 +20,7 @@ import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.R;
 
-import industries.muskaqueers.thunderechosaber.DatabaseEvent;
+import industries.muskaqueers.thunderechosaber.Events.DatabaseEvent;
 
 /**
  * Created by Andrew on 9/23/16.

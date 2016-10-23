@@ -6,11 +6,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+import industries.muskaqueers.thunderechosaber.Events.DatabaseEvent;
 
 /**
  * Created by vincekearney on 25/09/2016.

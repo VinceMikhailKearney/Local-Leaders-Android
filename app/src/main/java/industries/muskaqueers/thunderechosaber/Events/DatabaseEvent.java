@@ -1,6 +1,8 @@
-package industries.muskaqueers.thunderechosaber;
+package industries.muskaqueers.thunderechosaber.Events;
 
 import java.util.List;
+
+import industries.muskaqueers.thunderechosaber.MLA;
 
 /**
  * Created by vincekearney on 30/09/2016.
