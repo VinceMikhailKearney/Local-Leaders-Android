@@ -16,8 +16,8 @@ import de.greenrobot.event.EventBus;
  * Created by vincekearney on 25/09/2016.
  */
 
-public abstract class PasrserUtils {
-    private static final String TAG = "PasrserUtils";
+public abstract class ParserUtils {
+    private static final String TAG = "ParserUtils";
 
     /**
      * Get an array of MLAs from map that we get from Firebase

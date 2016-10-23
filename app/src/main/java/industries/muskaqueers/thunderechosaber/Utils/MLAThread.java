@@ -6,7 +6,7 @@ import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
 import industries.muskaqueers.thunderechosaber.DatabaseEvent;
 import industries.muskaqueers.thunderechosaber.MLA;
-import industries.muskaqueers.thunderechosaber.PasrserUtils;
+import industries.muskaqueers.thunderechosaber.ParserUtils;
 import industries.muskaqueers.thunderechosaber.UI.ProcessImage;
 
 /**
@@ -38,7 +38,7 @@ public class MLAThread extends Thread {
                     mla.getConstituency());
 
             // Now that the MLA is in the DB, let's update the TwitterHandle
-            DatabaseManager.mlaHelper().updateTwitterHandle(addMLA, PasrserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
+            DatabaseManager.mlaHelper().updateTwitterHandle(addMLA, ParserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
             // Async download the image and store in DB against the MLA
             imageProcessor.getDataFromImage(mla.getImageURL(), mla.getMLA_ID(), ProcessImage.type.MLA);
         }
