@@ -9,12 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.io.IOException;
-
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.Events.TwitterEvent;
-import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.R;
+import industries.muskaqueers.thunderechosaber.Utils.TwitterThread;
 
 /**
  * Created by Andrew on 9/23/16.
@@ -40,11 +38,8 @@ public class SocialFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_social, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 
-//        try {
-//            TwitterManager.getTweetsForUser("@AndyAllen88");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        TwitterThread twitterThread = new TwitterThread("@AndyAllen88");
+        twitterThread.start();
 
         return view;
     }
