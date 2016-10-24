@@ -96,6 +96,7 @@ public class FirebaseManager {
                 MLAThread thread = new MLAThread(list, i);
                 thread.start();
                 i++;
+            }
         }
     }
 
