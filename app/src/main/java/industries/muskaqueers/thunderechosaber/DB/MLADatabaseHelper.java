@@ -46,6 +46,7 @@ public class MLADatabaseHelper extends DatabaseManager {
             mlaValues.put(getLocalDatabase().MLA_PARTY_NAME, partyName);
             mlaValues.put(getLocalDatabase().MLA_TITLE, title);
             mlaValues.put(getLocalDatabase().MLA_TWITTER_HANDLE, ""); // The twitter handle is updated later
+            mlaValues.put(getLocalDatabase().MLA_EMAIL_ADDRESS, "");
             mlaValues.put(getLocalDatabase().MLA_CONSTITUENCY, constituency);
 
             add(mlaValues);
@@ -72,7 +73,7 @@ public class MLADatabaseHelper extends DatabaseManager {
      * Method for updating the email address of an MLA in the DB
      *
      * @param mla    - The MLA we are updating
-     * @param emailAddress - Twitter handle for MLA
+     * @param emailAddress - Email address for MLA
      */
     public void updateEmailAddress(MLA mla, String emailAddress) {
 
@@ -132,7 +133,8 @@ public class MLADatabaseHelper extends DatabaseManager {
         MLA.setPartyName(cursor.getString(6));
         MLA.setTitle(cursor.getString(7));
         MLA.setTwitterHandle(cursor.getString(8));
-        MLA.setConstituency(cursor.getString(9));
+        MLA.setEmailAddress(cursor.getString(9));
+        MLA.setConstituency(cursor.getString(10));
         return MLA;
     }
 }
