@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -17,9 +18,9 @@ import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.Party;
 import industries.muskaqueers.thunderechosaber.R;
 
-public class MLAInfoActivity extends AppCompatActivity implements View.OnClickListener {
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "MLAInfoActivity";
+    private static final String TAG = "ProfileActivity";
     public static final String MLA_EXTRA = "MLA_EXTRA";
 
     private MLA mla;
@@ -34,21 +35,14 @@ public class MLAInfoActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mla_info);
+        setContentView(R.layout.activity_profile);
 
         String mlaID = (String) getIntent().getSerializableExtra(MLA_EXTRA);
         mla = DatabaseManager.mlaHelper().fetchMlaWithID(mlaID);
 
-        profilePicture = (CircleImageView) findViewById(R.id.profile_picture);
-        coverPhoto = (ImageView) findViewById(R.id.cover_photo);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        name = (TextView) findViewById(R.id.name);
-        partyAbrv = (TextView)  findViewById(R.id.party_abrv);
-        title = (TextView) findViewById(R.id.title);
-        partyName = (TextView) findViewById(R.id.party_name);
-        constituency = (TextView) findViewById(R.id.constituency);
-        tweetButton = (ImageButton) findViewById(R.id.tweet_button);
-        emailButton = (ImageButton) findViewById(R.id.email_button);
+        Log.d(TAG, "AAC --> MLA DATA: " + mla.toString());
+
+        bindUI();
 
         profilePicture.setImageBitmap(mla.getImageBitmap());
         this.mlaParty = DatabaseManager.partyHelper().fetchParty(mla.getPartyAbbreviation().toUpperCase());
@@ -73,6 +67,28 @@ public class MLAInfoActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        int twitterAvailable = mla.getTwitterHandle()!=null ? View.VISIBLE : View.GONE;
+        tweetButton.setVisibility(twitterAvailable);
+        int emailAvailable = mla.getEmailAddress()!=null ? View.VISIBLE : View.GONE;
+        emailButton.setVisibility(emailAvailable);
+    }
+
+    private void bindUI(){
+        profilePicture = (CircleImageView) findViewById(R.id.profile_picture);
+        coverPhoto = (ImageView) findViewById(R.id.cover_photo);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        name = (TextView) findViewById(R.id.name);
+        partyAbrv = (TextView)  findViewById(R.id.party_abrv);
+        title = (TextView) findViewById(R.id.title);
+        partyName = (TextView) findViewById(R.id.party_name);
+        constituency = (TextView) findViewById(R.id.constituency);
+        tweetButton = (ImageButton) findViewById(R.id.tweet_button);
+        emailButton = (ImageButton) findViewById(R.id.email_button);
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tweet_button: {
@@ -84,7 +100,7 @@ public class MLAInfoActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             }
             case R.id.email_button:
-                Toast.makeText(MLAInfoActivity.this, "Coming soon...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this, "Coming soon...", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

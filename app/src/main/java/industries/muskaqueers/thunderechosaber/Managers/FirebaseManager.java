@@ -93,10 +93,9 @@ public class FirebaseManager {
             List<MLA> list = new ArrayList<>();
             for (MLA mla : event.getMlaList()) {
                 list.add(mla);
-            }
-            MLAThread thread = new MLAThread(list, i);
-            thread.start();
-            i++;
+                MLAThread thread = new MLAThread(list, i);
+                thread.start();
+                i++;
         }
     }
 

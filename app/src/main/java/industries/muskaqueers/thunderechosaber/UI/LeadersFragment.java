@@ -26,9 +26,9 @@ import industries.muskaqueers.thunderechosaber.Events.DatabaseEvent;
  * Created by Andrew on 9/23/16.
  */
 
-public class MLAFragment extends Fragment {
+public class LeadersFragment extends Fragment {
 
-    private static final String TAG = "MLAFragment";
+    private static final String TAG = "LeadersFragment";
     private RecyclerView mlaRecyclerView;
     private List<MLA> mlaList = new ArrayList<>();
     private MLAAdapter mlaAdapter;

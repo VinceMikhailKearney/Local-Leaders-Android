@@ -94,8 +94,8 @@ public class MLAAdapter extends RecyclerView.Adapter<MLAAdapter.MLAViewHolder> {
 
         @Override
         public void onClick(View view) {
-            Intent showDetail = new Intent(view.getContext(), MLAInfoActivity.class);
-            showDetail.putExtra(MLAInfoActivity.MLA_EXTRA, viewMLA.getMLA_ID());
+            Intent showDetail = new Intent(view.getContext(), ProfileActivity.class);
+            showDetail.putExtra(ProfileActivity.MLA_EXTRA, viewMLA.getMLA_ID());
             view.getContext().startActivity(showDetail);
         }
     }

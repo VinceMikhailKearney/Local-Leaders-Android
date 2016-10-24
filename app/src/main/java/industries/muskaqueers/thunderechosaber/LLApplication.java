@@ -12,7 +12,6 @@ import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
 import industries.muskaqueers.thunderechosaber.DB.PartyDatabaseHelper;
 import industries.muskaqueers.thunderechosaber.Managers.FirebaseManager;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
-import industries.muskaqueers.thunderechosaber.Utils.Credentials;
 import io.fabric.sdk.android.Fabric;
 
 public class LLApplication extends Application {
