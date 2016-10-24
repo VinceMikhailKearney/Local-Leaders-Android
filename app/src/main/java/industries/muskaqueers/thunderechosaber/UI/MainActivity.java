@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     // ---------- Fragment Pager Methods
     protected static class MainAdapter extends FragmentPagerAdapter {
-        private Fragment[] fragments = {new SocialFragment(), new MLAFragment(), new AreaFragment()};
+        private Fragment[] fragments = {new SocialFragment(), new LeadersFragment(), new AreaFragment()};
         protected Context context;
 
         public MainAdapter(FragmentManager fm, Context context) {

@@ -22,7 +22,7 @@ public class ProcessImage {
      * Just to sort of give a view of what is going on with this all:
      * This class will download an image via a URL as a bitmap. We then alter this to a byte
      * array that is saved against the MLA in the DB.
-     * When we are interacting with MLAs in the MLAFragment the DatabaseManager will convert
+     * When we are interacting with MLAs in the LeadersFragment the DatabaseManager will convert
      * this byte array to a Bitmap to make it easier for us to interact with :D
      */
 
