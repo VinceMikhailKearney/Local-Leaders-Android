@@ -49,8 +49,8 @@ public class FirebaseManager {
 
                 List<Object> array = (List) dataSnapShotMap.get("mlas");
                 DatabaseManager.mlaHelper().setTotalMlaCount(array.size());
-                if (DatabaseManager.mlaHelper().size() == array.size())
-                    return; // This is hardcoded right now just to save myself bother. We really ought to sort this out properly
+                if (DatabaseManager.mlaHelper().size() == DatabaseManager.mlaHelper().getTotalMlaCount())
+                    return;
 
                 ParserUtils.getMLAsFromMap(dataSnapShotMap, "mlas");
             }
@@ -91,9 +91,9 @@ public class FirebaseManager {
     public void onEvent(DatabaseEvent event) {
         if(event.getEventType() == DatabaseEvent.type.ProcessMLAs) {
             List<MLA> list = new ArrayList<>();
-            for (MLA mla : event.getMlaList()) {
+            for (MLA mla : event.getMlaList())
                 list.add(mla);
-            }
+
             MLAThread thread = new MLAThread(list, i);
             thread.start();
             i++;
