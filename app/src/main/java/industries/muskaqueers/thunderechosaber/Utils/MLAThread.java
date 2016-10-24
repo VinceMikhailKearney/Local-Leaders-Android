@@ -39,6 +39,8 @@ public class MLAThread extends Thread {
 
             // Now that the MLA is in the DB, let's update the TwitterHandle
             DatabaseManager.mlaHelper().updateTwitterHandle(addMLA, ParserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
+            // Now that the MLA is in the DB, let's update the EmailAddress
+            DatabaseManager.mlaHelper().updateEmailAddress(addMLA, ParserUtils.findEmailFor(mla.getFirstName(), mla.getLastName()));
             // Async download the image and store in DB against the MLA
             imageProcessor.getDataFromImage(mla.getImageURL(), mla.getMLA_ID(), ProcessImage.type.MLA);
         }

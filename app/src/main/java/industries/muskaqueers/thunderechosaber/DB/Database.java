@@ -37,6 +37,7 @@ public class Database extends SQLiteOpenHelper {
     public final String MLA_PARTY_NAME = "party_name";
     public final String MLA_TITLE = "title";
     public final String MLA_TWITTER_HANDLE = "twitter_handle";
+    public final String MLA_EMAIL_ADDRESS = "email_address";
     public final String MLA_CONSTITUENCY = "constituency";
 
     /* ---- Party Table and Columns (in order) ---- */
@@ -59,6 +60,7 @@ public class Database extends SQLiteOpenHelper {
                     + MLA_PARTY_NAME + formatTextType
                     + MLA_TITLE + formatTextType
                     + MLA_TWITTER_HANDLE + formatTextType
+                    + MLA_EMAIL_ADDRESS + formatTextType
                     + MLA_CONSTITUENCY + formatTextTypeEnd + ")";
 
     private final String CREATE_PARTY_TABLE =

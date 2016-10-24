@@ -25,8 +25,9 @@ public class MLADatabaseHelper extends DatabaseManager {
     /**
      * Method for adding a MLA to the DB
      * Parameters are self explanatory
-     *
+     * <p>
      * We set the twitter handle and image data blank here as we update after we get the right information
+     *
      * @return - Returns a MLA object
      */
     public MLA addMLA(String mlaID, String firstName, String lastName, String imageURL,
@@ -55,32 +56,49 @@ public class MLADatabaseHelper extends DatabaseManager {
 
     /**
      * Method for updating the twitter handle of an MLA in the DB
-     * @param mla - The MLA we are updating
+     *
+     * @param mla    - The MLA we are updating
      * @param handle - Twitter handle for MLA
      */
     public void updateTwitterHandle(MLA mla, String handle) {
 
         Log.i(TAG, "\nMLA ID -> " + mla.getMLA_ID() + "\nHandle ->" + handle + "\n");
 
-        String sqlSearch = String.format("%s = %s%s%s",getLocalDatabase().MLA_ID,"'",mla.getMLA_ID(),"'");
+        String sqlSearch = String.format("%s = %s%s%s", getLocalDatabase().MLA_ID, "'", mla.getMLA_ID(), "'");
         update(newValues(getLocalDatabase().MLA_TWITTER_HANDLE, handle), sqlSearch);
     }
 
     /**
+     * Method for updating the email address of an MLA in the DB
+     *
+     * @param mla    - The MLA we are updating
+     * @param emailAddress - Twitter handle for MLA
+     */
+    public void updateEmailAddress(MLA mla, String emailAddress) {
+
+        Log.i(TAG, "\nMLA ID -> " + mla.getMLA_ID() + "\nEmailAddress ->" + emailAddress + "\n");
+
+        String sqlSearch = String.format("%s = %s%s%s", getLocalDatabase().MLA_ID, "'", mla.getMLA_ID(), "'");
+        update(newValues(getLocalDatabase().MLA_EMAIL_ADDRESS, emailAddress), sqlSearch);
+    }
+
+    /**
      * Method for updating the Image Data of an MLA in the DB
-     * @param mla - The MLA we are updating
+     *
+     * @param mla       - The MLA we are updating
      * @param byteArray - The byteArray we fetched from the URL
      */
     public void updateImageData(MLA mla, byte[] byteArray) {
 
         Log.i(TAG, "\nMLA ID -> " + mla.getMLA_ID() + "\nByte Array ->" + byteArray + "\n");
 
-        String sqlSearch = String.format("%s = %s%s%s",getLocalDatabase().MLA_ID,"'",mla.getMLA_ID(),"'");
+        String sqlSearch = String.format("%s = %s%s%s", getLocalDatabase().MLA_ID, "'", mla.getMLA_ID(), "'");
         update(newValues(getLocalDatabase().MLA_IMAGE_BITMAP, byteArray), sqlSearch);
     }
 
     /**
      * Convenience method to return a MLA with a matching ID
+     *
      * @param id - ID of the MLA we are fetching
      * @return - MLA
      */
@@ -108,7 +126,7 @@ public class MLADatabaseHelper extends DatabaseManager {
         MLA.setLastName(cursor.getString(2));
         MLA.setImageURL(cursor.getString(3));
         byte[] imageData = cursor.getBlob(4);
-        if(imageData.length != 0)
+        if (imageData.length != 0)
             MLA.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.length));
         MLA.setPartyAbbreviation(cursor.getString(5));
         MLA.setPartyName(cursor.getString(6));

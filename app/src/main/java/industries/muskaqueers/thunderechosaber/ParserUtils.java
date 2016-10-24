@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,11 +17,14 @@ import de.greenrobot.event.EventBus;
 
 public abstract class ParserUtils {
     private static final String TAG = "ParserUtils";
+    private static final int TWITTER_ROW_DATA = 13;
+    private static final int EMAIL_ROW_DATA = 7;
 
     /**
      * Get an array of MLAs from map that we get from Firebase
+     *
      * @param hashMap - The map that contains the information of all MLAs
-     * @param key - The key of what we are looking to retrieve from the hash map (in this case it is 'mlas', which is an array)
+     * @param key     - The key of what we are looking to retrieve from the hash map (in this case it is 'mlas', which is an array)
      * @return - Array of MLAs from the map that we pass in
      */
     public static List<MLA> getMLAsFromMap(HashMap<String, Object> hashMap, String key) {
@@ -46,15 +48,15 @@ public abstract class ParserUtils {
             allMLAs.add(newMLA);
 
             int endOfArray = arrayList.size() - 1;
-            if((i != 0 && i % 10 == 0) || i == endOfArray) {
+            if ((i != 0 && i % 10 == 0) || i == endOfArray) {
                 DatabaseEvent event = new DatabaseEvent(DatabaseEvent.type.ProcessMLAs);
                 /* If we are at the end of the array, we need to explicity rest the value of end */
-                if(i == endOfArray) end = (allMLAs.size());
-                Log.d(TAG, "getMLAsFromMap: End of array = " + endOfArray +"   Value of i = " + i + "    Size of the MLAs array = " + allMLAs.size());
+                if (i == endOfArray) end = (allMLAs.size());
+                Log.d(TAG, "getMLAsFromMap: End of array = " + endOfArray + "   Value of i = " + i + "    Size of the MLAs array = " + allMLAs.size());
                 event.setMlaList(allMLAs.subList(start, end));
                 EventBus.getDefault().post(event);
                 start = end;
-                end =  end + 10;
+                end = end + 10;
             }
         }
 
@@ -63,7 +65,7 @@ public abstract class ParserUtils {
 
     public static List<Party> getPartiesFromArray(List<Object> partyArray) throws NullPointerException {
         List<Party> allParties = new ArrayList<>();
-        for(int i = 0; i < partyArray.size(); i++) {
+        for (int i = 0; i < partyArray.size(); i++) {
             HashMap<String, Object> partyMap = (HashMap) partyArray.get(i);
             Party newParty = new Party();
             // For now the easiest way to access a party in the DB is via it's name. I prefer to interact with the ID attribute.
@@ -78,14 +80,24 @@ public abstract class ParserUtils {
         return allParties;
     }
 
+    public static String findHandleFor(String firstName, String lastName) {
+        return findDataFor(TWITTER_ROW_DATA, firstName, lastName);
+    }
+
+    public static String findEmailFor(String firstName, String lastName) {
+        Log.d(TAG, "AAC --> Got a wee email address: " + findDataFor(EMAIL_ROW_DATA, firstName, lastName));
+        return findDataFor(EMAIL_ROW_DATA, firstName, lastName);
+    }
+
     /**
      * Find the twitter handle for a MLA
+     *
      * @param firstName - First name of the MLA
-     * @param lastName - Last name of the MLA
+     * @param lastName  - Last name of the MLA
      * @return - Twitter handle that matches the full name of the MLA
      */
-    public static String findHandleFor(String firstName, String lastName) {
-        String twitterHandle = "";
+    public static String findDataFor(int DATA, String firstName, String lastName) {
+        String data = "";
         BufferedReader reader = new BufferedReader(new InputStreamReader(LLApplication.getAppContext().getResources().openRawResource(R.raw.elected_candidates)));
         String line;
 
@@ -93,7 +105,7 @@ public abstract class ParserUtils {
             while ((line = reader.readLine()) != null) {
                 String[] rowData = line.split(",");
                 if (rowData[11].equalsIgnoreCase(lastName) && rowData[12].equalsIgnoreCase(firstName)) {
-                    twitterHandle = rowData[13];
+                    data = rowData[DATA];
                 }
             }
         } catch (IOException error) {
@@ -106,8 +118,8 @@ public abstract class ParserUtils {
             }
         }
 
-        Log.d(TAG, "findHandleFor: " + firstName + " " + lastName + " = " + twitterHandle);
-        return twitterHandle;
+        Log.d(TAG, "findDataFor: " + firstName + " " + lastName + " = " + data);
+        return data;
     }
 
     public static Long versionNumber(HashMap<String, Object> hashMap, String key) {
