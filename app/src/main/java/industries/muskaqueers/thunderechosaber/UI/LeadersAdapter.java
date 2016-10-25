@@ -1,7 +1,6 @@
 package industries.muskaqueers.thunderechosaber.UI;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import industries.muskaqueers.thunderechosaber.LLApplication;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.R;
 
@@ -59,7 +59,6 @@ public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.MLAViewH
         private TextView nameTextView, partyTextView, positionTextView;
         private CircleImageView profilePicture;
         private String name, party, position;
-        private Bitmap bitmap;
 
         public MLAViewHolder(View itemView) {
             super(itemView);
@@ -76,12 +75,9 @@ public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.MLAViewH
             this.name = mla.getFullName();
             this.party = mla.getPartyName();
             this.position = mla.getTitle();
-            this.bitmap = mla.getImageBitmap();
-
-            if(bitmap != null) {
-                Log.d(TAG, "setMLA: Bitmap is NOT null. MLA Name = " + mla.getFullName());
-                this.profilePicture.setImageBitmap(this.bitmap);
-            }
+            String mlaId = String.format("mla_with_id__" + this.viewMLA.getMLA_ID().toString());
+            int drawableID = LLApplication.getAppContext().getResources().getIdentifier(mlaId, "drawable", LLApplication.getAppContext().getPackageName());
+            this.profilePicture.setImageResource(drawableID);
 
             setTextViews();
         }

@@ -47,7 +47,7 @@ public class MLAThread extends Thread {
             // Now that the MLA is in the DB, let's update the EmailAddress
             DatabaseManager.mlaHelper().updateEmailAddress(mla, ParserUtils.findEmailFor(mla.getFirstName(), mla.getLastName()));
             // Async download the image and store in DB against the MLA
-            imageProcessor.getDataFromImage(mla.getImageURL(), mla.getMLA_ID(), ProcessImage.type.MLA);
+//            imageProcessor.getDataFromImage(mla.getImageURL(), mla.getMLA_ID(), ProcessImage.type.MLA);
         }
 
         EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs));

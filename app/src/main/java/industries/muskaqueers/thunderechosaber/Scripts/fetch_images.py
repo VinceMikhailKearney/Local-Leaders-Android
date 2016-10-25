@@ -16,7 +16,7 @@ def fetchJSONfile(str):
         downloadImageFromUrl(i['MemberImgUrl'], i['MemberName'])
 
 def downloadImageFromUrl(url, name):
-    filename = (url.split('/')[-1]).replace("_s", "")
+    filename = "mla_with_id__%s" % (url.split('/')[-1]).replace("_s", "")
     print "Downloading image for -> %s" % name
     urllib.urlretrieve(url, filename)
 
