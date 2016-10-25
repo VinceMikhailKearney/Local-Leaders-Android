@@ -4,9 +4,6 @@ import urllib
 import urllib2
 import json
 import os
-import getpass
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def fetchJSONfile(str):
     os.chdir('app/src/main/res/drawable/')
@@ -20,11 +17,15 @@ def fetchJSONfile(str):
 
 def downloadImageFromUrl(url, name):
     filename = (url.split('/')[-1]).replace("_s", "")
-    if not mlaAlreadyDownloaded(filename):
-        print "Downloading image for -> %s" % name
-        urllib.urlretrieve(url, filename)
+    print "Downloading image for -> %s" % name
+    urllib.urlretrieve(url, filename)
 
-def mlaAlreadyDownloaded(filename):
+'''
+Was trying to make use of this to flag that we have a way of flagging
+that we already downloaded the image for the MLA. Didn't get it working
+YET. When we download it just overrides so not such a big deal.
+'''
+def mlaAlreadyDownloaded():
     for the_file in os.listdir('.'):
         file_path = os.path.join('.', the_file)
         try:
