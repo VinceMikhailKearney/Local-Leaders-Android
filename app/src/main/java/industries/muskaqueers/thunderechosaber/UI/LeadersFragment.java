@@ -60,10 +60,10 @@ public class LeadersFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         // Set the list of the fragment to all MLAs in the DB
-        this.leadersAdapter = new LeadersAdapter(this.mlaList);
         for(Object mla : DatabaseManager.mlaHelper().getAllObjects()) {
             this.mlaList.add((MLA) mla);
         }
+        this.leadersAdapter = new LeadersAdapter(this.mlaList);
         mlaRecyclerView.setLayoutManager(layoutManager);
         mlaRecyclerView.setAdapter(this.leadersAdapter);
 
