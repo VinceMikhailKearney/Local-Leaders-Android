@@ -61,6 +61,13 @@ public class DatabaseTests {
         String mlaHandler = DatabaseManager.mlaHelper().fetchMlaWithID(searchForNewC1.getMLA_ID()).getTwitterHandle();
         Assert.assertEquals(mlaHandler, testHandle);
 
+        // Now let's make sure that we can update email address properly
+        String testEmail = "vince.kearney@tes.com";
+        assertThat(searchForNewC1.getEmailAddress().length(), is(0));
+        DatabaseManager.mlaHelper().updateEmailAddress(searchForNewC1, testEmail);
+        String mlaEmail = DatabaseManager.mlaHelper().fetchMlaWithID(searchForNewC1.getMLA_ID()).getEmailAddress();
+        Assert.assertEquals(mlaEmail, testEmail);
+
         // Make sure we can delete a specific MLA
         DatabaseManager.mlaHelper().delete(newC.getMLA_ID());
         Assert.assertNull(DatabaseManager.mlaHelper().fetchMlaWithID(newC.getMLA_ID()));
