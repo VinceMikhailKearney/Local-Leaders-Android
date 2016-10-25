@@ -31,7 +31,7 @@ public class LeadersFragment extends Fragment {
     private static final String TAG = "LeadersFragment";
     private RecyclerView mlaRecyclerView;
     private List<MLA> mlaList = new ArrayList<>();
-    private MLAAdapter mlaAdapter;
+    private LeadersAdapter leadersAdapter;
 
     // ---------- Lifecycle Methods
     @Override
@@ -60,12 +60,12 @@ public class LeadersFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         // Set the list of the fragment to all MLAs in the DB
-        this.mlaAdapter = new MLAAdapter(this.mlaList);
+        this.leadersAdapter = new LeadersAdapter(this.mlaList);
         for(Object mla : DatabaseManager.mlaHelper().getAllObjects()) {
             this.mlaList.add((MLA) mla);
         }
         mlaRecyclerView.setLayoutManager(layoutManager);
-        mlaRecyclerView.setAdapter(this.mlaAdapter);
+        mlaRecyclerView.setAdapter(this.leadersAdapter);
 
         return view;
     }
@@ -83,7 +83,7 @@ public class LeadersFragment extends Fragment {
                 this.mlaList.add((MLA) mla);
             }
 
-            this.mlaAdapter.setMlaList(this.mlaList);
+            this.leadersAdapter.setMlaList(this.mlaList);
         } else if(event.getEventType() == DatabaseEvent.type.OnClickMla) {
             Log.d(TAG, "onEvent: Clicked MLA");
             MLA thisMLA = event.getMLA();

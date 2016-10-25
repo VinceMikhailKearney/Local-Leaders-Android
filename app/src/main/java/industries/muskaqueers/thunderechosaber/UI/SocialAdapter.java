@@ -21,7 +21,7 @@ import industries.muskaqueers.thunderechosaber.R;
 
 public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.MLAViewHolder> {
 
-    private static final String TAG = "MLAAdapter";
+    private static final String TAG = "LeadersAdapter";
     private List<String> tweetList;
     private MLA mla;
 

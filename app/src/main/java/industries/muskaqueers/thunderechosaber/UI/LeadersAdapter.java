@@ -19,12 +19,12 @@ import industries.muskaqueers.thunderechosaber.R;
  * Created by vincekearney on 24/09/2016.
  */
 
-public class MLAAdapter extends RecyclerView.Adapter<MLAAdapter.MLAViewHolder> {
+public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.MLAViewHolder> {
 
-    private static final String TAG = "MLAAdapter";
+    private static final String TAG = "LeadersAdapter";
     private List<MLA> mlaList;
 
-    public MLAAdapter(List<MLA> list) {
+    public LeadersAdapter(List<MLA> list) {
         setMlaList(list);
     }
 
