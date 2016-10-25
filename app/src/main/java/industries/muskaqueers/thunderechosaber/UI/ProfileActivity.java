@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
+import industries.muskaqueers.thunderechosaber.LLApplication;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.Party;
@@ -44,7 +45,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         bindUI();
 
-        profilePicture.setImageBitmap(mla.getImageBitmap());
+        String mlaId = String.format("mla_with_id__" + mla.getMLA_ID().toString());
+        int drawableID = LLApplication.getAppContext().getResources().getIdentifier(mlaId, "drawable", LLApplication.getAppContext().getPackageName());
+        profilePicture.setImageResource(drawableID);
         this.mlaParty = DatabaseManager.partyHelper().fetchParty(mla.getPartyAbbreviation().toUpperCase());
         if(this.mlaParty != null) {
             coverPhoto.setImageBitmap(this.mlaParty.getImageBitmap());
