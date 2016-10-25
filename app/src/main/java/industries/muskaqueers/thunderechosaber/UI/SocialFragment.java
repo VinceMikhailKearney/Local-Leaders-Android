@@ -9,8 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.IOException;
+
 import de.greenrobot.event.EventBus;
+import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
 import industries.muskaqueers.thunderechosaber.Events.TwitterEvent;
+import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.R;
 import industries.muskaqueers.thunderechosaber.Utils.TwitterThread;
 
@@ -37,19 +41,25 @@ public class SocialFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_social, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-
-        TwitterThread twitterThread = new TwitterThread("@AndyAllen88");
-        twitterThread.start();
-
         return view;
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        try {
+            TwitterManager.getTweetsForUser("@AndyAllen88");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onEvent(TwitterEvent.RecentTweets event) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        socialAdapter = new SocialAdapter();
+        socialAdapter = new SocialAdapter(MLADatabaseHelper.mlaHelper().fetchMlaWithID("5307"), event.getRecentTweets());
         recyclerView.setAdapter(socialAdapter);
-        socialAdapter.setTweetList(event.getRecentTweets());
         socialAdapter.notifyDataSetChanged();
     }
 
