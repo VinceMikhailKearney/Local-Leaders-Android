@@ -41,8 +41,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         String mlaID = (String) getIntent().getSerializableExtra(MLA_EXTRA);
         mla = DatabaseManager.mlaHelper().fetchMlaWithID(mlaID);
 
-        Log.d(TAG, "AAC --> MLA DATA: " + mla.toString());
-
         bindUI();
 
         String mlaId = String.format("mla_with_id__" + mla.getMLA_ID().toString());

@@ -16,11 +16,11 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
+import industries.muskaqueers.thunderechosaber.Events.DatabaseEvent;
+import industries.muskaqueers.thunderechosaber.Events.UIEvent;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.R;
-
-import industries.muskaqueers.thunderechosaber.Events.DatabaseEvent;
 
 /**
  * Created by Andrew on 9/23/16.
@@ -60,8 +60,11 @@ public class LeadersFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         // Set the list of the fragment to all MLAs in the DB
-        for(Object mla : DatabaseManager.mlaHelper().getAllObjects()) {
+        for (Object mla : DatabaseManager.mlaHelper().getAllObjects()) {
             this.mlaList.add((MLA) mla);
+        }
+        if(this.mlaList.size()!=0){
+            EventBus.getDefault().post(new UIEvent.RemoveSpinner());
         }
         this.leadersAdapter = new LeadersAdapter(this.mlaList);
         mlaRecyclerView.setLayoutManager(layoutManager);
@@ -72,22 +75,24 @@ public class LeadersFragment extends Fragment {
 
     /**
      * EventBus listener
+     *
      * @param event - Event object that states what the event is for along with containing information such as a specific MLA
      */
     public void onEventMainThread(DatabaseEvent event) {
-        if(event.getEventType() == DatabaseEvent.type.UpdateMLAs) {
+        if (event.getEventType() == DatabaseEvent.type.UpdateMLAs) {
             Log.d(TAG, "onEvent: Just got told to update mlas");
-
             this.mlaList.clear();
-            for(Object mla : DatabaseManager.mlaHelper().getAllObjects()) {
+            for (Object mla : DatabaseManager.mlaHelper().getAllObjects()) {
                 this.mlaList.add((MLA) mla);
             }
-
+            if(this.mlaList.size()!=0){
+                EventBus.getDefault().post(new UIEvent.RemoveSpinner());
+            }
             this.leadersAdapter.setMlaList(this.mlaList);
-        } else if(event.getEventType() == DatabaseEvent.type.OnClickMla) {
+        } else if (event.getEventType() == DatabaseEvent.type.OnClickMla) {
             Log.d(TAG, "onEvent: Clicked MLA");
             MLA thisMLA = event.getMLA();
-            if(thisMLA.getTwitterHandle().length() == 0) {
+            if (thisMLA.getTwitterHandle().length() == 0) {
                 Toast.makeText(getContext(), "MLA does not have a twitter handle", Toast.LENGTH_SHORT).show();
             } else {
                 TwitterManager.tweetUser(getContext(), thisMLA.getTwitterHandle());

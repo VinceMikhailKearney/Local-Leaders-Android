@@ -85,7 +85,6 @@ public abstract class ParserUtils {
     }
 
     public static String findEmailFor(String firstName, String lastName) {
-        Log.d(TAG, "AAC --> Got a wee email address: " + findDataFor(EMAIL_ROW_DATA, firstName, lastName));
         return findDataFor(EMAIL_ROW_DATA, firstName, lastName);
     }
 

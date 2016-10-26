@@ -92,7 +92,6 @@ public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.MLAViewHol
                     this.profilePicture.setImageBitmap(this.bitmap);
                 }
             } else {
-                Log.d(TAG, "AAC --> APPARENTLY, MLA is null");
             }
 
             setTextViews();

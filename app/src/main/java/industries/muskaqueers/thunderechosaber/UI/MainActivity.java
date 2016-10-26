@@ -10,7 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 //import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.ViewSwitcher;
 
+import de.greenrobot.event.EventBus;
+import industries.muskaqueers.thunderechosaber.Events.UIEvent;
 import industries.muskaqueers.thunderechosaber.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager fragmentPager;
+    ViewSwitcher viewSwitcher;
 
     // ---------- Lifecycle Methods
     @Override
@@ -33,11 +40,24 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         fragmentPager = (ViewPager) findViewById(R.id.fragment_pager);
+        viewSwitcher = (ViewSwitcher) findViewById(R.id.view_switcher);
 
         setSupportActionBar(toolbar);
         setupPager();
         setupTabLayout();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().registerSticky(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     // ---------- Fragment Pager Methods
@@ -118,6 +138,11 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    // ---------- Event Handler ----------
+    public void onEventMainThread(UIEvent.RemoveSpinner removeSpinner){
+        viewSwitcher.setDisplayedChild(1);
     }
 
 }
