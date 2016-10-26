@@ -23,6 +23,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private static final String TAG = "ProfileActivity";
     public static final String MLA_EXTRA = "MLA_EXTRA";
+    public static final String MLA_IMG_PREFIX = "mla_with_id__";
 
     private MLA mla;
     private Party mlaParty;
@@ -43,7 +44,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         bindUI();
 
-        String mlaId = String.format("mla_with_id__" + mla.getMLA_ID().toString());
+        String mlaId = String.format(MLA_IMG_PREFIX + mla.getMLA_ID().toString());
         int drawableID = LLApplication.getAppContext().getResources().getIdentifier(mlaId, "drawable", LLApplication.getAppContext().getPackageName());
         profilePicture.setImageResource(drawableID);
         this.mlaParty = DatabaseManager.partyHelper().fetchParty(mla.getPartyAbbreviation().toUpperCase());

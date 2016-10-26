@@ -1,23 +1,21 @@
 package industries.muskaqueers.thunderechosaber.UI;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-//import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.ViewSwitcher;
 
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.Events.UIEvent;
 import industries.muskaqueers.thunderechosaber.R;
+
+//import android.support.v7.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        EventBus.getDefault().registerSticky(this);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().registerSticky(this);
     }
 
     @Override
@@ -141,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // ---------- Event Handler ----------
-    public void onEventMainThread(UIEvent.RemoveSpinner removeSpinner){
+    public void onEventMainThread(UIEvent.RemoveSpinner removeSpinner) {
         viewSwitcher.setDisplayedChild(1);
     }
 
