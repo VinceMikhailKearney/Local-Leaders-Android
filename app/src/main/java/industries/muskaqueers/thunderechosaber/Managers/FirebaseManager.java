@@ -25,15 +25,14 @@ import industries.muskaqueers.thunderechosaber.Utils.PartyThread;
  * Created by vincekearney on 20/09/2016.
  */
 public class FirebaseManager {
+
     private static final String TAG = "FirebaseManager";
     public DatabaseReference firebaseMlaReference;
     public DatabaseReference firebasePartyReference;
-    private int i;
 
     public FirebaseManager() {
         // Register on the EventBus
         EventBus.getDefault().register(this);
-        i = 0;
 
         this.firebaseMlaReference = FirebaseDatabase.getInstance().getReference("MLASJSON");
         this.firebaseMlaReference.addValueEventListener(new ValueEventListener() {
@@ -90,13 +89,8 @@ public class FirebaseManager {
 
     public void onEvent(DatabaseEvent event) {
         if(event.getEventType() == DatabaseEvent.type.ProcessMLAs) {
-            List<MLA> list = new ArrayList<>();
-            for (MLA mla : event.getMlaList())
-                list.add(mla);
-
-            MLAThread thread = new MLAThread(list, i);
+            MLAThread thread = new MLAThread(event.getMlaList());
             thread.start();
-            i++;
         }
     }
 

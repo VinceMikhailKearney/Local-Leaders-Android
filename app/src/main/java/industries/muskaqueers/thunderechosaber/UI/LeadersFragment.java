@@ -60,12 +60,12 @@ public class LeadersFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         // Set the list of the fragment to all MLAs in the DB
-        for (Object mla : DatabaseManager.mlaHelper().getAllObjects()) {
+        for (Object mla : DatabaseManager.mlaHelper().getAllObjects())
             this.mlaList.add((MLA) mla);
-        }
-        if(this.mlaList.size()!=0){
+
+        if(this.mlaList.size()!=0)
             EventBus.getDefault().post(new UIEvent.RemoveSpinner());
-        }
+
         this.leadersAdapter = new LeadersAdapter(this.mlaList);
         mlaRecyclerView.setLayoutManager(layoutManager);
         mlaRecyclerView.setAdapter(this.leadersAdapter);
@@ -81,22 +81,15 @@ public class LeadersFragment extends Fragment {
     public void onEventMainThread(DatabaseEvent event) {
         if (event.getEventType() == DatabaseEvent.type.UpdateMLAs) {
             Log.d(TAG, "onEvent: Just got told to update mlas");
+
             this.mlaList.clear();
-            for (Object mla : DatabaseManager.mlaHelper().getAllObjects()) {
+            for (Object mla : DatabaseManager.mlaHelper().getAllObjects())
                 this.mlaList.add((MLA) mla);
-            }
-            if(this.mlaList.size()!=0){
+
+            if(this.mlaList.size() != 0)
                 EventBus.getDefault().post(new UIEvent.RemoveSpinner());
-            }
+
             this.leadersAdapter.setMlaList(this.mlaList);
-        } else if (event.getEventType() == DatabaseEvent.type.OnClickMla) {
-            Log.d(TAG, "onEvent: Clicked MLA");
-            MLA thisMLA = event.getMLA();
-            if (thisMLA.getTwitterHandle().length() == 0) {
-                Toast.makeText(getContext(), "MLA does not have a twitter handle", Toast.LENGTH_SHORT).show();
-            } else {
-                TwitterManager.tweetUser(getContext(), thisMLA.getTwitterHandle());
-            }
         }
     }
 }

@@ -46,6 +46,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         String mlaId = String.format("mla_with_id__" + mla.getMLA_ID().toString());
         int drawableID = LLApplication.getAppContext().getResources().getIdentifier(mlaId, "drawable", LLApplication.getAppContext().getPackageName());
         profilePicture.setImageResource(drawableID);
+
+        // If independent - No party
         this.mlaParty = DatabaseManager.partyHelper().fetchParty(mla.getPartyAbbreviation().toUpperCase());
         if(this.mlaParty != null) {
             coverPhoto.setImageBitmap(this.mlaParty.getImageBitmap());
@@ -54,6 +56,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         } else{
             coverPhoto.setBackgroundResource(R.color.blue1);
         }
+
         name.setText(mla.getFullName());
         partyAbrv.setText(mla.getPartyAbbreviation().toUpperCase());
         title.setText(mla.getTitle());
