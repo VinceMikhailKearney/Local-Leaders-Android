@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setupPager();
         setupTabLayout();
-
     }
 
     @Override
@@ -51,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().registerSticky(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -88,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
         if (tabLayout.getTabCount() > 0) {
             updateTabTitle(tabLayout.getTabAt(fragmentPager.getCurrentItem()));
         }
-
     }
 
     public void setupTabLayout() {
@@ -119,21 +123,21 @@ public class MainActivity extends AppCompatActivity {
 
     protected void updateTabTitle(TabLayout.Tab tab) {
         switch (tab.getPosition()) {
-            case 0: {
+            case 0:
                 getSupportActionBar().setTitle("Social");
                 fragmentPager.setCurrentItem(tab.getPosition());
                 break;
-            }
-            case 1: {
+
+            case 1:
                 getSupportActionBar().setTitle("MLAs");
                 fragmentPager.setCurrentItem(tab.getPosition());
                 break;
-            }
-            case 2: {
+
+            case 2:
                 getSupportActionBar().setTitle("My Area");
                 fragmentPager.setCurrentItem(tab.getPosition());
                 break;
-            }
+
             default:
                 break;
         }
@@ -143,5 +147,4 @@ public class MainActivity extends AppCompatActivity {
     public void onEventMainThread(UIEvent.RemoveSpinner removeSpinner) {
         viewSwitcher.setDisplayedChild(1);
     }
-
 }

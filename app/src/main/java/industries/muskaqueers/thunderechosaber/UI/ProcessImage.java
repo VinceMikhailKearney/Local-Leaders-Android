@@ -57,9 +57,9 @@ public class ProcessImage {
                 super.onPostExecute(byteArray);
                 if(byteArray != null)
                     Log.d(TAG, "onPostExecute: Byte Array = " + byteArray.toString());
-                if(state == ProcessImage.type.MLA) {
+                if(state == ProcessImage.type.MLA) { // This is no longer used, but keeping incase we need it.
                     DatabaseManager.mlaHelper().updateImageData(DatabaseManager.mlaHelper().fetchMlaWithID(objectId), byteArray);
-                    EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.DownloadedImage).setThreadNumber(threadNumber));
+                    EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.DownloadedImage));
                 } else if (state == ProcessImage.type.Party) {
                     DatabaseManager.partyHelper().updateImageData(DatabaseManager.partyHelper().fetchParty(objectId), byteArray);
                     EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateParties));

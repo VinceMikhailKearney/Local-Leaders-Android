@@ -18,16 +18,9 @@ import industries.muskaqueers.thunderechosaber.UI.ProcessImage;
 public class MLAThread extends Thread {
 
     private List<MLA> mlaArray;
-    private ProcessImage imageProcessor;
-    private int downloadImageCount;
-    private int threadNumber;
 
-    public MLAThread(List<MLA> array, int threadNumber) {
+    public MLAThread(List<MLA> array) {
         this.mlaArray = array;
-        this.imageProcessor = new ProcessImage(threadNumber);
-        this.downloadImageCount = 0;
-        this.threadNumber = threadNumber;
-        EventBus.getDefault().register(this);
     }
 
     public void run()
@@ -46,18 +39,8 @@ public class MLAThread extends Thread {
             DatabaseManager.mlaHelper().updateTwitterHandle(mla, ParserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
             // Now that the MLA is in the DB, let's update the EmailAddress
             DatabaseManager.mlaHelper().updateEmailAddress(mla, ParserUtils.findEmailFor(mla.getFirstName(), mla.getLastName()));
-            // Async download the image and store in DB against the MLA
-//            imageProcessor.getDataFromImage(mla.getImageURL(), mla.getMLA_ID(), ProcessImage.type.MLA);
         }
 
         EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs));
-    }
-
-    public void onEvent(DatabaseEvent event) {
-        if(event.getEventType() == DatabaseEvent.type.DownloadedImage && this.threadNumber == event.getThreadNumber()) {
-            downloadImageCount++;
-            if(downloadImageCount == 10 || downloadImageCount == (DatabaseManager.mlaHelper().getTotalMlaCount() - 100))
-                EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs)); 
-        }
     }
 }

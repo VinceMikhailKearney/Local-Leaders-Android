@@ -28,10 +28,7 @@ public abstract class ParserUtils {
      * @param key     - The key of what we are looking to retrieve from the hash map (in this case it is 'mlas', which is an array)
      * @return - Array of MLAs from the map that we pass in
      */
-    public static List<MLA> getMLAsFromMap(HashMap<String, Object> hashMap, String key) {
-        int start = 0;
-        int end = 9;
-
+    public static void getMLAsFromMap(HashMap<String, Object> hashMap, String key) {
         ArrayList<Object> arrayList = (ArrayList) hashMap.get(key);
         List<MLA> allMLAs = new ArrayList<>();
         for (int i = 0; i < arrayList.size(); i++) {
@@ -47,20 +44,9 @@ public abstract class ParserUtils {
             newMLA.setConstituency(stringFromKey(mlaMap, "ConstituencyName"));
 
             allMLAs.add(newMLA);
-
-            int endOfArray = arrayList.size() - 1;
-            if ((i != 0 && i % 10 == 0) || i == endOfArray) {
-                DatabaseEvent event = new DatabaseEvent(DatabaseEvent.type.ProcessMLAs);
-                /* If we are at the end of the array, we need to explicity reset the value of end */
-                if (i == endOfArray) end = (allMLAs.size());
-                event.setMlaList(allMLAs.subList(start, end));
-                EventBus.getDefault().post(event);
-                start = end;
-                end = end + 10;
-            }
         }
 
-        return allMLAs;
+        EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.ProcessMLAs).setMlaList(allMLAs));
     }
 
     public static List<Party> getPartiesFromArray(List<Object> partyArray) throws NullPointerException {
@@ -93,7 +79,7 @@ public abstract class ParserUtils {
      *
      * @param firstName - First name of the MLA
      * @param lastName  - Last name of the MLA
-     * @return - Twitter handle that matches the full name of the MLA
+     * @return - Twitter handle/Email that matches the full name of the MLA
      */
     public static String findDataFor(int DATA, String firstName, String lastName) {
         String data = "";

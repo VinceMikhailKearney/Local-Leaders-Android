@@ -10,12 +10,11 @@ import industries.muskaqueers.thunderechosaber.MLA;
 
 public class DatabaseEvent {
     public enum type {
-        UpdateMLAs, OnClickMla, UpdateParties, DownloadedImage, ProcessMLAs
+        UpdateMLAs, UpdateParties, DownloadedImage, ProcessMLAs
     }
     private type eventType;
     private MLA mla;
     private List<MLA> mlaList;
-    private int threadNumber;
 
     public DatabaseEvent(type type) {
         this.eventType = type;
@@ -33,20 +32,12 @@ public class DatabaseEvent {
         return mlaList;
     }
 
-    public void setMlaList(List<MLA> mlaList) {
+    public DatabaseEvent setMlaList(List<MLA> mlaList) {
         this.mlaList = mlaList;
+        return this;
     }
 
     public type getEventType() {
         return this.eventType;
-    }
-
-    public DatabaseEvent setThreadNumber(int number) {
-        this.threadNumber = number;
-        return this;
-    }
-
-    public int getThreadNumber() {
-        return this.threadNumber;
     }
 }
