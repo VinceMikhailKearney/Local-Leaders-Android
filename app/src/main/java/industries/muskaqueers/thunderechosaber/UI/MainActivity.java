@@ -54,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
