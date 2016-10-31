@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ToolbarTheme" parent="ToolbarTheme">
+        <item name="android:title"></item>
+        <item name="android:background">@drawable/tw__transparent</item>
+    </style>
+
 </resources>

@@ -1,6 +1,10 @@
 package industries.muskaqueers.thunderechosaber.UI;
 
+import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
@@ -8,8 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
@@ -24,23 +28,24 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private static final String TAG = "ProfileActivity";
     public static final String MLA_EXTRA = "MLA_EXTRA";
     public static final String MLA_IMG_PREFIX = "mla_with_id__";
+    private static final int UP_ARROW = android.support.design.R.drawable.abc_ic_ab_back_material;
 
     private MLA mla;
     private Party mlaParty;
     private Toolbar toolbar;
+    private LinearLayout contactBar;
     private CircleImageView profilePicture;
     private ImageView coverPhoto;
     private TextView name, partyAbrv, title, partyName, constituency;
     private ImageButton tweetButton, emailButton;
 
-    // ---------- Lifecycle Methods
+    // ---------- Lifecycle Methods ----------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        String mlaID = (String) getIntent().getSerializableExtra(MLA_EXTRA);
-        mla = DatabaseManager.mlaHelper().fetchMlaWithID(mlaID);
+        getIntentData();
 
         bindUI();
 
@@ -50,11 +55,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         // If independent - No party
         this.mlaParty = DatabaseManager.partyHelper().fetchParty(mla.getPartyAbbreviation().toUpperCase());
-        if(this.mlaParty != null) {
+        if (this.mlaParty != null) {
             coverPhoto.setImageBitmap(this.mlaParty.getImageBitmap());
             Palette p = Palette.from(this.mlaParty.getImageBitmap()).generate();
-            findViewById(R.id.contact_bar).setBackgroundColor(p.getVibrantSwatch().getRgb());
-        } else{
+            contactBar.setBackgroundColor(p.getVibrantSwatch().getRgb());
+            final Drawable upArrow = ContextCompat.getDrawable(this, UP_ARROW);
+            upArrow.setColorFilter(p.getVibrantSwatch().getRgb(), PorterDuff.Mode.SRC_ATOP);
+            getSupportActionBar().setHomeAsUpIndicator(upArrow);
+        } else {
             coverPhoto.setBackgroundResource(R.color.blue1);
         }
 
@@ -64,49 +72,68 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         partyName.setText(mla.getPartyName());
         constituency.setText(mla.getConstituency());
 
+        int twitterAvailable = mla.getTwitterHandle() != null ? View.VISIBLE : View.GONE;
+        tweetButton.setVisibility(twitterAvailable);
+        int emailAvailable = !mla.getEmailAddress().isEmpty() ? View.VISIBLE : View.GONE;
+        emailButton.setVisibility(emailAvailable);
+
         tweetButton.setOnClickListener(this);
         emailButton.setOnClickListener(this);
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    // ---------- OnClick Methods ----------
     @Override
-    protected void onStart() {
-        super.onStart();
-        int twitterAvailable = mla.getTwitterHandle()!=null ? View.VISIBLE : View.GONE;
-        tweetButton.setVisibility(twitterAvailable);
-        int emailAvailable = mla.getEmailAddress()!=null ? View.VISIBLE : View.GONE;
-        emailButton.setVisibility(emailAvailable);
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tweet_button: {
+                tweetUser();
+                break;
+            }
+            case R.id.email_button:
+                emailUser();
+                break;
+        }
     }
 
-    private void bindUI(){
+    private void tweetUser() {
+        String twitterHandle = mla.getTwitterHandle();
+        if (mla.getTwitterHandle().isEmpty())
+            twitterHandle = this.mlaParty.getTwitterHandle();
+        TwitterManager.tweetUser(this, twitterHandle);
+    }
+
+    private void emailUser() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mla.getEmailAddress()});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Contacting via Local Leaders");
+        intent.putExtra(Intent.EXTRA_TEXT, "Dear " + mla.getFullName() + ", \n\n");
+        startActivity(Intent.createChooser(intent, "Please choose an emailUser client: "));
+    }
+
+    // ---------- Custom Methods ----------
+    private void getIntentData() {
+        String mlaID = (String) getIntent().getSerializableExtra(MLA_EXTRA);
+        mla = DatabaseManager.mlaHelper().fetchMlaWithID(mlaID);
+        Log.d(TAG, "MLA INFO: " + mla.toString());
+    }
+
+    private void bindUI() {
         profilePicture = (CircleImageView) findViewById(R.id.profile_picture);
         coverPhoto = (ImageView) findViewById(R.id.cover_photo);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        contactBar = (LinearLayout) findViewById(R.id.contact_bar);
         name = (TextView) findViewById(R.id.name);
-        partyAbrv = (TextView)  findViewById(R.id.party_abrv);
+        partyAbrv = (TextView) findViewById(R.id.party_abrv);
         title = (TextView) findViewById(R.id.title);
         partyName = (TextView) findViewById(R.id.party_name);
         constituency = (TextView) findViewById(R.id.constituency);
         tweetButton = (ImageButton) findViewById(R.id.tweet_button);
         emailButton = (ImageButton) findViewById(R.id.email_button);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.tweet_button: {
-                String twitterHandle = mla.getTwitterHandle();
-                if (mla.getTwitterHandle().isEmpty()) // If the MLA does not have a twitter handle, set twitter handle to that of the party.
-                    twitterHandle = this.mlaParty.getTwitterHandle();
 
-                TwitterManager.tweetUser(v.getContext(), twitterHandle);
-                break;
-            }
-            case R.id.email_button:
-                Toast.makeText(ProfileActivity.this, "Coming soon...", Toast.LENGTH_SHORT).show();
-                break;
-        }
-    }
 }
