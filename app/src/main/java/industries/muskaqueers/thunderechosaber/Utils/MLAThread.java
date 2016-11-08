@@ -8,6 +8,8 @@ import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
 import industries.muskaqueers.thunderechosaber.Events.DatabaseEvent;
 import industries.muskaqueers.thunderechosaber.MLA;
+import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
+import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
 import industries.muskaqueers.thunderechosaber.ParserUtils;
 import industries.muskaqueers.thunderechosaber.UI.ProcessImage;
 
@@ -17,15 +19,17 @@ import industries.muskaqueers.thunderechosaber.UI.ProcessImage;
 
 public class MLAThread extends Thread {
 
-    private List<MLA> mlaArray;
+    private final static String TAG = "MLA";
 
-    public MLAThread(List<MLA> array) {
+    private List<MLADb> mlaArray;
+
+    public MLAThread(List<MLADb> array) {
         this.mlaArray = array;
     }
 
     public void run()
     {
-        for (MLA mla : mlaArray) {
+        for (MLADb mla : mlaArray) {
             DatabaseManager.mlaHelper().addMLA(mla.getMLA_ID(),
                     mla.getFirstName(),
                     mla.getLastName(),
@@ -35,10 +39,13 @@ public class MLAThread extends Thread {
                     mla.getTitle(),
                     mla.getConstituency());
 
+            if (GreenDatabaseManager.addMLA(mla)) Log.d(TAG, "AAC --> Success");
+            else Log.d(TAG, "AAC --> Something went wrong storing the MLA");
+
             // Now that the MLA is in the DB, let's update the TwitterHandle
-            DatabaseManager.mlaHelper().updateTwitterHandle(mla, ParserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
+//            DatabaseManager.mlaHelper().updateTwitterHandle(mla, ParserUtils.findHandleFor(mla.getFirstName(), mla.getLastName()));
             // Now that the MLA is in the DB, let's update the EmailAddress
-            DatabaseManager.mlaHelper().updateEmailAddress(mla, ParserUtils.findEmailFor(mla.getFirstName(), mla.getLastName()));
+//            DatabaseManager.mlaHelper().updateEmailAddress(mla, ParserUtils.findEmailFor(mla.getFirstName(), mla.getLastName()));
         }
 
         EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.UpdateMLAs));

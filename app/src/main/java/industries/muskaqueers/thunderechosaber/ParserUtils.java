@@ -11,6 +11,7 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.Events.DatabaseEvent;
+import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
 
 /**
  * Created by vincekearney on 25/09/2016.
@@ -22,31 +23,27 @@ public abstract class ParserUtils {
     private static final int EMAIL_ROW_DATA = 7;
 
     /**
-     * Get an array of MLAs from map that we get from Firebase
      *
-     * @param hashMap - The map that contains the information of all MLAs
-     * @param key     - The key of what we are looking to retrieve from the hash map (in this case it is 'mlas', which is an array)
-     * @return - Array of MLAs from the map that we pass in
+     * @param hashMap
+     * @param key
+     * @return
      */
-    public static void getMLAsFromMap(HashMap<String, Object> hashMap, String key) {
-        ArrayList<Object> arrayList = (ArrayList) hashMap.get(key);
-        List<MLA> allMLAs = new ArrayList<>();
-        for (int i = 0; i < arrayList.size(); i++) {
-            HashMap<String, Object> mlaMap = (HashMap) arrayList.get(i);
-            MLA newMLA = new MLA();
-            newMLA.setMLA_ID(stringFromKey(mlaMap, "MemberPersonId"));
-            newMLA.setFirstName(stringFromKey(mlaMap, "MemberFirstName"));
-            newMLA.setLastName(stringFromKey(mlaMap, "MemberLastName"));
-            newMLA.setImageURL(stringFromKey(mlaMap, "MemberImgUrl"));
-            newMLA.setPartyAbbreviation(stringFromKey(mlaMap, "PartyAbbreviation"));
-            newMLA.setPartyName(stringFromKey(mlaMap, "PartyName"));
-            newMLA.setTitle(stringFromKey(mlaMap, "MemberTitle"));
-            newMLA.setConstituency(stringFromKey(mlaMap, "ConstituencyName"));
-
-            allMLAs.add(newMLA);
+    public static List<MLADb> getMLAsFromMapNew(HashMap<String, Object> hashMap, String key){
+        ArrayList<HashMap> allMLAsJSON = (ArrayList) hashMap.get(key);
+        List<MLADb> MLAsFromMap = new ArrayList<>();
+        for(HashMap mlaJSON : allMLAsJSON){
+            MLADb newMLA = new MLADb();
+            newMLA.setMLA_ID(stringFromKey(mlaJSON, "MemberPersonId"));
+            newMLA.setFirstName(stringFromKey(mlaJSON, "MemberFirstName"));
+            newMLA.setLastName(stringFromKey(mlaJSON, "MemberLastName"));
+            newMLA.setImageURL(stringFromKey(mlaJSON, "MemberImgUrl"));
+            newMLA.setPartyAbbreviation(stringFromKey(mlaJSON, "PartyAbbreviation"));
+            newMLA.setPartyName(stringFromKey(mlaJSON, "PartyName"));
+            newMLA.setTitle(stringFromKey(mlaJSON, "MemberTitle"));
+            newMLA.setConstituency(stringFromKey(mlaJSON, "ConstituencyName"));
+            MLAsFromMap.add(newMLA);
         }
-
-        EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.ProcessMLAs).setMlaList(allMLAs));
+        return MLAsFromMap;
     }
 
     public static List<Party> getPartiesFromArray(List<Object> partyArray) throws NullPointerException {

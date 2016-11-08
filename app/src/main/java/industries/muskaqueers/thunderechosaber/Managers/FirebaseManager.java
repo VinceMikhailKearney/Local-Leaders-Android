@@ -15,6 +15,7 @@ import java.util.List;
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
 import industries.muskaqueers.thunderechosaber.MLA;
+import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
 import industries.muskaqueers.thunderechosaber.ParserUtils;
 import industries.muskaqueers.thunderechosaber.Party;
 import industries.muskaqueers.thunderechosaber.Events.DatabaseEvent;
@@ -51,7 +52,10 @@ public class FirebaseManager {
                 if (DatabaseManager.mlaHelper().size() == DatabaseManager.mlaHelper().getTotalMlaCount())
                     return;
 
-                ParserUtils.getMLAsFromMap(dataSnapShotMap, "mlas");
+                //ParserUtils.getMLAsFromMap(dataSnapShotMap, "mlas");
+                List<MLADb> MLAsFromMap = ParserUtils.getMLAsFromMapNew(dataSnapShotMap, "mlas");
+                Log.d(TAG, "AAC --> We got something from parsing the new data and the size of the list is: " + MLAsFromMap.size());
+                EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.ProcessMLAs).setMlaListNew(MLAsFromMap));
             }
 
             @Override
@@ -89,7 +93,7 @@ public class FirebaseManager {
 
     public void onEvent(DatabaseEvent event) {
         if(event.getEventType() == DatabaseEvent.type.ProcessMLAs) {
-            MLAThread thread = new MLAThread(event.getMlaList());
+            MLAThread thread = new MLAThread(event.getMlaListNew());
             thread.start();
         }
     }
