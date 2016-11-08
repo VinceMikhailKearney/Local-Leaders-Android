@@ -9,6 +9,7 @@ buildscript {
 }
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'org.greenrobot.greendao'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -63,6 +64,7 @@ dependencies {
     compile 'com.google.firebase:firebase-database:9.2.1'
     compile 'com.firebase:firebase-client-android:2.3.1'
     compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'org.greenrobot:greendao:3.2.0'
 
     testCompile 'junit:junit:4.12'
     androidTestCompile 'junit:junit:4.12'
