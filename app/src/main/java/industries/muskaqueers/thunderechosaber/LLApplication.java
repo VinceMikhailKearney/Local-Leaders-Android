@@ -2,6 +2,7 @@ package industries.muskaqueers.thunderechosaber;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import com.firebase.client.Firebase;
 import com.twitter.sdk.android.Twitter;
@@ -16,6 +17,9 @@ import industries.muskaqueers.thunderechosaber.NewDB.DaoMaster;
 import io.fabric.sdk.android.Fabric;
 
 public class LLApplication extends Application {
+
+    private static final String TAG = "LLApplication";
+
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = Credentials.getTwitterKey();
     private static final String TWITTER_SECRET = Credentials.getTwitterSecret();
@@ -66,6 +70,7 @@ public class LLApplication extends Application {
     public static industries.muskaqueers.thunderechosaber.NewDB.DaoSession getDaoSession() { return daoSession; }
 
     public void onEvent(NewDatabaseEvent.FinsihedMLAUpdates finsihedMLAUpdates) {
+        Log.d(TAG, "AAC --> onEvent: FinsihedMLAUpdates");
         mlasUpdated = true;
         if (partiesUpdated == true){
             GreenDatabaseManager.updateTwitterHandles();
@@ -75,6 +80,7 @@ public class LLApplication extends Application {
     }
 
     public void onEvent(NewDatabaseEvent.FinishedPartyUpdates finishedPartyUpdates){
+        Log.d(TAG, "AAC --> onEvent: FinishedPartyUpdates");
         partiesUpdated = true;
         if (mlasUpdated == true){
             GreenDatabaseManager.updateTwitterHandles();

@@ -9,6 +9,7 @@ import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
 import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
 import industries.muskaqueers.thunderechosaber.NewDB.MLADbDao;
 import industries.muskaqueers.thunderechosaber.NewDB.PartyDB;
+import industries.muskaqueers.thunderechosaber.ParserUtils;
 
 /**
  * Created by vincekearney on 24/10/2016.
@@ -25,19 +26,15 @@ public class TwitterThread extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] params) {
         MLADbDao mlaDbDao = GreenDatabaseManager.getMlaTable();
-        for (PartyDB partyDB : GreenDatabaseManager.getPartyTable().loadAll()) {
-            Log.d(TAG, "AAC --> party name " + partyDB.getName());
-//            String firstName = partyDB.getName().substring(0, partyDB.getName().indexOf(" "));
-//            String lastName = partyDB.getName().substring(partyDB.getName().indexOf(" "), partyDB.getName().length());
-//
-//            MLADb mlaDb = mlaDbDao.queryBuilder()
-//                    .where(MLADbDao.Properties.FirstName.eq(firstName))
-//                    .where(MLADbDao.Properties.LastName.eq(lastName)).unique();
-//
-//            if (mlaDb != null) {
-//                mlaDb.setTwitterHandle(partyDB.getTwitterHandle());
-//                mlaDbDao.update(mlaDb);
-//            }
+        for (MLADb mlaDb : mlaDbDao.loadAll()) {
+            String twitterHandle = ParserUtils.findHandleFor(mlaDb.getFirstName(), mlaDb.getLastName());
+            String emailAddress = ParserUtils.findEmailFor(mlaDb.getFirstName(), mlaDb.getLastName());
+
+            if (mlaDb != null) {
+                mlaDb.setTwitterHandle(twitterHandle);
+                mlaDb.setEmailAddress(emailAddress);
+                mlaDbDao.update(mlaDb);
+            }
         }
         return null;
     }
@@ -45,6 +42,7 @@ public class TwitterThread extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
+        Log.d(TAG, "AAC --> Posting CompletedMLAUpdates");
         EventBus.getDefault().post(new NewDatabaseEvent.CompletedMLAUpdates());
     }
 }

@@ -31,7 +31,7 @@ public class SocialFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
     }
 
     @Nullable
@@ -53,12 +53,12 @@ public class SocialFragment extends Fragment {
         }
     }
 
-    public void onEvent(TwitterEvent.RecentTweets event) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-//        socialAdapter = new SocialAdapter(MLADatabaseHelper.mlaHelper().fetchMlaWithID("5307"), event.getRecentTweets());
-        recyclerView.setAdapter(socialAdapter);
-        socialAdapter.notifyDataSetChanged();
-    }
+//    public void onEvent(TwitterEvent.RecentTweets event) {
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
+//        recyclerView.setLayoutManager(linearLayoutManager);
+////        socialAdapter = new SocialAdapter(MLADatabaseHelper.mlaHelper().fetchMlaWithID("5307"), event.getRecentTweets());
+//        recyclerView.setAdapter(socialAdapter);
+//        socialAdapter.notifyDataSetChanged();
+//    }
 
 }

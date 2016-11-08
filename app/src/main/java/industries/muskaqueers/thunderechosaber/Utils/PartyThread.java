@@ -39,6 +39,7 @@ public class PartyThread extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
+        Log.d(TAG, "AAC --> Posting FinishedPartyUpdates");
         EventBus.getDefault().post(new NewDatabaseEvent.FinishedPartyUpdates());
     }
 }

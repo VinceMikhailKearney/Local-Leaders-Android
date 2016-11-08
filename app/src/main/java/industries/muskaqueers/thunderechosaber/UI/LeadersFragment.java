@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,8 @@ public class LeadersFragment extends Fragment {
     }
 
     public void onEventMainThread(NewDatabaseEvent.CompletedMLAUpdates completedMLAUpdates){
+        Log.d(TAG, "AAC --> onEvent CompletedMLAUpdates");
+        EventBus.getDefault().post(new UIEvent.RemoveSpinner());
         mlaList = GreenDatabaseManager.getMlaTable().loadAll();
         leadersAdapter.setMlaList(mlaList);
         leadersAdapter.notifyDataSetChanged();
