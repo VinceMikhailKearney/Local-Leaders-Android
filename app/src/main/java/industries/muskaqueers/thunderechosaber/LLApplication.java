@@ -7,14 +7,10 @@ import com.firebase.client.Firebase;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
-import industries.muskaqueers.thunderechosaber.DB.DaoMaster;
-import industries.muskaqueers.thunderechosaber.DB.DaoSession;
-import industries.muskaqueers.thunderechosaber.DB.Database;
-import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
-import industries.muskaqueers.thunderechosaber.DB.PartyDatabaseHelper;
 import industries.muskaqueers.thunderechosaber.Managers.FirebaseManager;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
+import industries.muskaqueers.thunderechosaber.NewDB.DaoMaster;
 import io.fabric.sdk.android.Fabric;
 
 public class LLApplication extends Application {
@@ -27,11 +23,7 @@ public class LLApplication extends Application {
     public static Twitter twitter;
     public static TwitterManager twitterManager;
     // Local Database
-    private static Database database;
-    private static MLADatabaseHelper mlaDatabaseHelper;
-    private static PartyDatabaseHelper partyDatabaseHelper;
-
-    private static DaoSession daoSession;
+    private static industries.muskaqueers.thunderechosaber.NewDB.DaoSession daoSession;
     private static GreenDatabaseManager databaseManager;
 
     @Override
@@ -41,14 +33,8 @@ public class LLApplication extends Application {
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "notes-db");
         org.greenrobot.greendao.database.Database db = helper.getWritableDb();
         daoSession = new DaoMaster(db).newSession();
-
         databaseManager = new GreenDatabaseManager(this);
 
-        // First thing, lets set up the DB
-        this.database = new Database(this);
-        this.mlaDatabaseHelper = new MLADatabaseHelper();
-        this.partyDatabaseHelper = new PartyDatabaseHelper();
-        // Then set up the context
         this.appContext = getApplicationContext();
         // Now set up twitter
         authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
@@ -61,21 +47,9 @@ public class LLApplication extends Application {
         new FirebaseManager();
     }
 
-    public static MLADatabaseHelper getLocalMlaHelper() {
-        return mlaDatabaseHelper;
-    }
-
-    public static PartyDatabaseHelper getLocalPartyHelper() {
-        return partyDatabaseHelper;
-    }
-
-    public static Database getDatabase() {
-        return database;
-    }
-
     public static Context getAppContext() {
         return appContext;
     }
 
-    public static DaoSession getDaoSession() { return daoSession; }
+    public static industries.muskaqueers.thunderechosaber.NewDB.DaoSession getDaoSession() { return daoSession; }
 }

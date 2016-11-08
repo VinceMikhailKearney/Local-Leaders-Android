@@ -12,6 +12,7 @@ import java.util.List;
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.Events.DatabaseEvent;
 import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
+import industries.muskaqueers.thunderechosaber.NewDB.PartyDB;
 
 /**
  * Created by vincekearney on 25/09/2016.
@@ -19,10 +20,24 @@ import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
 
 public abstract class ParserUtils {
     private static final String TAG = "ParserUtils";
+
+    private static final String ID = "MemberPersonId";
+    private static final String FIRST_NAME = "MemberFirstName";
+    private static final String LAST_NAME = "MemberLastName";
+    private static final String IMAGE_URL= "MemberImgUrl";
+    private static final String PARTY_ABRV = "PartyAbbreviation";
+    private static final String PARTY_NAME = "PartyName";
+    private static final String TITLE = "MemberTitle";
+    private static final String CONSTITUENCY = "ConstituencyName";
+
     private static final int TWITTER_ROW_DATA = 13;
     private static final int EMAIL_ROW_DATA = 7;
 
     /**
+     * getMLAsFromMapNew
+     *
+     * Takes a HashMap from the server and rips out the MLA data and returns the data as a list of
+     * MLAs
      *
      * @param hashMap
      * @param key
@@ -33,24 +48,24 @@ public abstract class ParserUtils {
         List<MLADb> MLAsFromMap = new ArrayList<>();
         for(HashMap mlaJSON : allMLAsJSON){
             MLADb newMLA = new MLADb();
-            newMLA.setMLA_ID(stringFromKey(mlaJSON, "MemberPersonId"));
-            newMLA.setFirstName(stringFromKey(mlaJSON, "MemberFirstName"));
-            newMLA.setLastName(stringFromKey(mlaJSON, "MemberLastName"));
-            newMLA.setImageURL(stringFromKey(mlaJSON, "MemberImgUrl"));
-            newMLA.setPartyAbbreviation(stringFromKey(mlaJSON, "PartyAbbreviation"));
-            newMLA.setPartyName(stringFromKey(mlaJSON, "PartyName"));
-            newMLA.setTitle(stringFromKey(mlaJSON, "MemberTitle"));
-            newMLA.setConstituency(stringFromKey(mlaJSON, "ConstituencyName"));
+            newMLA.setMLA_ID(stringFromKey(mlaJSON, ID));
+            newMLA.setFirstName(stringFromKey(mlaJSON, FIRST_NAME));
+            newMLA.setLastName(stringFromKey(mlaJSON, LAST_NAME));
+            newMLA.setImageURL(stringFromKey(mlaJSON, IMAGE_URL));
+            newMLA.setPartyAbbreviation(stringFromKey(mlaJSON, PARTY_ABRV));
+            newMLA.setPartyName(stringFromKey(mlaJSON, PARTY_NAME));
+            newMLA.setTitle(stringFromKey(mlaJSON, TITLE));
+            newMLA.setConstituency(stringFromKey(mlaJSON, CONSTITUENCY));
             MLAsFromMap.add(newMLA);
         }
         return MLAsFromMap;
     }
 
-    public static List<Party> getPartiesFromArray(List<Object> partyArray) throws NullPointerException {
-        List<Party> allParties = new ArrayList<>();
+    public static List<PartyDB> getPartiesFromArray(List<Object> partyArray) throws NullPointerException {
+        List<PartyDB> allParties = new ArrayList<>();
         for (int i = 0; i < partyArray.size(); i++) {
             HashMap<String, Object> partyMap = (HashMap) partyArray.get(i);
-            Party newParty = new Party();
+            PartyDB newParty = new PartyDB();
             // For now the easiest way to access a party in the DB is via it's name. I prefer to interact with the ID attribute.
             /* ToDo - Will improve this later. */
             newParty.setPartyId(stringFromKey(partyMap, "name"));

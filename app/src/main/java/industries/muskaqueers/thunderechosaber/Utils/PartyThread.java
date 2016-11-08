@@ -1,9 +1,13 @@
 package industries.muskaqueers.thunderechosaber.Utils;
 
+import android.util.Log;
+
 import java.util.List;
 
-import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
-import industries.muskaqueers.thunderechosaber.Party;
+import de.greenrobot.event.EventBus;
+import industries.muskaqueers.thunderechosaber.Events.NewDatabaseEvent;
+import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
+import industries.muskaqueers.thunderechosaber.NewDB.PartyDB;
 import industries.muskaqueers.thunderechosaber.UI.ProcessImage;
 
 /**
@@ -11,23 +15,23 @@ import industries.muskaqueers.thunderechosaber.UI.ProcessImage;
  */
 
 public class PartyThread extends Thread {
-    private List<Party> partyList;
+
+    private static final String TAG = "PartyThread";
+
+    private List<PartyDB> partyList;
     private ProcessImage processImage;
 
-    public PartyThread(List<Party> array) {
+    public PartyThread(List<PartyDB> array) {
         this.partyList = array;
         this.processImage = new ProcessImage(0); // Does not apply here.
     }
 
-    public void run()
-    {
-        for(Party party : (this.partyList)) {
-            DatabaseManager.partyHelper().addParty(party.getPartyId(),
-                    party.getName(),
-                    party.getTwitterHandle(),
-                    party.getImageURL());
-
-            processImage.getDataFromImage(party.getImageURL(), party.getPartyId(), ProcessImage.type.Party);
+    public void run() {
+        for (PartyDB partyDb : partyList) {
+            if (GreenDatabaseManager.addParty(partyDb)) Log.d(TAG, "AAC --> Success");
+            else Log.d(TAG, "AAC --> Something went wrong storing the MLA");
+            processImage.getDataFromImage(partyDb.getImageURL(), partyDb.getPartyId(), ProcessImage.type.Party);
         }
+        EventBus.getDefault().post(new NewDatabaseEvent.FinishedPartyUpdates());
     }
 }

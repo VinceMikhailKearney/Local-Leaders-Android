@@ -8,17 +8,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
-import industries.muskaqueers.thunderechosaber.MLA;
-import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
-import industries.muskaqueers.thunderechosaber.ParserUtils;
-import industries.muskaqueers.thunderechosaber.Party;
 import industries.muskaqueers.thunderechosaber.Events.DatabaseEvent;
+import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
+import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
+import industries.muskaqueers.thunderechosaber.NewDB.PartyDB;
+import industries.muskaqueers.thunderechosaber.ParserUtils;
 import industries.muskaqueers.thunderechosaber.Utils.MLAThread;
 import industries.muskaqueers.thunderechosaber.Utils.PartyThread;
 
@@ -47,15 +45,14 @@ public class FirebaseManager {
                 HashMap dataSnapShotMap = (HashMap) dataSnapshot.getValue();
                 Log.d(TAG, "onDataChange MLA: Version = " + ParserUtils.versionNumber(dataSnapShotMap, "version"));
 
-                List<Object> array = (List) dataSnapShotMap.get("mlas");
-                DatabaseManager.mlaHelper().setTotalMlaCount(array.size());
-                if (DatabaseManager.mlaHelper().size() == DatabaseManager.mlaHelper().getTotalMlaCount())
+                List<Object> mlaDataSnapShot = (List) dataSnapShotMap.get("mlas");
+                if (GreenDatabaseManager.getMLADBSize() == mlaDataSnapShot.size()) {
+                    Log.d(TAG, "AAC --> There are no difference in the size of MLAs, do not change edit table");
                     return;
-
-                //ParserUtils.getMLAsFromMap(dataSnapShotMap, "mlas");
+                }
                 List<MLADb> MLAsFromMap = ParserUtils.getMLAsFromMapNew(dataSnapShotMap, "mlas");
                 Log.d(TAG, "AAC --> We got something from parsing the new data and the size of the list is: " + MLAsFromMap.size());
-                EventBus.getDefault().post(new DatabaseEvent(DatabaseEvent.type.ProcessMLAs).setMlaListNew(MLAsFromMap));
+                addMLAsToDatabase(MLAsFromMap);
             }
 
             @Override
@@ -74,14 +71,14 @@ public class FirebaseManager {
                 }
 
                 List<Object> dataSnapShotArray = (List) dataSnapshot.getValue();
-                if(DatabaseManager.partyHelper().size() == dataSnapShotArray.size())
+                if (GreenDatabaseManager.getPartyDBSize() == dataSnapShotArray.size()) {
+                    Log.d(TAG, "AAC --> There are no difference in the size of Parties, do not change edit table");
                     return;
-
-                try {
-                    addPartiesToDatabase(ParserUtils.getPartiesFromArray(dataSnapShotArray));
-                } catch (NullPointerException e) {
-                    Log.w(TAG, "onDataChange: Well something fucked up",e);
                 }
+                List<PartyDB> partiesFromMap = ParserUtils.getPartiesFromArray(dataSnapShotArray);
+                Log.d(TAG, "AAC --> We got something from parsing the new data and the size of the list is: " + partiesFromMap.size());
+                addPartiesToDatabase(partiesFromMap);
+
             }
 
             @Override
@@ -91,14 +88,13 @@ public class FirebaseManager {
         });
     }
 
-    public void onEvent(DatabaseEvent event) {
-        if(event.getEventType() == DatabaseEvent.type.ProcessMLAs) {
-            MLAThread thread = new MLAThread(event.getMlaListNew());
-            thread.start();
-        }
+    public void addMLAsToDatabase(List<MLADb> mlaDbs) {
+        MLAThread thread = new MLAThread(mlaDbs);
+        thread.start();
+
     }
 
-    private void addPartiesToDatabase(List<Party> parties) {
+    private void addPartiesToDatabase(List<PartyDB> parties) {
         PartyThread thread = new PartyThread(parties);
         thread.start();
     }
