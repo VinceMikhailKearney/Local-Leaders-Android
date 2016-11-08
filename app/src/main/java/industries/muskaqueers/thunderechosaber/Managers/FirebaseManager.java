@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import industries.muskaqueers.thunderechosaber.Events.DatabaseEvent;
 import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
 import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
 import industries.muskaqueers.thunderechosaber.NewDB.PartyDB;
@@ -30,9 +29,6 @@ public class FirebaseManager {
     public DatabaseReference firebasePartyReference;
 
     public FirebaseManager() {
-        // Register on the EventBus
-        EventBus.getDefault().register(this);
-
         this.firebaseMlaReference = FirebaseDatabase.getInstance().getReference("MLASJSON");
         this.firebaseMlaReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -90,12 +86,12 @@ public class FirebaseManager {
 
     public void addMLAsToDatabase(List<MLADb> mlaDbs) {
         MLAThread thread = new MLAThread(mlaDbs);
-        thread.start();
+        thread.execute();
 
     }
 
     private void addPartiesToDatabase(List<PartyDB> parties) {
         PartyThread thread = new PartyThread(parties);
-        thread.start();
+        thread.execute();
     }
 }

@@ -5,21 +5,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
-import industries.muskaqueers.thunderechosaber.Events.DatabaseEvent;
+import industries.muskaqueers.thunderechosaber.Events.NewDatabaseEvent;
 import industries.muskaqueers.thunderechosaber.Events.UIEvent;
-import industries.muskaqueers.thunderechosaber.MLA;
-import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
+import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
+import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
 import industries.muskaqueers.thunderechosaber.R;
 
 /**
@@ -30,7 +27,7 @@ public class LeadersFragment extends Fragment {
 
     private static final String TAG = "LeadersFragment";
     private RecyclerView mlaRecyclerView;
-    private List<MLA> mlaList = new ArrayList<>();
+    private List<MLADb> mlaList = new ArrayList<>();
     private LeadersAdapter leadersAdapter;
 
     // ---------- Lifecycle Methods
@@ -60,8 +57,8 @@ public class LeadersFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         // Set the list of the fragment to all MLAs in the DB
-        for (Object mla : DatabaseManager.mlaHelper().getAllObjects())
-            this.mlaList.add((MLA) mla);
+        for (MLADb mla : GreenDatabaseManager.getMlaTable().loadAll())
+            this.mlaList.add(mla);
 
         if(this.mlaList.size()!=0)
             EventBus.getDefault().post(new UIEvent.RemoveSpinner());
@@ -73,23 +70,9 @@ public class LeadersFragment extends Fragment {
         return view;
     }
 
-    /**
-     * EventBus listener
-     *
-     * @param event - Event object that states what the event is for along with containing information such as a specific MLA
-     */
-    public void onEventMainThread(DatabaseEvent event) {
-        if (event.getEventType() == DatabaseEvent.type.UpdateMLAs) {
-            Log.d(TAG, "onEvent: Just got told to update mlas");
-
-            this.mlaList.clear();
-            for (Object mla : DatabaseManager.mlaHelper().getAllObjects())
-                this.mlaList.add((MLA) mla);
-
-            if(this.mlaList.size() != 0)
-                EventBus.getDefault().post(new UIEvent.RemoveSpinner());
-
-            this.leadersAdapter.setMlaList(this.mlaList);
-        }
+    public void onEventMainThread(NewDatabaseEvent.CompletedMLAUpdates completedMLAUpdates){
+        mlaList = GreenDatabaseManager.getMlaTable().loadAll();
+        leadersAdapter.setMlaList(mlaList);
+        leadersAdapter.notifyDataSetChanged();
     }
 }

@@ -16,10 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import industries.muskaqueers.thunderechosaber.DB.DatabaseManager;
 import industries.muskaqueers.thunderechosaber.LLApplication;
 import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
+import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
+import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
+import industries.muskaqueers.thunderechosaber.NewDB.MLADbDao;
+import industries.muskaqueers.thunderechosaber.NewDB.PartyDB;
+import industries.muskaqueers.thunderechosaber.NewDB.PartyDBDao;
 import industries.muskaqueers.thunderechosaber.Party;
 import industries.muskaqueers.thunderechosaber.R;
 
@@ -30,8 +34,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public static final String MLA_IMG_PREFIX = "mla_with_id__";
     private static final int UP_ARROW = android.support.design.R.drawable.abc_ic_ab_back_material;
 
-    private MLA mla;
-    private Party mlaParty;
+    private MLADb mla;
+    private PartyDB mlaParty;
     private Toolbar toolbar;
     private LinearLayout contactBar;
     private CircleImageView profilePicture;
@@ -54,19 +58,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         profilePicture.setImageResource(drawableID);
 
         // If independent - No party
-        this.mlaParty = DatabaseManager.partyHelper().fetchParty(mla.getPartyAbbreviation().toUpperCase());
+        this.mlaParty = GreenDatabaseManager.getPartyTable().queryBuilder().where(PartyDBDao.Properties.PartyId.eq(mla.getPartyAbbreviation().toUpperCase())).unique();
         if (this.mlaParty != null) {
-            coverPhoto.setImageBitmap(this.mlaParty.getImageBitmap());
-            Palette p = Palette.from(this.mlaParty.getImageBitmap()).generate();
-            contactBar.setBackgroundColor(p.getVibrantSwatch().getRgb());
-            final Drawable upArrow = ContextCompat.getDrawable(this, UP_ARROW);
-            upArrow.setColorFilter(p.getVibrantSwatch().getRgb(), PorterDuff.Mode.SRC_ATOP);
-            getSupportActionBar().setHomeAsUpIndicator(upArrow);
+//            coverPhoto.setImageBitmap(this.mlaParty.getImageBitmap());
+//            Palette p = Palette.from(this.mlaParty.getImageBitmap()).generate();
+//            contactBar.setBackgroundColor(p.getVibrantSwatch().getRgb());
+//            final Drawable upArrow = ContextCompat.getDrawable(this, UP_ARROW);
+//            upArrow.setColorFilter(p.getVibrantSwatch().getRgb(), PorterDuff.Mode.SRC_ATOP);
+//            getSupportActionBar().setHomeAsUpIndicator(upArrow);
         } else {
             coverPhoto.setBackgroundResource(R.color.blue1);
         }
 
-        name.setText(mla.getFullName());
+        name.setText(mla.getFirstName() + " " + mla.getLastName());
         partyAbrv.setText(mla.getPartyAbbreviation().toUpperCase());
         title.setText(mla.getTitle());
         partyName.setText(mla.getPartyName());
@@ -107,14 +111,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mla.getEmailAddress()});
         intent.putExtra(Intent.EXTRA_SUBJECT, "Contacting via Local Leaders");
-        intent.putExtra(Intent.EXTRA_TEXT, "Dear " + mla.getFullName() + ", \n\n");
+        intent.putExtra(Intent.EXTRA_TEXT, "Dear " + mla.getFirstName() + " " + mla.getLastName() + ", \n\n");
         startActivity(Intent.createChooser(intent, "Please choose an emailUser client: "));
     }
 
     // ---------- Custom Methods ----------
     private void getIntentData() {
         String mlaID = (String) getIntent().getSerializableExtra(MLA_EXTRA);
-        mla = DatabaseManager.mlaHelper().fetchMlaWithID(mlaID);
+        mla = GreenDatabaseManager.getMlaTable().queryBuilder().where(MLADbDao.Properties.MLA_ID.eq(mlaID)).unique();
         Log.d(TAG, "MLA INFO: " + mla.toString());
     }
 

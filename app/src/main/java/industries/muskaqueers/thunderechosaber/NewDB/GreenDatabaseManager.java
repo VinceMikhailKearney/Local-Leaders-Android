@@ -18,9 +18,6 @@ public class GreenDatabaseManager {
     private static MLADbDao mlaTable;
     private static PartyDBDao partyTable;
 
-    private boolean mlasUpdated = false;
-    private boolean partiesUpdated = false;
-
     public GreenDatabaseManager(LLApplication application) {
         daoSession = application.getDaoSession();
         mlaTable = daoSession.getMLADbDao();
@@ -51,25 +48,7 @@ public class GreenDatabaseManager {
 
     public static void updateTwitterHandles() {
         TwitterThread twitterThread = new TwitterThread();
-        twitterThread.run();
-    }
-
-    public void onEvent(NewDatabaseEvent.FinsihedMLAUpdates finsihedMLAUpdates) {
-        mlasUpdated = true;
-        if (partiesUpdated == true){
-            updateTwitterHandles();
-            mlasUpdated = false;
-            partiesUpdated = false;
-        }
-    }
-
-    public void onEvent(NewDatabaseEvent.FinishedPartyUpdates finishedPartyUpdates){
-        partiesUpdated = true;
-        if (mlasUpdated == true){
-            updateTwitterHandles();
-            partiesUpdated = false;
-            mlasUpdated = false;
-        }
+        twitterThread.execute();
     }
 
 }

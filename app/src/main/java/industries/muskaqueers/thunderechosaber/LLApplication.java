@@ -7,6 +7,8 @@ import com.firebase.client.Firebase;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
+import de.greenrobot.event.EventBus;
+import industries.muskaqueers.thunderechosaber.Events.NewDatabaseEvent;
 import industries.muskaqueers.thunderechosaber.Managers.FirebaseManager;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
@@ -26,9 +28,13 @@ public class LLApplication extends Application {
     private static industries.muskaqueers.thunderechosaber.NewDB.DaoSession daoSession;
     private static GreenDatabaseManager databaseManager;
 
+    private boolean mlasUpdated = false;
+    private boolean partiesUpdated = false;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        EventBus.getDefault().register(this);
         // Let's set up new DB
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "notes-db");
         org.greenrobot.greendao.database.Database db = helper.getWritableDb();
@@ -47,9 +53,33 @@ public class LLApplication extends Application {
         new FirebaseManager();
     }
 
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        EventBus.getDefault().unregister(this);
+    }
+
     public static Context getAppContext() {
         return appContext;
     }
 
     public static industries.muskaqueers.thunderechosaber.NewDB.DaoSession getDaoSession() { return daoSession; }
+
+    public void onEvent(NewDatabaseEvent.FinsihedMLAUpdates finsihedMLAUpdates) {
+        mlasUpdated = true;
+        if (partiesUpdated == true){
+            GreenDatabaseManager.updateTwitterHandles();
+            mlasUpdated = false;
+            partiesUpdated = false;
+        }
+    }
+
+    public void onEvent(NewDatabaseEvent.FinishedPartyUpdates finishedPartyUpdates){
+        partiesUpdated = true;
+        if (mlasUpdated == true){
+            GreenDatabaseManager.updateTwitterHandles();
+            partiesUpdated = false;
+            mlasUpdated = false;
+        }
+    }
 }

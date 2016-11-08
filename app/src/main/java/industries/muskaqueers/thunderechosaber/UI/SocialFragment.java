@@ -12,11 +12,9 @@ import android.view.ViewGroup;
 import java.io.IOException;
 
 import de.greenrobot.event.EventBus;
-import industries.muskaqueers.thunderechosaber.DB.MLADatabaseHelper;
 import industries.muskaqueers.thunderechosaber.Events.TwitterEvent;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.R;
-import industries.muskaqueers.thunderechosaber.Utils.TwitterThread;
 
 /**
  * Created by Andrew on 9/23/16.
@@ -58,7 +56,7 @@ public class SocialFragment extends Fragment {
     public void onEvent(TwitterEvent.RecentTweets event) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        socialAdapter = new SocialAdapter(MLADatabaseHelper.mlaHelper().fetchMlaWithID("5307"), event.getRecentTweets());
+//        socialAdapter = new SocialAdapter(MLADatabaseHelper.mlaHelper().fetchMlaWithID("5307"), event.getRecentTweets());
         recyclerView.setAdapter(socialAdapter);
         socialAdapter.notifyDataSetChanged();
     }

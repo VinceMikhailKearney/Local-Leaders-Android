@@ -13,6 +13,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import industries.muskaqueers.thunderechosaber.LLApplication;
 import industries.muskaqueers.thunderechosaber.MLA;
+import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
 import industries.muskaqueers.thunderechosaber.R;
 
 /**
@@ -22,13 +23,13 @@ import industries.muskaqueers.thunderechosaber.R;
 public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.MLAViewHolder> {
 
     private static final String TAG = "LeadersAdapter";
-    private List<MLA> mlaList;
+    private List<MLADb> mlaList;
 
-    public LeadersAdapter(List<MLA> list) {
+    public LeadersAdapter(List<MLADb> list) {
         setMlaList(list);
     }
 
-    public void setMlaList(List<MLA> list) {
+    public void setMlaList(List<MLADb> list) {
         this.mlaList = list;
         this.notifyDataSetChanged();
     }
@@ -49,13 +50,13 @@ public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.MLAViewH
         return this.mlaList.size();
     }
 
-    public MLA getItem(int position) {
+    public MLADb getItem(int position) {
         return this.mlaList.get(position);
     }
 
     // ---------- Adapter ViewHolder
     public class MLAViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private MLA viewMLA;
+        private MLADb viewMLA;
         private TextView nameTextView, partyTextView, positionTextView;
         private CircleImageView profilePicture;
         private String name, party, position;
@@ -70,9 +71,9 @@ public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.MLAViewH
             itemView.setOnClickListener(this);
         }
 
-        public void setMLA(MLA mla) {
+        public void setMLA(MLADb mla) {
             this.viewMLA = mla;
-            this.name = mla.getFullName();
+            this.name = mla.getFirstName() + " " + mla.getLastName();
             this.party = mla.getPartyName();
             this.position = mla.getTitle();
             String mlaId = String.format("mla_with_id__" + this.viewMLA.getMLA_ID().toString());
