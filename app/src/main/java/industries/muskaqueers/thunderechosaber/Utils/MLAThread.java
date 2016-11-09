@@ -28,8 +28,9 @@ public class MLAThread extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] params) {
         for (MLADb mla : mlaArray) {
-            if (GreenDatabaseManager.addMLA(mla)) Log.d(TAG, "AAC --> Success");
-            else Log.d(TAG, "AAC --> Something went wrong storing the MLA");
+            if (GreenDatabaseManager.addMLA(mla))
+                Log.d(TAG, "Success adding MLA (" + mla.getFirstName() + " " + mla.getLastName() + ")");
+            else Log.d(TAG, "Something went wrong storing the MLA (" + mla.getFirstName() + " " + mla.getLastName() + ")");
         }
         return null;
     }
@@ -37,7 +38,6 @@ public class MLAThread extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
-        Log.d(TAG, "AAC --> Posting FinsihedMLAUpdates");
         EventBus.getDefault().post(new NewDatabaseEvent.FinsihedMLAUpdates());
 
     }

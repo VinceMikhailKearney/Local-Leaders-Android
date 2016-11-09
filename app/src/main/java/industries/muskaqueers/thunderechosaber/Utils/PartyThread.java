@@ -29,8 +29,9 @@ public class PartyThread extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] params) {
         for (PartyDB partyDb : partyList) {
-            if (GreenDatabaseManager.addParty(partyDb)) Log.d(TAG, "AAC --> Success");
-            else Log.d(TAG, "AAC --> Something went wrong storing the MLA");
+            if (GreenDatabaseManager.addParty(partyDb))
+                Log.d(TAG, "Success adding party (" + partyDb.getName() + ")");
+            else Log.d(TAG, "Something went wrong storing the Party (" + partyDb.getName() + ")");
 //            processImage.getDataFromImage(partyDb.getImageURL(), partyDb.getPartyId(), ProcessImage.type.Party);
         }
         return null;
@@ -39,7 +40,6 @@ public class PartyThread extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
-        Log.d(TAG, "AAC --> Posting FinishedPartyUpdates");
         EventBus.getDefault().post(new NewDatabaseEvent.FinishedPartyUpdates());
     }
 }

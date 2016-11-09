@@ -1,60 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:background="@android:color/white"
-    android:padding="10dp"
-    android:layout_marginBottom="0.5dp">
+    android:layout_margin="5dp"
+    app:cardBackgroundColor="@color/tw__solid_white"
+    app:cardCornerRadius="0.5dp"
+    app:cardElevation="1dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_picture"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_gravity="center"
-        android:layout_toLeftOf="@+id/info_layout" />
-
-    <android.support.v7.widget.LinearLayoutCompat
-        android:id="@+id/info_layout"
-        android:paddingLeft="10dp"
+    <LinearLayout
+        android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/name"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_picture"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_gravity="center"
+            android:layout_toLeftOf="@+id/info_layout" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/info_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-bold"
-            android:paddingBottom="2dp"
-            android:paddingTop="5dp"
-            android:textStyle="bold"
-            android:textColor="@color/grey1"
-            tools:text="John Smith" />
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="10dp">
 
-        <TextView
-            android:id="@+id/party_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:textColor="@color/pink1"
-            tools:text="Example Party" />
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-bold"
+                android:paddingBottom="2dp"
+                android:paddingTop="5dp"
+                android:textColor="@color/grey1"
+                android:textStyle="bold"
+                tools:text="John Smith" />
 
-
-        <TextView
-            android:id="@+id/position"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:paddingBottom="5dp"
-            android:paddingTop="2dp"
-            android:textColor="@color/grey1"
-            tools:text="Mayor of RandomTown" />
-
-    </android.support.v7.widget.LinearLayoutCompat>
+            <TextView
+                android:id="@+id/party_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/pink1"
+                tools:text="Example Party" />
 
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/position"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:paddingBottom="5dp"
+                android:paddingTop="2dp"
+                android:textColor="@color/grey1"
+                tools:text="Mayor of RandomTown" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+

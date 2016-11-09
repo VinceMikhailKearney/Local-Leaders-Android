@@ -67,12 +67,10 @@ public class LeadersFragment extends Fragment {
         this.leadersAdapter = new LeadersAdapter(this.mlaList);
         mlaRecyclerView.setLayoutManager(layoutManager);
         mlaRecyclerView.setAdapter(this.leadersAdapter);
-
         return view;
     }
 
     public void onEventMainThread(NewDatabaseEvent.CompletedMLAUpdates completedMLAUpdates){
-        Log.d(TAG, "AAC --> onEvent CompletedMLAUpdates");
         EventBus.getDefault().post(new UIEvent.RemoveSpinner());
         mlaList = GreenDatabaseManager.getMlaTable().loadAll();
         leadersAdapter.setMlaList(mlaList);

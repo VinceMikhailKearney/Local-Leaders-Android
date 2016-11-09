@@ -42,7 +42,6 @@ public class TwitterThread extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
-        Log.d(TAG, "AAC --> Posting CompletedMLAUpdates");
         EventBus.getDefault().post(new NewDatabaseEvent.CompletedMLAUpdates());
     }
 }

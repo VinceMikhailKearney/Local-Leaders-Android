@@ -43,11 +43,9 @@ public class FirebaseManager {
 
                 List<Object> mlaDataSnapShot = (List) dataSnapShotMap.get("mlas");
                 if (GreenDatabaseManager.getMLADBSize() == mlaDataSnapShot.size()) {
-                    Log.d(TAG, "AAC --> There are no difference in the size of MLAs, do not change edit table");
                     return;
                 }
                 List<MLADb> MLAsFromMap = ParserUtils.getMLAsFromMapNew(dataSnapShotMap, "mlas");
-                Log.d(TAG, "AAC --> We got something from parsing the new data and the size of the list is: " + MLAsFromMap.size());
                 addMLAsToDatabase(MLAsFromMap);
             }
 
@@ -68,11 +66,9 @@ public class FirebaseManager {
 
                 List<Object> dataSnapShotArray = (List) dataSnapshot.getValue();
                 if (GreenDatabaseManager.getPartyDBSize() == dataSnapShotArray.size()) {
-                    Log.d(TAG, "AAC --> There are no difference in the size of Parties, do not change edit table");
                     return;
                 }
                 List<PartyDB> partiesFromMap = ParserUtils.getPartiesFromArray(dataSnapShotArray);
-                Log.d(TAG, "AAC --> We got something from parsing the new data and the size of the list is: " + partiesFromMap.size());
                 addPartiesToDatabase(partiesFromMap);
 
             }

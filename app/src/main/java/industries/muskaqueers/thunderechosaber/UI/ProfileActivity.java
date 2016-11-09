@@ -63,12 +63,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 //            coverPhoto.setImageBitmap(this.mlaParty.getImageBitmap());
 //            Palette p = Palette.from(this.mlaParty.getImageBitmap()).generate();
 //            contactBar.setBackgroundColor(p.getVibrantSwatch().getRgb());
-//            final Drawable upArrow = ContextCompat.getDrawable(this, UP_ARROW);
-//            upArrow.setColorFilter(p.getVibrantSwatch().getRgb(), PorterDuff.Mode.SRC_ATOP);
-//            getSupportActionBar().setHomeAsUpIndicator(upArrow);
         } else {
             coverPhoto.setBackgroundResource(R.color.blue1);
         }
+        final Drawable upArrow = ContextCompat.getDrawable(this, UP_ARROW);
+        upArrow.setColorFilter(getResources().getColor(R.color.tw__solid_white), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
 
         name.setText(mla.getFirstName() + " " + mla.getLastName());
         partyAbrv.setText(mla.getPartyAbbreviation().toUpperCase());

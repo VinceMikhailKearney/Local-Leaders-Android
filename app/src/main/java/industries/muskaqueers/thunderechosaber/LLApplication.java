@@ -70,7 +70,6 @@ public class LLApplication extends Application {
     public static industries.muskaqueers.thunderechosaber.NewDB.DaoSession getDaoSession() { return daoSession; }
 
     public void onEvent(NewDatabaseEvent.FinsihedMLAUpdates finsihedMLAUpdates) {
-        Log.d(TAG, "AAC --> onEvent: FinsihedMLAUpdates");
         mlasUpdated = true;
         if (partiesUpdated == true){
             GreenDatabaseManager.updateTwitterHandles();
@@ -80,7 +79,6 @@ public class LLApplication extends Application {
     }
 
     public void onEvent(NewDatabaseEvent.FinishedPartyUpdates finishedPartyUpdates){
-        Log.d(TAG, "AAC --> onEvent: FinishedPartyUpdates");
         partiesUpdated = true;
         if (mlasUpdated == true){
             GreenDatabaseManager.updateTwitterHandles();
