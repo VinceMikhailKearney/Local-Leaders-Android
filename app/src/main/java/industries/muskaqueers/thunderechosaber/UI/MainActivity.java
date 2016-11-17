@@ -13,6 +13,7 @@ import android.widget.ViewSwitcher;
 
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.Events.UIEvent;
+import industries.muskaqueers.thunderechosaber.Managers.ServerManager;
 import industries.muskaqueers.thunderechosaber.R;
 
 //import android.support.v7.widget.RecyclerView;
@@ -43,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setupPager();
         setupTabLayout();
+
+//        ServerManager serverManager = new ServerManager(this);
+
     }
 
     @Override

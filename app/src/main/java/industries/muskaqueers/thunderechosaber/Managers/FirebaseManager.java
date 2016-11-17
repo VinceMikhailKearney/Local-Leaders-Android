@@ -83,7 +83,6 @@ public class FirebaseManager {
     public void addMLAsToDatabase(List<MLADb> mlaDbs) {
         MLAThread thread = new MLAThread(mlaDbs);
         thread.execute();
-
     }
 
     private void addPartiesToDatabase(List<PartyDB> parties) {

@@ -11,6 +11,7 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.Events.NewDatabaseEvent;
 import industries.muskaqueers.thunderechosaber.Managers.FirebaseManager;
+import industries.muskaqueers.thunderechosaber.Managers.ServerManager;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
 import industries.muskaqueers.thunderechosaber.NewDB.DaoMaster;
@@ -51,10 +52,12 @@ public class LLApplication extends Application {
         Fabric.with(this, new Twitter(authConfig));
         twitter = Twitter.getInstance();
         twitterManager = new TwitterManager();
+
+        ServerManager serverManager = new ServerManager(this);
         // Lastly Firebase
-        Firebase.setAndroidContext(this);
+//        Firebase.setAndroidContext(this);
         // We just need to init the FirebaseManager here to pull the information down. We don't need an instance of it.
-        new FirebaseManager();
+//        new FirebaseManager();
     }
 
     @Override

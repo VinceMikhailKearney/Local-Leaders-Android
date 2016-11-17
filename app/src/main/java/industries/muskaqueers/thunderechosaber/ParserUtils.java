@@ -2,6 +2,10 @@ package industries.muskaqueers.thunderechosaber;
 
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,10 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
-import industries.muskaqueers.thunderechosaber.Events.DatabaseEvent;
 import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
 import industries.muskaqueers.thunderechosaber.NewDB.PartyDB;
+import industries.muskaqueers.thunderechosaber.Utils.MLAThread;
 
 /**
  * Created by vincekearney on 25/09/2016.
@@ -24,7 +27,7 @@ public abstract class ParserUtils {
     private static final String ID = "MemberPersonId";
     private static final String FIRST_NAME = "MemberFirstName";
     private static final String LAST_NAME = "MemberLastName";
-    private static final String IMAGE_URL= "MemberImgUrl";
+    private static final String IMAGE_URL = "MemberImgUrl";
     private static final String PARTY_ABRV = "PartyAbbreviation";
     private static final String PARTY_NAME = "PartyName";
     private static final String TITLE = "MemberTitle";
@@ -35,7 +38,7 @@ public abstract class ParserUtils {
 
     /**
      * getMLAsFromMapNew
-     *
+     * <p>
      * Takes a HashMap from the server and rips out the MLA data and returns the data as a list of
      * MLAs
      *
@@ -43,10 +46,10 @@ public abstract class ParserUtils {
      * @param key
      * @return
      */
-    public static List<MLADb> getMLAsFromMapNew(HashMap<String, Object> hashMap, String key){
+    public static List<MLADb> getMLAsFromMapNew(HashMap<String, Object> hashMap, String key) {
         ArrayList<HashMap> allMLAsJSON = (ArrayList) hashMap.get(key);
         List<MLADb> MLAsFromMap = new ArrayList<>();
-        for(HashMap mlaJSON : allMLAsJSON){
+        for (HashMap mlaJSON : allMLAsJSON) {
             MLADb newMLA = new MLADb();
             newMLA.setMLA_ID(stringFromKey(mlaJSON, ID));
             newMLA.setFirstName(stringFromKey(mlaJSON, FIRST_NAME));
@@ -59,6 +62,28 @@ public abstract class ParserUtils {
             MLAsFromMap.add(newMLA);
         }
         return MLAsFromMap;
+    }
+
+    public static List<MLADb> getMLAsFromJSONArray(JSONArray jsonArray) {
+        ArrayList<MLADb> mlaList = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            MLADb newMLA = new MLADb();
+            try {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                newMLA.setMLA_ID(stringFromObject(jsonObject, ID));
+                newMLA.setFirstName(stringFromObject(jsonObject, FIRST_NAME));
+                newMLA.setLastName(stringFromObject(jsonObject, LAST_NAME));
+                newMLA.setImageURL(stringFromObject(jsonObject, IMAGE_URL));
+                newMLA.setPartyAbbreviation(stringFromObject(jsonObject, PARTY_ABRV));
+                newMLA.setPartyName(stringFromObject(jsonObject, PARTY_NAME));
+                newMLA.setTitle(stringFromObject(jsonObject, TITLE));
+                newMLA.setConstituency(stringFromObject(jsonObject, CONSTITUENCY));
+                mlaList.add(newMLA);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return mlaList;
     }
 
     public static List<PartyDB> getPartiesFromArray(List<Object> partyArray) throws NullPointerException {
@@ -129,4 +154,15 @@ public abstract class ParserUtils {
     private static String stringFromKey(HashMap<String, Object> map, String key) {
         return map.get(key).toString();
     }
+
+    private static String stringFromObject(JSONObject json, String key) {
+        String string = null;
+        try {
+            string = json.get(key).toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return string;
+    }
+
 }
