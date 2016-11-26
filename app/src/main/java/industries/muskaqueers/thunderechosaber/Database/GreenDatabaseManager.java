@@ -1,9 +1,7 @@
-package industries.muskaqueers.thunderechosaber.NewDB;
+package industries.muskaqueers.thunderechosaber.Database;
 
 
-import industries.muskaqueers.thunderechosaber.Events.NewDatabaseEvent;
 import industries.muskaqueers.thunderechosaber.LLApplication;
-import industries.muskaqueers.thunderechosaber.Party;
 import industries.muskaqueers.thunderechosaber.Utils.TwitterThread;
 
 /**

@@ -13,10 +13,7 @@ import android.widget.ViewSwitcher;
 
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.Events.NewDatabaseEvent;
-import industries.muskaqueers.thunderechosaber.Events.UIEvent;
-import industries.muskaqueers.thunderechosaber.Managers.ServerManager;
-import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
-import industries.muskaqueers.thunderechosaber.NewDB.MLADbDao;
+import industries.muskaqueers.thunderechosaber.Database.GreenDatabaseManager;
 import industries.muskaqueers.thunderechosaber.R;
 
 //import android.support.v7.widget.RecyclerView;

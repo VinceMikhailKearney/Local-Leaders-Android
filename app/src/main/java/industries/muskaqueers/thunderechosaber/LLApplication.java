@@ -10,8 +10,8 @@ import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.Events.NewDatabaseEvent;
 import industries.muskaqueers.thunderechosaber.Managers.ServerManager;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
-import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
-import industries.muskaqueers.thunderechosaber.NewDB.DaoMaster;
+import industries.muskaqueers.thunderechosaber.Database.GreenDatabaseManager;
+import industries.muskaqueers.thunderechosaber.Database.DaoMaster;
 import io.fabric.sdk.android.Fabric;
 
 public class LLApplication extends Application {
@@ -27,7 +27,7 @@ public class LLApplication extends Application {
     public static Twitter twitter;
     public static TwitterManager twitterManager;
     // Local Database
-    private static industries.muskaqueers.thunderechosaber.NewDB.DaoSession daoSession;
+    private static industries.muskaqueers.thunderechosaber.Database.DaoSession daoSession;
     private static GreenDatabaseManager databaseManager;
 
     private boolean mlasUpdated = false;
@@ -64,7 +64,7 @@ public class LLApplication extends Application {
         return appContext;
     }
 
-    public static industries.muskaqueers.thunderechosaber.NewDB.DaoSession getDaoSession() { return daoSession; }
+    public static industries.muskaqueers.thunderechosaber.Database.DaoSession getDaoSession() { return daoSession; }
 
     public void onEvent(NewDatabaseEvent.FinsihedMLAUpdates finsihedMLAUpdates) {
         mlasUpdated = true;

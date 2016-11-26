@@ -1,4 +1,4 @@
-package industries.muskaqueers.thunderechosaber.NewDB;
+package industries.muskaqueers.thunderechosaber.Database;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;

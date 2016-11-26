@@ -13,9 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
-import industries.muskaqueers.thunderechosaber.NewDB.PartyDB;
-import industries.muskaqueers.thunderechosaber.Utils.MLAThread;
+import industries.muskaqueers.thunderechosaber.Database.MLADb;
+import industries.muskaqueers.thunderechosaber.Database.PartyDB;
 
 /**
  * Created by vincekearney on 25/09/2016.

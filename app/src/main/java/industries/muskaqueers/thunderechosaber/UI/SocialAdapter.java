@@ -12,7 +12,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import industries.muskaqueers.thunderechosaber.MLA;
+import industries.muskaqueers.thunderechosaber.Database.MLADb;
 import industries.muskaqueers.thunderechosaber.R;
 
 /**
@@ -23,9 +23,9 @@ public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.MLAViewHol
 
     private static final String TAG = "LeadersAdapter";
     private List<String> tweetList;
-    private MLA mla;
+    private MLADb mla;
 
-    public SocialAdapter(MLA mla, List<String> tweetList) {
+    public SocialAdapter(MLADb mla, List<String> tweetList) {
         this.mla = mla;
         setTweetList(tweetList);
     }
@@ -65,7 +65,7 @@ public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.MLAViewHol
 
     // ---------- Adapter ViewHolder
     public class MLAViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private MLA viewMLA;
+        private MLADb viewMLA;
         private TextView nameTextView, tweetBodyView;
         private CircleImageView profilePicture;
         private String name, tweetBody;
@@ -79,16 +79,14 @@ public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.MLAViewHol
             itemView.setOnClickListener(this);
         }
 
-        public void setTweet(MLA mla, String tweetBody) {
+        public void setTweet(MLADb mla, String tweetBody) {
             this.viewMLA = mla;
             this.tweetBody = tweetBody;
             if(mla!=null) {
-                this.name = mla.getFullName();
-                this.bitmap = mla.getImageBitmap();
-
+                this.name = mla.getFirstName() + " " + mla.getLastName();
 
                 if (bitmap != null) {
-                    Log.d(TAG, "setMLA: Bitmap is NOT null. MLA Name = " + mla.getFullName());
+                    Log.d(TAG, "setMLA: Bitmap is NOT null. MLA Name = " + mla.getFirstName() + " " + mla.getLastName());
                     this.profilePicture.setImageBitmap(this.bitmap);
                 }
             } else {

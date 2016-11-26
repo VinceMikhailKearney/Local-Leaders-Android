@@ -1,14 +1,12 @@
 package industries.muskaqueers.thunderechosaber.Utils;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.Events.NewDatabaseEvent;
-import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
-import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
-import industries.muskaqueers.thunderechosaber.NewDB.MLADbDao;
-import industries.muskaqueers.thunderechosaber.NewDB.PartyDB;
+import industries.muskaqueers.thunderechosaber.Database.GreenDatabaseManager;
+import industries.muskaqueers.thunderechosaber.Database.MLADb;
+import industries.muskaqueers.thunderechosaber.Database.MLADbDao;
 import industries.muskaqueers.thunderechosaber.ParserUtils;
 
 /**

@@ -7,9 +7,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -18,8 +16,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
-import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
+import industries.muskaqueers.thunderechosaber.Database.GreenDatabaseManager;
+import industries.muskaqueers.thunderechosaber.Database.MLADb;
 import industries.muskaqueers.thunderechosaber.ParserUtils;
 import industries.muskaqueers.thunderechosaber.Utils.MLAThread;
 
@@ -33,20 +31,19 @@ public class ServerManager {
 
     private final static String MLA_POINT = "https://localleaders.herokuapp.com/leaders/mlas/";
     private final static String PARTIES_POINT = "https://localleaders.herokuapp.com/leaders/parties/";
+    private final static String RESPONSE = "response";
 
     public ServerManager(Context context) {
 
         if(GreenDatabaseManager.getMlaTable().loadAll().isEmpty()) {
             RequestQueue requestQueue = Volley.newRequestQueue(context);
-
             JsonObjectRequest jsObjRequest = new JsonObjectRequest
                     (Request.Method.GET, MLA_POINT, null, new Response.Listener<JSONObject>() {
 
                         @Override
                         public void onResponse(JSONObject response) {
-                            Log.d(TAG, "AAC --> We got a response: " + response.toString());
                             try {
-                                JSONArray jsonArray = response.getJSONArray("response");
+                                JSONArray jsonArray = response.getJSONArray(RESPONSE);
                                 List<MLADb> mlaDbs = ParserUtils.getMLAsFromJSONArray(jsonArray);
                                 addMLAsToDatabase(mlaDbs);
                             } catch (JSONException e) {
@@ -57,7 +54,7 @@ public class ServerManager {
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.d(TAG, "AAC --> We got an error: " + error.toString());
+                            Log.d(TAG, "We got an error: " + error.toString());
                         }
                     });
 

@@ -2,8 +2,7 @@ package industries.muskaqueers.thunderechosaber.Events;
 
 import java.util.List;
 
-import industries.muskaqueers.thunderechosaber.MLA;
-import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
+import industries.muskaqueers.thunderechosaber.Database.MLADb;
 
 /**
  * Created by vincekearney on 30/09/2016.

@@ -7,8 +7,8 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.Events.NewDatabaseEvent;
-import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
-import industries.muskaqueers.thunderechosaber.NewDB.PartyDB;
+import industries.muskaqueers.thunderechosaber.Database.GreenDatabaseManager;
+import industries.muskaqueers.thunderechosaber.Database.PartyDB;
 
 /**
  * Created by vincekearney on 23/10/2016.

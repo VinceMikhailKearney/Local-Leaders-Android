@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,8 @@ import java.util.List;
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.Events.NewDatabaseEvent;
 import industries.muskaqueers.thunderechosaber.Events.UIEvent;
-import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
-import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
+import industries.muskaqueers.thunderechosaber.Database.GreenDatabaseManager;
+import industries.muskaqueers.thunderechosaber.Database.MLADb;
 import industries.muskaqueers.thunderechosaber.R;
 
 /**

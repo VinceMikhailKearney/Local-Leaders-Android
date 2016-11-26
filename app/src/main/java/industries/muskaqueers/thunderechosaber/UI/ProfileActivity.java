@@ -18,11 +18,11 @@ import android.widget.TextView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import industries.muskaqueers.thunderechosaber.LLApplication;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
-import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
-import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
-import industries.muskaqueers.thunderechosaber.NewDB.MLADbDao;
-import industries.muskaqueers.thunderechosaber.NewDB.PartyDB;
-import industries.muskaqueers.thunderechosaber.NewDB.PartyDBDao;
+import industries.muskaqueers.thunderechosaber.Database.GreenDatabaseManager;
+import industries.muskaqueers.thunderechosaber.Database.MLADb;
+import industries.muskaqueers.thunderechosaber.Database.MLADbDao;
+import industries.muskaqueers.thunderechosaber.Database.PartyDB;
+import industries.muskaqueers.thunderechosaber.Database.PartyDBDao;
 import industries.muskaqueers.thunderechosaber.R;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {

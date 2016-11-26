@@ -6,10 +6,9 @@ import android.util.Log;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import industries.muskaqueers.thunderechosaber.Events.DatabaseEvent;
 import industries.muskaqueers.thunderechosaber.Events.NewDatabaseEvent;
-import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
-import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
+import industries.muskaqueers.thunderechosaber.Database.GreenDatabaseManager;
+import industries.muskaqueers.thunderechosaber.Database.MLADb;
 
 /**
  * Created by vincekearney on 17/10/2016.
