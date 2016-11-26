@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.twitter.sdk.android.tweetui.TweetView;
+
 import java.io.IOException;
 
 import de.greenrobot.event.EventBus;
@@ -31,7 +33,7 @@ public class SocialFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
     }
 
     @Nullable
@@ -47,18 +49,20 @@ public class SocialFragment extends Fragment {
     public void onStart() {
         super.onStart();
         try {
-            TwitterManager.getTweetsForUser("@AndyAllen88");
+            TwitterManager.getTweetsForUser("@_AndrewAAC");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-//    public void onEvent(TwitterEvent.RecentTweets event) {
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
-//        recyclerView.setLayoutManager(linearLayoutManager);
-////        socialAdapter = new SocialAdapter(MLADatabaseHelper.mlaHelper().fetchMlaWithID("5307"), event.getRecentTweets());
-//        recyclerView.setAdapter(socialAdapter);
-//        socialAdapter.notifyDataSetChanged();
-//    }
+
+
+    public void onEventMainThread(TwitterEvent.RecentTweets event) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        socialAdapter = new SocialAdapter(event.getRecentTweets());
+        recyclerView.setAdapter(socialAdapter);
+        socialAdapter.notifyDataSetChanged();
+    }
 
 }

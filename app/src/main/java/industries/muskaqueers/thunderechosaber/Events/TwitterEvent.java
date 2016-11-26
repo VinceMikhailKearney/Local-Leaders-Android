@@ -1,5 +1,8 @@
 package industries.muskaqueers.thunderechosaber.Events;
 
+import com.twitter.sdk.android.core.models.Tweet;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,13 +15,13 @@ public class TwitterEvent {
 
     public static class RecentTweets {
 
-        private List<String> recentTweets;
+        private ArrayList<Tweet> recentTweets;
 
-        public RecentTweets(List<String> recentTweets) {
+        public RecentTweets(ArrayList<Tweet> recentTweets) {
             this.recentTweets = recentTweets;
         }
 
-        public List<String> getRecentTweets() {
+        public ArrayList<Tweet> getRecentTweets() {
             return recentTweets;
         }
     }

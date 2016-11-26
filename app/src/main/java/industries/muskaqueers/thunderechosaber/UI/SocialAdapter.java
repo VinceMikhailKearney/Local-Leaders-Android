@@ -1,108 +1,62 @@
 package industries.muskaqueers.thunderechosaber.UI;
 
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.Adapter;
+import android.widget.FrameLayout;
+import android.widget.ListAdapter;
 
-import java.util.List;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.tweetui.CompactTweetView;
+import com.twitter.sdk.android.tweetui.TweetView;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-import industries.muskaqueers.thunderechosaber.Database.MLADb;
+import java.util.ArrayList;
+
 import industries.muskaqueers.thunderechosaber.R;
 
 /**
- * Created by vincekearney on 24/09/2016.
+ * Created by andrewcunningham on 11/26/16.
  */
 
-public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.MLAViewHolder> {
+public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.LLTweetView> {
 
-    private static final String TAG = "LeadersAdapter";
-    private List<String> tweetList;
-    private MLADb mla;
+    private ArrayList<Tweet> tweetArrayList = new ArrayList<>();
 
-    public SocialAdapter(MLADb mla, List<String> tweetList) {
-        this.mla = mla;
-        setTweetList(tweetList);
-    }
-
-    public SocialAdapter(List<String> tweetList){
-        Log.d(TAG, "We have got a tweetList: " + tweetList);
-        this.mla = null;
-        setTweetList(tweetList);
-    }
-
-    public SocialAdapter(){}
-
-    public void setTweetList(List<String> tweetList) {
-        this.tweetList = tweetList;
-        this.notifyDataSetChanged();
+    public SocialAdapter(ArrayList<Tweet> tweetArrayList){
+        this.tweetArrayList = tweetArrayList;
     }
 
     @Override
-    public MLAViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public LLTweetView onCreateViewHolder(ViewGroup parent, int viewType) {
         final View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_tweet, parent, false);
-        return new MLAViewHolder(itemView);
+        return new LLTweetView(itemView);
     }
 
     @Override
-    public void onBindViewHolder(MLAViewHolder holder, int position) {
-        holder.setTweet(mla, getItem(position));
+    public void onBindViewHolder(LLTweetView holder, int position) {
+        holder.bind(tweetArrayList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return this.tweetList.size();
+        return tweetArrayList.size();
     }
 
-    public String getItem(int position) {
-        return this.tweetList.get(position);
-    }
+    public class LLTweetView extends RecyclerView.ViewHolder{
 
-    // ---------- Adapter ViewHolder
-    public class MLAViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private MLADb viewMLA;
-        private TextView nameTextView, tweetBodyView;
-        private CircleImageView profilePicture;
-        private String name, tweetBody;
-        private Bitmap bitmap;
+        private FrameLayout mainLayout;
 
-        public MLAViewHolder(View itemView) {
+        public LLTweetView(View itemView) {
             super(itemView);
-            nameTextView = (TextView) itemView.findViewById(R.id.name);
-            tweetBodyView = (TextView) itemView.findViewById(R.id.tweet_body);
-            profilePicture = (CircleImageView) itemView.findViewById(R.id.profile_picture);
-            itemView.setOnClickListener(this);
+            mainLayout = (FrameLayout) itemView.findViewById(R.id.frame_layout);
         }
 
-        public void setTweet(MLADb mla, String tweetBody) {
-            this.viewMLA = mla;
-            this.tweetBody = tweetBody;
-            if(mla!=null) {
-                this.name = mla.getFirstName() + " " + mla.getLastName();
-
-                if (bitmap != null) {
-                    Log.d(TAG, "setMLA: Bitmap is NOT null. MLA Name = " + mla.getFirstName() + " " + mla.getLastName());
-                    this.profilePicture.setImageBitmap(this.bitmap);
-                }
-            } else {
-            }
-
-            setTextViews();
-        }
-
-        private void setTextViews() {
-            if(mla!=null)this.nameTextView.setText(name);
-            this.tweetBodyView.setText(tweetBody);
-        }
-
-        @Override
-        public void onClick(View view) {
-            Toast.makeText(view.getContext(), "Do Something", Toast.LENGTH_SHORT).show();
+        public void bind(Tweet tweet){
+            CompactTweetView tweetView = new CompactTweetView(itemView.getContext(), tweet);
+            mainLayout.addView(tweetView);
         }
     }
+
 }

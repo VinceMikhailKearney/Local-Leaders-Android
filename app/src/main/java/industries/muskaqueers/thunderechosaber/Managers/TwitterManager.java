@@ -41,7 +41,7 @@ public class TwitterManager {
         }
         Log.d(TAG, "We are getting tweets for user: " + username);
 
-        final List<Tweet> tweetList = new ArrayList<>();
+        final ArrayList<Tweet> tweetList = new ArrayList<>();
         final List<String> tweetListBody = new ArrayList<>();
 
         SearchService searchService = LLApplication.twitter.core.getApiClient().getSearchService();
@@ -54,7 +54,7 @@ public class TwitterManager {
                                  tweetList.add(tweet);
                                  tweetListBody.add(tweet.text);
                              }
-                             EventBus.getDefault().post(new TwitterEvent.RecentTweets(tweetListBody));
+                             EventBus.getDefault().post(new TwitterEvent.RecentTweets(tweetList));
                          }
 
                          @Override
