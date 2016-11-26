@@ -12,8 +12,11 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ViewSwitcher;
 
 import de.greenrobot.event.EventBus;
+import industries.muskaqueers.thunderechosaber.Events.NewDatabaseEvent;
 import industries.muskaqueers.thunderechosaber.Events.UIEvent;
 import industries.muskaqueers.thunderechosaber.Managers.ServerManager;
+import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
+import industries.muskaqueers.thunderechosaber.NewDB.MLADbDao;
 import industries.muskaqueers.thunderechosaber.R;
 
 //import android.support.v7.widget.RecyclerView;
@@ -44,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setupPager();
         setupTabLayout();
-
-//        ServerManager serverManager = new ServerManager(this);
 
     }
 
@@ -97,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
         if (tabLayout.getTabCount() > 0) {
             updateTabTitle(tabLayout.getTabAt(fragmentPager.getCurrentItem()));
         }
+        int gotMLAS = GreenDatabaseManager.getMlaTable().loadAll().isEmpty() ? 0 : 1;
+        viewSwitcher.setDisplayedChild(gotMLAS);
     }
 
     public void setupTabLayout() {
@@ -148,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // ---------- Event Handler ----------
-    public void onEventMainThread(UIEvent.RemoveSpinner removeSpinner) {
+    public void onEventMainThread(NewDatabaseEvent.FinsihedMLAUpdates removeSpinner) {
         viewSwitcher.setDisplayedChild(1);
     }
 }

@@ -6,10 +6,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,14 +17,12 @@ import android.widget.TextView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import industries.muskaqueers.thunderechosaber.LLApplication;
-import industries.muskaqueers.thunderechosaber.MLA;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
 import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
 import industries.muskaqueers.thunderechosaber.NewDB.MLADbDao;
 import industries.muskaqueers.thunderechosaber.NewDB.PartyDB;
 import industries.muskaqueers.thunderechosaber.NewDB.PartyDBDao;
-import industries.muskaqueers.thunderechosaber.Party;
 import industries.muskaqueers.thunderechosaber.R;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
@@ -42,6 +40,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private ImageView coverPhoto;
     private TextView name, partyAbrv, title, partyName, constituency;
     private ImageButton tweetButton, emailButton;
+    private FrameLayout tweetButtonFrame, emailButtonFrame;
 
     // ---------- Lifecycle Methods ----------
     @Override
@@ -59,13 +58,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         // If independent - No party
         this.mlaParty = GreenDatabaseManager.getPartyTable().queryBuilder().where(PartyDBDao.Properties.PartyId.eq(mla.getPartyAbbreviation().toUpperCase())).unique();
-        if (this.mlaParty != null) {
-//            coverPhoto.setImageBitmap(this.mlaParty.getImageBitmap());
-//            Palette p = Palette.from(this.mlaParty.getImageBitmap()).generate();
-//            contactBar.setBackgroundColor(p.getVibrantSwatch().getRgb());
-        } else {
-            coverPhoto.setBackgroundResource(R.color.blue1);
-        }
+        coverPhoto.setBackgroundResource(R.color.blue1);
         final Drawable upArrow = ContextCompat.getDrawable(this, UP_ARROW);
         upArrow.setColorFilter(getResources().getColor(R.color.tw__solid_white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
@@ -78,10 +71,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         partyName.setText(mla.getPartyName());
         constituency.setText(mla.getConstituency());
 
-        int twitterAvailable = mla.getTwitterHandle() != null ? View.VISIBLE : View.GONE;
-        tweetButton.setVisibility(twitterAvailable);
+        int twitterAvailable = !mla.getTwitterHandle().isEmpty() ? View.VISIBLE : View.GONE;
+        tweetButtonFrame.setVisibility(twitterAvailable);
         int emailAvailable = !mla.getEmailAddress().isEmpty() ? View.VISIBLE : View.GONE;
-        emailButton.setVisibility(emailAvailable);
+        emailButtonFrame.setVisibility(emailAvailable);
 
         tweetButton.setOnClickListener(this);
         emailButton.setOnClickListener(this);
@@ -91,10 +84,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tweet_button: {
+            case R.id.tweet_button:
                 tweetUser();
                 break;
-            }
             case R.id.email_button:
                 emailUser();
                 break;
@@ -114,7 +106,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mla.getEmailAddress()});
         intent.putExtra(Intent.EXTRA_SUBJECT, "Contacting via Local Leaders");
         intent.putExtra(Intent.EXTRA_TEXT, "Dear " + mla.getFirstName() + " " + mla.getLastName() + ", \n\n");
-        startActivity(Intent.createChooser(intent, "Please choose an emailUser client: "));
+        startActivity(Intent.createChooser(intent, "Please choose an email client: "));
     }
 
     // ---------- Custom Methods ----------
@@ -136,9 +128,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         constituency = (TextView) findViewById(R.id.constituency);
         tweetButton = (ImageButton) findViewById(R.id.tweet_button);
         emailButton = (ImageButton) findViewById(R.id.email_button);
+        tweetButtonFrame = (FrameLayout) findViewById(R.id.tweet_frame);
+        emailButtonFrame = (FrameLayout) findViewById(R.id.email_frame);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        try {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch(NullPointerException e){
+            Log.d(TAG, "There was a problem setting the Home as Up button");
+        }
     }
 
 

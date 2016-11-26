@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
 import industries.muskaqueers.thunderechosaber.NewDB.MLADb;
 import industries.muskaqueers.thunderechosaber.ParserUtils;
 import industries.muskaqueers.thunderechosaber.Utils.MLAThread;
@@ -35,31 +36,33 @@ public class ServerManager {
 
     public ServerManager(Context context) {
 
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        if(GreenDatabaseManager.getMlaTable().loadAll().isEmpty()) {
+            RequestQueue requestQueue = Volley.newRequestQueue(context);
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, MLA_POINT, null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                    (Request.Method.GET, MLA_POINT, null, new Response.Listener<JSONObject>() {
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d(TAG, "AAC --> We got a response: " + response.toString());
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("response");
-                            List<MLADb> mlaDbs = ParserUtils.getMLAsFromJSONArray(jsonArray);
-                            addMLAsToDatabase(mlaDbs);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d(TAG, "AAC --> We got a response: " + response.toString());
+                            try {
+                                JSONArray jsonArray = response.getJSONArray("response");
+                                List<MLADb> mlaDbs = ParserUtils.getMLAsFromJSONArray(jsonArray);
+                                addMLAsToDatabase(mlaDbs);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }, new Response.ErrorListener() {
+                    }, new Response.ErrorListener() {
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "AAC --> We got an error: " + error.toString());
-                    }
-                });
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d(TAG, "AAC --> We got an error: " + error.toString());
+                        }
+                    });
 
-        requestQueue.add(jsObjRequest);
+            requestQueue.add(jsObjRequest);
+        }
 
     }
 

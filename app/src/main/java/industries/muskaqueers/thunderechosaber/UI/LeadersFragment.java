@@ -70,6 +70,7 @@ public class LeadersFragment extends Fragment {
         return view;
     }
 
+    // ---------- Event Handlers ----------
     public void onEventMainThread(NewDatabaseEvent.CompletedMLAUpdates completedMLAUpdates){
         EventBus.getDefault().post(new UIEvent.RemoveSpinner());
         mlaList = GreenDatabaseManager.getMlaTable().loadAll();

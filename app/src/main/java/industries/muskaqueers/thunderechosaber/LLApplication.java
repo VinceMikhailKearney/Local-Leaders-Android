@@ -2,15 +2,12 @@ package industries.muskaqueers.thunderechosaber;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
-import com.firebase.client.Firebase;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
 import de.greenrobot.event.EventBus;
 import industries.muskaqueers.thunderechosaber.Events.NewDatabaseEvent;
-import industries.muskaqueers.thunderechosaber.Managers.FirebaseManager;
 import industries.muskaqueers.thunderechosaber.Managers.ServerManager;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.NewDB.GreenDatabaseManager;
@@ -40,6 +37,7 @@ public class LLApplication extends Application {
     public void onCreate() {
         super.onCreate();
         EventBus.getDefault().register(this);
+
         // Let's set up new DB
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "notes-db");
         org.greenrobot.greendao.database.Database db = helper.getWritableDb();
@@ -54,10 +52,6 @@ public class LLApplication extends Application {
         twitterManager = new TwitterManager();
 
         ServerManager serverManager = new ServerManager(this);
-        // Lastly Firebase
-//        Firebase.setAndroidContext(this);
-        // We just need to init the FirebaseManager here to pull the information down. We don't need an instance of it.
-//        new FirebaseManager();
     }
 
     @Override

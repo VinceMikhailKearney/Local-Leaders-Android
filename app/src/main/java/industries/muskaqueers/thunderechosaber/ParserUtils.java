@@ -24,45 +24,19 @@ import industries.muskaqueers.thunderechosaber.Utils.MLAThread;
 public abstract class ParserUtils {
     private static final String TAG = "ParserUtils";
 
-    private static final String ID = "MemberPersonId";
-    private static final String FIRST_NAME = "MemberFirstName";
-    private static final String LAST_NAME = "MemberLastName";
-    private static final String IMAGE_URL = "MemberImgUrl";
-    private static final String PARTY_ABRV = "PartyAbbreviation";
-    private static final String PARTY_NAME = "PartyName";
-    private static final String TITLE = "MemberTitle";
-    private static final String CONSTITUENCY = "ConstituencyName";
+    private static final String ID = "key";
+    private static final String FIRST_NAME = "firstName";
+    private static final String LAST_NAME = "lastName";
+    private static final String IMAGE_URL = "imageURL";
+    private static final String PARTY_ABRV = "party";
+    private static final String PARTY_NAME = "partyName";
+    private static final String TITLE = "title";
+    private static final String CONSTITUENCY = "constituency";
+    private static final String TWITTER_HANDLE = "twitter";
+    private static final String EMAIL_ADDRESS = "email";
 
     private static final int TWITTER_ROW_DATA = 13;
     private static final int EMAIL_ROW_DATA = 7;
-
-    /**
-     * getMLAsFromMapNew
-     * <p>
-     * Takes a HashMap from the server and rips out the MLA data and returns the data as a list of
-     * MLAs
-     *
-     * @param hashMap
-     * @param key
-     * @return
-     */
-    public static List<MLADb> getMLAsFromMapNew(HashMap<String, Object> hashMap, String key) {
-        ArrayList<HashMap> allMLAsJSON = (ArrayList) hashMap.get(key);
-        List<MLADb> MLAsFromMap = new ArrayList<>();
-        for (HashMap mlaJSON : allMLAsJSON) {
-            MLADb newMLA = new MLADb();
-            newMLA.setMLA_ID(stringFromKey(mlaJSON, ID));
-            newMLA.setFirstName(stringFromKey(mlaJSON, FIRST_NAME));
-            newMLA.setLastName(stringFromKey(mlaJSON, LAST_NAME));
-            newMLA.setImageURL(stringFromKey(mlaJSON, IMAGE_URL));
-            newMLA.setPartyAbbreviation(stringFromKey(mlaJSON, PARTY_ABRV));
-            newMLA.setPartyName(stringFromKey(mlaJSON, PARTY_NAME));
-            newMLA.setTitle(stringFromKey(mlaJSON, TITLE));
-            newMLA.setConstituency(stringFromKey(mlaJSON, CONSTITUENCY));
-            MLAsFromMap.add(newMLA);
-        }
-        return MLAsFromMap;
-    }
 
     public static List<MLADb> getMLAsFromJSONArray(JSONArray jsonArray) {
         ArrayList<MLADb> mlaList = new ArrayList<>();
@@ -70,6 +44,7 @@ public abstract class ParserUtils {
             MLADb newMLA = new MLADb();
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
+                Log.d(TAG, "AAC --> JSONObject: " + jsonObject.toString());
                 newMLA.setMLA_ID(stringFromObject(jsonObject, ID));
                 newMLA.setFirstName(stringFromObject(jsonObject, FIRST_NAME));
                 newMLA.setLastName(stringFromObject(jsonObject, LAST_NAME));
@@ -78,6 +53,8 @@ public abstract class ParserUtils {
                 newMLA.setPartyName(stringFromObject(jsonObject, PARTY_NAME));
                 newMLA.setTitle(stringFromObject(jsonObject, TITLE));
                 newMLA.setConstituency(stringFromObject(jsonObject, CONSTITUENCY));
+                newMLA.setTwitterHandle(stringFromObject(jsonObject, TWITTER_HANDLE));
+                newMLA.setEmailAddress(stringFromObject(jsonObject, EMAIL_ADDRESS));
                 mlaList.add(newMLA);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -156,7 +133,7 @@ public abstract class ParserUtils {
     }
 
     private static String stringFromObject(JSONObject json, String key) {
-        String string = null;
+        String string = "";
         try {
             string = json.get(key).toString();
         } catch (JSONException e) {
