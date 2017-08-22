@@ -10,9 +10,10 @@ def fetchJSONfile(str):
     print "Changed dir to store images"
     req = urllib2.Request(str)
     opener = urllib2.build_opener()
-    f = opener.open(req)
-    jsonResponse = json.loads(f.read())
-    for i in jsonResponse:
+    file = opener.open(req)
+    jsonResponse = json.loads(file.read())
+    jsonArray = jsonResponse['response']
+    for i in jsonArray:
         downloadImageFromUrl(i['MemberImgUrl'], i['MemberName'])
 
 def downloadImageFromUrl(url, name):
