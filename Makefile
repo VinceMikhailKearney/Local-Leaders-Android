@@ -2,7 +2,7 @@ v:
 	vim app/src/main/java/industries/muskaqueers/thunderechosaber/Scripts/fetch_images.py
 
 images:
-	python app/src/main/java/industries/muskaqueers/thunderechosaber/Scripts/fetch_images.py http://127.0.0.1:8000/leaders/plainMlaData/
+	python app/src/main/java/industries/muskaqueers/thunderechosaber/Scripts/fetch_images.py https://vincetestaccount.herokuapp.com/leaders/plainMlaData/
 
 partyImages:
-	python app/src/main/java/industries/muskaqueers/thunderechosaber/Scripts/fetchPartyImages.py http://127.0.0.1:8000/leaders/parties/
+	python app/src/main/java/industries/muskaqueers/thunderechosaber/Scripts/fetchPartyImages.py https://vincetestaccount.herokuapp.com/leaders/parties/
