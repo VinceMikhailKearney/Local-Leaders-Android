@@ -14,6 +14,10 @@ import com.twitter.sdk.android.tweetui.TweetView;
 import java.io.IOException;
 
 import de.greenrobot.event.EventBus;
+import industries.muskaqueers.thunderechosaber.Database.GreenDatabaseManager;
+import industries.muskaqueers.thunderechosaber.Database.MLADb;
+import industries.muskaqueers.thunderechosaber.Database.MLADbDao;
+import industries.muskaqueers.thunderechosaber.Database.PartyDBDao;
 import industries.muskaqueers.thunderechosaber.Events.TwitterEvent;
 import industries.muskaqueers.thunderechosaber.Managers.TwitterManager;
 import industries.muskaqueers.thunderechosaber.R;
@@ -44,18 +48,15 @@ public class SocialFragment extends Fragment {
         return view;
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
         try {
-            TwitterManager.getTweetsForUser("@_AndrewAAC");
+            TwitterManager.getTweetsForUser(GreenDatabaseManager.getMlaWithName("Michaela","Boyle").getTwitterHandle());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
 
     public void onEventMainThread(TwitterEvent.RecentTweets event) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());

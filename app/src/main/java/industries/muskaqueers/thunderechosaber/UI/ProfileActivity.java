@@ -30,12 +30,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private static final String TAG = "ProfileActivity";
     public static final String MLA_EXTRA = "MLA_EXTRA";
     public static final String MLA_IMG_PREFIX = "mla_with_id__";
+    public static final String PARTY_IMG_PREFIX = "party_with_id__";
     private static final int UP_ARROW = android.support.design.R.drawable.abc_ic_ab_back_material;
 
     private MLADb mla;
     private PartyDB mlaParty;
     private Toolbar toolbar;
-    private LinearLayout contactBar;
     private CircleImageView profilePicture;
     private ImageView coverPhoto;
     private TextView name, partyAbrv, title, partyName, constituency;
@@ -52,13 +52,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         bindUI();
 
+        // MLA profile photo
         String mlaId = String.format(MLA_IMG_PREFIX + mla.getMLA_ID().toString());
-        int drawableID = LLApplication.getAppContext().getResources().getIdentifier(mlaId, "drawable", LLApplication.getAppContext().getPackageName());
-        profilePicture.setImageResource(drawableID);
+        int mlaDrawableId = LLApplication.getAppContext().getResources().getIdentifier(mlaId, "drawable", LLApplication.getAppContext().getPackageName());
+        profilePicture.setImageResource(mlaDrawableId);
 
-        // If independent - No party
         this.mlaParty = GreenDatabaseManager.getPartyTable().queryBuilder().where(PartyDBDao.Properties.PartyId.eq(mla.getPartyAbbreviation().toUpperCase())).unique();
-        coverPhoto.setBackgroundResource(R.color.blue1);
+
+        // Party cover photo - Not showing at the minute as the latest design does not make use of it.
+//        String partyID = String.format(PARTY_IMG_PREFIX + mlaParty.getPartyId().toLowerCase());
+//        int partyDrawable = LLApplication.getAppContext().getResources().getIdentifier(partyID, "drawable", LLApplication.getAppContext().getPackageName());
+//        coverPhoto.setImageResource(partyDrawable);
+
+        // Back arrow
         final Drawable upArrow = ContextCompat.getDrawable(this, UP_ARROW);
         upArrow.setColorFilter(getResources().getColor(R.color.tw__solid_white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
@@ -118,9 +124,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void bindUI() {
         profilePicture = (CircleImageView) findViewById(R.id.profile_picture);
-        coverPhoto = (ImageView) findViewById(R.id.cover_photo);
+//        coverPhoto = (ImageView) findViewById(R.id.cover_photo);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        contactBar = (LinearLayout) findViewById(R.id.contact_bar);
         name = (TextView) findViewById(R.id.name);
         partyAbrv = (TextView) findViewById(R.id.party_abrv);
         title = (TextView) findViewById(R.id.title);
@@ -134,10 +139,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         setSupportActionBar(toolbar);
         try {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } catch(NullPointerException e){
+        } catch (NullPointerException e) {
             Log.d(TAG, "There was a problem setting the Home as Up button");
         }
     }
-
-
 }

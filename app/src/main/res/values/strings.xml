@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Local Leaders</string>
+    <string name="placeholder">Showing Tweets for Michaela Boyle</string>
 </resources>

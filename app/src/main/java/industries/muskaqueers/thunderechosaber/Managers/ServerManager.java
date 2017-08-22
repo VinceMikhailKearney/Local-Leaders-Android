@@ -20,8 +20,10 @@ import java.util.List;
 
 import industries.muskaqueers.thunderechosaber.Database.GreenDatabaseManager;
 import industries.muskaqueers.thunderechosaber.Database.MLADb;
+import industries.muskaqueers.thunderechosaber.Database.PartyDB;
 import industries.muskaqueers.thunderechosaber.ParserUtils;
 import industries.muskaqueers.thunderechosaber.Utils.MLAThread;
+import industries.muskaqueers.thunderechosaber.Utils.PartyThread;
 
 /**
  * Created by andrewcunningham on 11/17/16.
@@ -31,7 +33,7 @@ public class ServerManager {
 
     private final static String TAG = "ServerManager";
     private final static String MLA_POINT = "https://vincetestaccount.herokuapp.com/leaders/mlas/";
-//    private final static String PARTIES_POINT = "https://vincetestaccount.herokuapp.com/leaders/parties/";
+    private final static String PARTIES_POINT = "https://vincetestaccount.herokuapp.com/leaders/parties/";
     private final static String RESPONSE = "response";
 
     public ServerManager(Context context) {
@@ -42,7 +44,6 @@ public class ServerManager {
                 public void onResponse(JSONObject response) {
                     try {
                         JSONArray jsonArray = response.getJSONArray(RESPONSE);
-                        Log.i(TAG, "The JSON that we got back -> " + jsonArray);
                         List<MLADb> mlaDbs = ParserUtils.getMLAsFromJSONArray(jsonArray);
                         addMLAsToDatabase(mlaDbs);
                     } catch (JSONException e) {
@@ -61,10 +62,39 @@ public class ServerManager {
             requestQueue.add(jsObjRequest);
         }
 
+        if(GreenDatabaseManager.getPartyTable().loadAll().isEmpty()) {
+            RequestQueue requestQueue = Volley.newRequestQueue(context);
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, PARTIES_POINT, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        JSONArray jsonArray = response.getJSONArray(RESPONSE);
+                        List<PartyDB> partyDBs = ParserUtils.getPartiesFromArray(jsonArray);
+                        addPartiesToDatabase(partyDBs);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d(TAG, "We got an error: " + error.toString());
+                }
+            });
+
+            RetryPolicy policy = new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            jsObjRequest.setRetryPolicy(policy);
+            requestQueue.add(jsObjRequest);
+        }
     }
 
     public void addMLAsToDatabase(List<MLADb> mlaDbs) {
         MLAThread thread = new MLAThread(mlaDbs);
+        thread.execute();
+    }
+
+    public void addPartiesToDatabase(List<PartyDB> partyDBs) {
+        PartyThread thread = new PartyThread(partyDBs);
         thread.execute();
     }
 }

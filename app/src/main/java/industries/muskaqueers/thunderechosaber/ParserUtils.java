@@ -43,7 +43,6 @@ public abstract class ParserUtils {
             MLADb newMLA = new MLADb();
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                Log.d(TAG, "AAC --> JSONObject: " + jsonObject.toString());
                 newMLA.setMLA_ID(stringFromObject(jsonObject, ID));
                 newMLA.setFirstName(stringFromObject(jsonObject, FIRST_NAME));
                 newMLA.setLastName(stringFromObject(jsonObject, LAST_NAME));
@@ -62,19 +61,21 @@ public abstract class ParserUtils {
         return mlaList;
     }
 
-    public static List<PartyDB> getPartiesFromArray(List<Object> partyArray) throws NullPointerException {
-        List<PartyDB> allParties = new ArrayList<>();
-        for (int i = 0; i < partyArray.size(); i++) {
-            HashMap<String, Object> partyMap = (HashMap) partyArray.get(i);
+    public static List<PartyDB> getPartiesFromArray(JSONArray jsonArray) throws NullPointerException {
+        ArrayList<PartyDB> allParties = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
             PartyDB newParty = new PartyDB();
-            // For now the easiest way to access a party in the DB is via it's name. I prefer to interact with the ID attribute.
-            /* ToDo - Will improve this later. */
-            newParty.setPartyId(stringFromKey(partyMap, "name"));
-            newParty.setName(stringFromKey(partyMap, "name"));
-            newParty.setTwitterHandle(stringFromKey(partyMap, "twitter_handle"));
-            newParty.setImageURL(stringFromKey(partyMap, "image_url"));
-
-            allParties.add(newParty);
+            try {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                // For now the easiest way to access a party in the DB is via it's name. I prefer to interact with the ID attribute.
+                newParty.setPartyId(stringFromObject(jsonObject, "name"));
+                newParty.setName(stringFromObject(jsonObject, "name"));
+                newParty.setTwitterHandle(stringFromObject(jsonObject, "twitter_handle"));
+                newParty.setImageURL(stringFromObject(jsonObject, "image_url"));
+                allParties.add(newParty);
+            } catch (JSONException exception) {
+                exception.printStackTrace();
+            }
         }
         return allParties;
     }

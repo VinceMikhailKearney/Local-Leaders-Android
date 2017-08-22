@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     // ---------- Fragment Pager Methods
     protected static class MainAdapter extends FragmentPagerAdapter {
-        private Fragment[] fragments = {new SocialFragment(), new LeadersFragment(), new AreaFragment()};
+        private Fragment[] fragments = {new SocialFragment(), new LeadersFragment()};
         protected Context context;
 
         public MainAdapter(FragmentManager fm, Context context) {
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     public void setupTabLayout() {
         tabLayout.setupWithViewPager(fragmentPager);
 
-        int[] imageResIds = new int[]{R.drawable.newsicon, R.drawable.councilloricon, R.drawable.mapicon};
+        int[] imageResIds = new int[]{R.drawable.newsicon, R.drawable.councilloricon};
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             tabLayout.getTabAt(i).setIcon(imageResIds[i]);
         }
@@ -138,10 +138,11 @@ public class MainActivity extends AppCompatActivity {
                 fragmentPager.setCurrentItem(tab.getPosition());
                 break;
 
-            case 2:
-                getSupportActionBar().setTitle("My Area");
-                fragmentPager.setCurrentItem(tab.getPosition());
-                break;
+            // Not used yet as the Area activity is not fully implemented.
+//            case 2:
+//                getSupportActionBar().setTitle("My Area");
+//                fragmentPager.setCurrentItem(tab.getPosition());
+//                break;
 
             default:
                 break;

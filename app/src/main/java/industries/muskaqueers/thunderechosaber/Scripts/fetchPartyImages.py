@@ -17,7 +17,7 @@ def fetchJSONfile(str):
         downloadImageFromUrl(i['image_url'], i['name'])
 
 def downloadImageFromUrl(url, name):
-    filename = "party_with_id__%s" % (url.split('/')[-1]).replace("_s", "")
+    filename = "party_with_id__%s.jpg" % name.lower()
     print "Downloading image for -> %s" % name
     urllib.urlretrieve(url, filename)
 

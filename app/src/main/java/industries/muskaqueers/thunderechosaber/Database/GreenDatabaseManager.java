@@ -22,9 +22,13 @@ public class GreenDatabaseManager {
         partyTable = daoSession.getPartyDBDao();
     }
 
-    public static MLADbDao getMlaTable() { return  mlaTable; }
+    public static MLADbDao getMlaTable() {
+        return mlaTable;
+    }
 
-    public static PartyDBDao getPartyTable() { return partyTable; }
+    public static PartyDBDao getPartyTable() {
+        return partyTable;
+    }
 
     public static int getMLADBSize() {
         return (int) mlaTable.count();
@@ -32,6 +36,10 @@ public class GreenDatabaseManager {
 
     public static int getPartyDBSize() {
         return (int) partyTable.count();
+    }
+
+    public static MLADb getMlaWithName(String firstName, String lastName) {
+        return GreenDatabaseManager.getMlaTable().queryBuilder().where(MLADbDao.Properties.FirstName.eq(firstName), MLADbDao.Properties.LastName.eq(lastName)).unique();
     }
 
     public static boolean addMLA(MLADb mlaDb) {
