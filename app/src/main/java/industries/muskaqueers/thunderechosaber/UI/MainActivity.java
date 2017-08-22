@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ViewSwitcher;
 
 import de.greenrobot.event.EventBus;
@@ -149,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
     // ---------- Event Handler ----------
     public void onEventMainThread(NewDatabaseEvent.FinsihedMLAUpdates removeSpinner) {
+        Log.i(TAG,"Removing spinner???");
         viewSwitcher.setDisplayedChild(1);
     }
 }

@@ -17,7 +17,6 @@ import industries.muskaqueers.thunderechosaber.Database.MLADb;
 public class MLAThread extends AsyncTask {
 
     private final static String TAG = "MLA";
-
     private List<MLADb> mlaArray;
 
     public MLAThread(List<MLADb> array) {
@@ -27,9 +26,11 @@ public class MLAThread extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] params) {
         for (MLADb mla : mlaArray) {
-            if (GreenDatabaseManager.addMLA(mla))
+            if (GreenDatabaseManager.addMLA(mla)) {
                 Log.d(TAG, "Success adding MLA (" + mla.getFirstName() + " " + mla.getLastName() + ")");
-            else Log.d(TAG, "Something went wrong storing the MLA (" + mla.getFirstName() + " " + mla.getLastName() + ")");
+            } else {
+                Log.d(TAG, "Something went wrong storing the MLA (" + mla.getFirstName() + " " + mla.getLastName() + ")");
+            }
         }
         return null;
     }
@@ -38,6 +39,5 @@ public class MLAThread extends AsyncTask {
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
         EventBus.getDefault().post(new NewDatabaseEvent.FinsihedMLAUpdates());
-
     }
 }
